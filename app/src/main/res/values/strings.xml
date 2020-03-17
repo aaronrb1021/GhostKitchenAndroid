@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Ghost Kitchen Android</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_confirm">Confirm Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid email</string>
+    <string name="invalid_password">Password must be 8 or more characters</string>
+    <string name="invalid_password_2">Passwords do not match</string>
+    <string name="invalid_phone">Must be 10 or 11 digits in length</string>
+    <string name="required">Required</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_button">Don\'t have an account? Register</string>
+    <string name="register">Register</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="title_activity_login_tabbed">Ghost Kitchen</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+</resources>
