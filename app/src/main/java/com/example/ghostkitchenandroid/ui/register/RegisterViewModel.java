@@ -1,23 +1,37 @@
 package com.example.ghostkitchenandroid.ui.register;
 
+import android.util.Log;
 import android.util.Patterns;
 
 import com.example.ghostkitchenandroid.R;
+import com.example.ghostkitchenandroid.network.Result;
+import com.example.ghostkitchenandroid.data.model.User;
+import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.utils.UserCredValidity;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class RegisterViewModel extends ViewModel {
 
     private MutableLiveData<RegisterFormState> registerFormState = new MutableLiveData<>();
+    private MutableLiveData<Result<User>> userResultLiveData = new MutableLiveData<>();
 
-    public LiveData<RegisterFormState> getRegisterFormState() {
+    public RegisterViewModel() {
+
+    }
+
+    LiveData<RegisterFormState> getRegisterFormState() {
         return registerFormState;
     }
 
-    public void registerDataChanged(
+    LiveData<Result<User>> getResultLiveData() {
+        return userResultLiveData;
+    }
+
+    void registerDataChanged(
             String username,
             String password1,
             String password2,
@@ -43,7 +57,8 @@ public class RegisterViewModel extends ViewModel {
     }
 
 
-    public void register(String trim, String trim1, String trim2, String trim3, String trim4) {
-        //TODO
+    void register(String email, String password, String firstName, String lastName, String phone, boolean isStoreOwner) {
+        Log.i("isStoreOwnder", String.valueOf(isStoreOwner));
+        userResultLiveData.setValue(UserRepo.createUser(new User(email, password, firstName, lastName, phone, isStoreOwner)));
     }
 }

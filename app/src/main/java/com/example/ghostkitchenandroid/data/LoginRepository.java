@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.data;
 
 import com.example.ghostkitchenandroid.data.model.LoggedInUser;
+import com.example.ghostkitchenandroid.network.Result;
 
 /**
  * Class that requests authentication and user information from the remote data source and

@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel;
 import android.util.Patterns;
 
 import com.example.ghostkitchenandroid.data.LoginRepository;
-import com.example.ghostkitchenandroid.data.Result;
 import com.example.ghostkitchenandroid.data.model.LoggedInUser;
 import com.example.ghostkitchenandroid.R;
+import com.example.ghostkitchenandroid.network.Result;
 
 public class LoginViewModel extends ViewModel {
 
