@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
-import com.example.ghostkitchenandroid.network.Result;
 import com.example.ghostkitchenandroid.ui.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -26,19 +24,38 @@ import androidx.lifecycle.ViewModelProvider;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private TextInputEditText usernameEditText;
+    private TextInputEditText passwordEditText;
+    private Button loginButton;
+    private TextView registerButton;
+    private ProgressBar loadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        final TextInputEditText usernameEditText = findViewById(R.id.username);
-        final TextInputEditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final TextView registerButton = findViewById(R.id.login_register_bt);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        initViews();
 
+        setObservance();
+
+        setTextWatchers();
+
+        setOnClickListeners();
+
+    }
+
+    private void initViews() {
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.login);
+        registerButton = findViewById(R.id.login_register_bt);
+        loadingProgressBar = findViewById(R.id.loading);
+    }
+
+    private void setObservance() {
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
@@ -67,7 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
 
+    private void setTextWatchers() {
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
+    private void setOnClickListeners() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

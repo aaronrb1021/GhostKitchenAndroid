@@ -1,8 +1,5 @@
 package com.example.ghostkitchenandroid.ui.register;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,9 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
-import com.example.ghostkitchenandroid.data.model.User;
-import com.example.ghostkitchenandroid.network.Result;
+import com.example.ghostkitchenandroid.network.advice.Result;
 import com.google.android.material.textfield.TextInputEditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 public class RegisterActivity extends AppCompatActivity {
 

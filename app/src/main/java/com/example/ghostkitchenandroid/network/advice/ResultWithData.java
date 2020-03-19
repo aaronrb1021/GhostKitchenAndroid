@@ -1,4 +1,4 @@
-package com.example.ghostkitchenandroid.network;
+package com.example.ghostkitchenandroid.network.advice;
 
 import android.util.Log;
 

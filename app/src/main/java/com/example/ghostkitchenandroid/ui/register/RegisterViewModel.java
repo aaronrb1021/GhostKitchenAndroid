@@ -1,18 +1,16 @@
 package com.example.ghostkitchenandroid.ui.register;
 
 import android.util.Log;
-import android.util.Patterns;
 
 import com.example.ghostkitchenandroid.R;
-import com.example.ghostkitchenandroid.network.Result;
-import com.example.ghostkitchenandroid.data.model.User;
+import com.example.ghostkitchenandroid.network.advice.Result;
+import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.utils.UserCredValidity;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 public class RegisterViewModel extends ViewModel {
 

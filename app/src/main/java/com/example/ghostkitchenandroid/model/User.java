@@ -1,4 +1,4 @@
-package com.example.ghostkitchenandroid.data.model;
+package com.example.ghostkitchenandroid.model;
 
 public class User {
 

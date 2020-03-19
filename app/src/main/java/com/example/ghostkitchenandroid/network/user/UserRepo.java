@@ -1,22 +1,17 @@
 package com.example.ghostkitchenandroid.network.user;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.ghostkitchenandroid.network.Result;
-import com.example.ghostkitchenandroid.data.model.User;
-import com.example.ghostkitchenandroid.network.ResultWithData;
+import com.example.ghostkitchenandroid.network.advice.Result;
+import com.example.ghostkitchenandroid.model.User;
+import com.example.ghostkitchenandroid.network.advice.ResultWithData;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.HTTP;
 
 public abstract class UserRepo {
 
