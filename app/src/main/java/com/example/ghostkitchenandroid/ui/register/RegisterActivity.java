@@ -82,12 +82,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 registerViewModel.registerDataChanged(
-                        etEmail.getText().toString(),
-                        etPassword1.getText().toString(),
-                        etPassword2.getText().toString(),
-                        etFirstName.getText().toString(),
-                        etLastName.getText().toString(),
-                        etPhone.getText().toString()
+                        etEmail.getText().toString().trim(),
+                        etPassword1.getText().toString().trim(),
+                        etPassword2.getText().toString().trim(),
+                        etFirstName.getText().toString().trim(),
+                        etLastName.getText().toString().trim(),
+                        etPhone.getText().toString().trim()
                 );
             }
         };
@@ -136,8 +136,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerViewModel.getResultLiveData().observe(this, result -> {
             if (result instanceof Result.Success) {
-                Toast.makeText(getApplicationContext(), ((Result.Success) result).toString(), Toast.LENGTH_LONG).show();
-                finish();//TODO add startup activity
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                finish();
             } else if (result instanceof Result.Error) {
                 Toast.makeText(getApplicationContext(), ((Result.Error) result).getError().getMessage(), Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);

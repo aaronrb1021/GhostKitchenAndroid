@@ -5,7 +5,13 @@ package com.example.ghostkitchenandroid.network;
  */
 public class Result<T> {
     // hide the private constructor to limit subclass types (Success, Error)
+    private boolean isError;
+
     private Result() {
+    }
+
+    public boolean isError() {
+        return isError;
     }
 
     @Override
@@ -15,9 +21,9 @@ public class Result<T> {
             return success.getData().toString() + " " + success.getMessage();
         } else if (this instanceof Result.Error) {
             Result.Error error = (Result.Error) this;
-            return "Error[exception=" + error.getError().toString() + "]";
+            return "Error[" + error.getError().toString() + "]";
         }
-        return "";
+        return "error";
     }
 
     // Success sub-class
@@ -50,6 +56,7 @@ public class Result<T> {
 
         public Error(Exception error) {
             this.error = error;
+            super.isError = true;
         }
 
         public Exception getError() {

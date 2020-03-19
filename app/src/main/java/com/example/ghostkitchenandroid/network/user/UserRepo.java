@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.ghostkitchenandroid.network.Result;
 import com.example.ghostkitchenandroid.data.model.User;
+import com.example.ghostkitchenandroid.network.ResultWithData;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -41,18 +42,50 @@ public abstract class UserRepo {
         }
     }
 
-    //private static class GetUserTask extends AsyncTask<User, Void, Result>
+    public static ResultWithData<User> getUser(User user) {
+        try {
+            return new GetUserTask().execute(user).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return new ResultWithData<>("Execution Error");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return new ResultWithData<>("Interrupted Error");
+        }
+    }
+
+    private static class GetUserTask extends AsyncTask<User, Void, ResultWithData<User>> {
+
+        @Override
+        protected ResultWithData<User> doInBackground(User... users) {
+            try {
+                ResultWithData<User> result = userService.getUser(users[0]).execute().body();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResultWithData<>("IOException");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResultWithData<>("Unknown error");
+            }
+        }
+
+        @Override
+        protected void onPostExecute(ResultWithData<User> userResult) {
+            if (!userResult.isError()) {
+                loggedInUser = userResult.getData();
+            }
+        }
+    }
 
     private static class CreateUserTask extends AsyncTask<User, Void, Result<User>> {
 
         @Override
         protected Result<User> doInBackground(User... users) {
             try {
-                Log.i("isStoreOwnderbefore", String.valueOf(users[0].isStoreOwner()));
                 Call<User> call = userService.createUser(users[0]);
                 Response<User> response = call.execute();
                 User serverSideUser = response.body();
-                Log.i("isStoreOwnderafter", String.valueOf(serverSideUser.isStoreOwner()));
                 if (serverSideUser != null)
                     return new Result.Success<>(serverSideUser, " registered! You can now login.");
             } catch (EOFException e) {
@@ -67,9 +100,7 @@ public abstract class UserRepo {
 
         @Override
         protected void onPostExecute(Result<User> userResult) {
-            if (userResult instanceof Result.Success) {
-                loggedInUser = ((Result.Success<User>) userResult).getData();
-            }
+
         }
     }
 }

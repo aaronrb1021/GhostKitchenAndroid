@@ -1,33 +1,27 @@
 package com.example.ghostkitchenandroid.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
-import com.example.ghostkitchenandroid.ui.login.LoginViewModel;
-import com.example.ghostkitchenandroid.ui.login.LoginViewModelFactory;
+import com.example.ghostkitchenandroid.network.Result;
 import com.example.ghostkitchenandroid.ui.register.RegisterActivity;
 import com.google.android.material.textfield.TextInputEditText;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,8 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         final TextInputEditText usernameEditText = findViewById(R.id.username);
         final TextInputEditText passwordEditText = findViewById(R.id.password);
@@ -62,23 +55,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
+        loginViewModel.getLoginResultLiveData().observe(this, result -> {
+            if (!result.isError()) {
+                Toast.makeText(getApplicationContext(), result.toString() + " login success!", Toast.LENGTH_LONG).show();
+                finish();//TODO start main application page
+            } else if (result.isError()) {
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                loadingProgressBar.setVisibility(View.INVISIBLE);
+            } else {
+                Toast.makeText(getApplicationContext(), "Login failed!", Toast.LENGTH_SHORT).show();
+                loadingProgressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -126,15 +112,5 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    }
-
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }

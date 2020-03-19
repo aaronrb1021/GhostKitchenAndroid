@@ -15,6 +15,11 @@ public class User {
 
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public User(String email, String password, String firstName, String lastName, String phoneNumber, boolean isStoreOwner) {
         this.password = password;
         this.email = email;

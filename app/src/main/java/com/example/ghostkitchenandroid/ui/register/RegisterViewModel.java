@@ -59,6 +59,6 @@ public class RegisterViewModel extends ViewModel {
 
     void register(String email, String password, String firstName, String lastName, String phone, boolean isStoreOwner) {
         Log.i("isStoreOwnder", String.valueOf(isStoreOwner));
-        userResultLiveData.setValue(UserRepo.createUser(new User(email, password, firstName, lastName, phone, isStoreOwner)));
+        userResultLiveData.setValue(UserRepo.createUser(new User(email.trim(), password.trim(), firstName.trim(), lastName.trim(), phone.trim(), isStoreOwner)));
     }
 }
