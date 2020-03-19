@@ -2,10 +2,13 @@ package com.example.ghostkitchenandroid.network;
 
 import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
+
 import androidx.annotation.NonNull;
 
 public class ResultWithData<T> {
 
+    @SerializedName("error")
     private boolean isError;
     private String errorMessage;
     private T data;
@@ -29,7 +32,6 @@ public class ResultWithData<T> {
 
     public void setIsError(boolean isError) {
         this.isError = isError;
-        Log.i("checkIfIsError", String.valueOf(isError));
     }
 
     public String getErrorMessage() {
@@ -45,7 +47,6 @@ public class ResultWithData<T> {
     }
 
     public void setData(T data) {
-        Log.i("checkIfIsData", data.toString());
         this.data = data;
     }
 
