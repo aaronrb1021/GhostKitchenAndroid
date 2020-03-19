@@ -1,5 +1,7 @@
 package com.example.ghostkitchenandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
     private long id;
@@ -9,6 +11,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @SerializedName("storeOwner")
     private boolean isStoreOwner;
 
     public User() {

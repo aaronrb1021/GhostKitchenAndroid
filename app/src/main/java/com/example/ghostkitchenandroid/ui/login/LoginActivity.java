@@ -13,7 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
+import com.example.ghostkitchenandroid.model.User;
+import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.ui.register.RegisterActivity;
+import com.example.ghostkitchenandroid.ui.store_owner.StoreOwnerActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.Nullable;
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getLoginResultLiveData().observe(this, result -> {
             if (!result.isError()) {
                 Toast.makeText(getApplicationContext(), result.toString() + " login success!", Toast.LENGTH_LONG).show();
-                finish();//TODO start main application page
+                startMainViews();
             } else if (result.isError()) {
                 Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
                 loadingProgressBar.setVisibility(View.INVISIBLE);
@@ -133,5 +136,16 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void startMainViews() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        if (UserRepo.getLoggedInUser().isStoreOwner()) {
+            intent = new Intent(this, StoreOwnerActivity.class);
+        } else if (!UserRepo.getLoggedInUser().isStoreOwner()) {
+//            intent = new Intent(this, )TODO
+        }
+        startActivity(intent);
+        finish();
     }
 }

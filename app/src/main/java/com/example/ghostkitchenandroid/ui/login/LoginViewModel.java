@@ -28,14 +28,14 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String email, String password) {
-        ResultWithData<User> result = UserRepo.getUser(new User(email, password));
+        ResultWithData<User> result = UserRepo.getUser(new User(email.trim(), password.trim()));
         loginResultLiveData.setValue(result);
     }
 
     public void loginDataChanged(String username, String password) {
-        if (!UserCredValidity.isUserNameValid(username)) {
+        if (!UserCredValidity.isUserNameValid(username.trim())) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
-        } else if (!UserCredValidity.isPasswordValid(password)) {
+        } else if (!UserCredValidity.isPasswordValid(password.trim())) {
             loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
         } else {
             loginFormState.setValue(new LoginFormState(true));

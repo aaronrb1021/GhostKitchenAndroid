@@ -18,6 +18,10 @@ public abstract class UserRepo {
     private static User loggedInUser;
     private static UserService userService = UserServiceInstance.getInstance();
 
+    public static User getLoggedInUser() {
+        return loggedInUser;
+    }
+
     /**
      * This method will call an asynctask, which will in turn
      * receive a result from the server. If the result comes back negative, the task will update
@@ -39,7 +43,9 @@ public abstract class UserRepo {
 
     public static ResultWithData<User> getUser(User user) {
         try {
-            return new GetUserTask().execute(user).get();
+            ResultWithData<User> result = new GetUserTask().execute(user).get();
+            loggedInUser = result.getData();
+            return result;
         } catch (ExecutionException e) {
             e.printStackTrace();
             return new ResultWithData<>("Execution Error");
@@ -65,13 +71,8 @@ public abstract class UserRepo {
             }
         }
 
-        @Override
-        protected void onPostExecute(ResultWithData<User> userResult) {
-            if (!userResult.isError()) {
-                loggedInUser = userResult.getData();
-            }
-        }
     }
+
 
     private static class CreateUserTask extends AsyncTask<User, Void, Result<User>> {
 
@@ -91,11 +92,6 @@ public abstract class UserRepo {
                 return new Result.Error(new Exception("Unknown Error"));
             }
             return new Result.Error(new Exception("Unknown Error"));
-        }
-
-        @Override
-        protected void onPostExecute(Result<User> userResult) {
-
         }
     }
 }
