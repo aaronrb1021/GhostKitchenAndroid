@@ -2,6 +2,8 @@ package com.example.ghostkitchenandroid.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class User {
 
     private long id;
@@ -13,6 +15,7 @@ public class User {
     private String phoneNumber;
     @SerializedName("storeOwner")
     private boolean isStoreOwner;
+    private ArrayList<Long> kitchenIds;
 
     public User() {
 
@@ -30,6 +33,14 @@ public class User {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.isStoreOwner = isStoreOwner;
+    }
+
+    public ArrayList<Long> getKitchenIds() {
+        return kitchenIds;
+    }
+
+    public void setKitchenIds(ArrayList<Long> kitchenIds) {
+        this.kitchenIds = kitchenIds;
     }
 
     public boolean isStoreOwner() {

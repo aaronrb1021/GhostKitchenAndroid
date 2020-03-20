@@ -19,9 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.State;
+import com.example.ghostkitchenandroid.network.user.UserRepo;
 
 public class AddKitchenFragment extends Fragment {
 
@@ -51,6 +53,8 @@ public class AddKitchenFragment extends Fragment {
         setListeners();
 
         setObservance();
+
+        setOnClickListener();
     }
 
     private void initViews() {
@@ -151,6 +155,42 @@ public class AddKitchenFragment extends Fragment {
                     break;
             }
         });
+
+        addKitchenViewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result.isError()) {
+                Toast.makeText(getContext(), result.getErrorMessage(), Toast.LENGTH_LONG).show();
+                btAddKitchen.setEnabled(false);
+            } else if (result.getData() != null) {
+                Toast.makeText(getContext(), result.getData().getName() + " created!", Toast.LENGTH_LONG).show();
+                UserRepo.getLoggedInUser().getKitchenIds().add(result.getData().getId());
+                init();
+            } else {
+                Toast.makeText(getContext(), "Creation failed", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
+    private void init() {
+        etKitchenName.setText("");
+        etAddressLine1.setText("");
+        etAddressLine2.setText("");
+        etCity.setText("");
+        spState.setSelection(0);
+        etZip.setText("");
+        etPhone.setText("");
+    }
+
+    private void setOnClickListener() {
+        btAddKitchen.setOnClickListener(v -> {
+            addKitchenViewModel.submit(
+                    etKitchenName.getText().toString().trim(),
+                    etAddressLine1.getText().toString().trim(),
+                    etAddressLine2.getText().toString().trim(),
+                    etCity.getText().toString().trim(),
+                    (State) spState.getSelectedItem(),
+                    etZip.getText().toString().trim(),
+                    etPhone.getText().toString().trim()
+            );
+        });
+    }
 }

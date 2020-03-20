@@ -64,7 +64,7 @@ public abstract class UserRepo {
                 return result;
             } catch (IOException e) {
                 e.printStackTrace();
-                return new ResultWithData<>("IOException");
+                return new ResultWithData<>("Connection Error");
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResultWithData<>("Unknown error");
