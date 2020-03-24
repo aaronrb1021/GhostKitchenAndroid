@@ -39,7 +39,8 @@
                 android:id="@+id/add_kitchen_name_et"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/add_kitchen_name" />
+                android:hint="@string/add_kitchen_name"
+                android:inputType="text|textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/address_line1"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress|textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -77,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/address_line2"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress|textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -102,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/city"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPostalAddress|textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner

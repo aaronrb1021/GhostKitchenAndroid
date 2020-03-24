@@ -1,5 +1,7 @@
 package com.example.ghostkitchenandroid.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 public abstract class Address {
@@ -19,7 +21,16 @@ public abstract class Address {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phone = phone;
+        formatPhone(phone);
+    }
+
+    private void formatPhone(String phone) {
+        String phoneWithReplacements = phone.replace("[()- ]", "");
+        Log.i("phoneWithReplacements", phoneWithReplacements);//todo
+        if (phoneWithReplacements.length() == 10)
+            this.phone = "(" + phoneWithReplacements.substring(0, 3) + ")" + "-" + phoneWithReplacements.substring(3, 6) + "-" + phoneWithReplacements.substring(6, 10);
+        else if (phoneWithReplacements.length() == 11)
+            this.phone = phoneWithReplacements.charAt(0) + "-(" + phoneWithReplacements.substring(1, 4) + ")" + "-" + phoneWithReplacements.substring(4, 7) + "-" + phoneWithReplacements.substring(7, 11);
     }
 
     public String getPhone() {

@@ -1,28 +1,29 @@
 package com.example.ghostkitchenandroid.ui.store_owner;
 
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.ghostkitchenandroid.R;
-import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.ui.kitchen_list.KitchenListAdapter;
 
 public class MyKitchensFragment extends Fragment {
 
-    private MyKitchensViewModel mViewModel;
+    private MyKitchensViewModel myKitchensViewModel;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     public static MyKitchensFragment newInstance() {
         return new MyKitchensFragment();
@@ -38,9 +39,26 @@ public class MyKitchensFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this).get(MyKitchensViewModel.class);
+        myKitchensViewModel = new ViewModelProvider(this).get(MyKitchensViewModel.class);
+        progressBar = getActivity().findViewById(R.id.my_kitchen_progress);
         recyclerView = getActivity().findViewById(R.id.my_kitchen_recycler);
-//        recyclerView.setAdapter(new KitchenListAdapter(getContext(), ));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        setObservance();
+
+        updateKitchensList();
+    }
+
+    private void updateKitchensList() {
+        progressBar.setVisibility(View.VISIBLE);
+        myKitchensViewModel.updateKitchensLiveData(UserRepo.getLoggedInUser());
+    }
+
+    private void setObservance() {
+        myKitchensViewModel.getKitchensLiveData().observe(getViewLifecycleOwner(), kitchens -> {
+            recyclerView.setAdapter(new KitchenListAdapter(getContext(), kitchens));
+            progressBar.setVisibility(View.INVISIBLE);
+        });
     }
 
 }

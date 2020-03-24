@@ -83,7 +83,7 @@ public abstract class UserRepo {
                 Response<User> response = call.execute();
                 User serverSideUser = response.body();
                 if (serverSideUser != null)
-                    return new Result.Success<>(serverSideUser, " registered! You can now login.");
+                    return new Result.Success<>(serverSideUser, "registered! You can now login.");
             } catch (EOFException e) {
                 e.printStackTrace();
                 return new Result.Error(new Exception("Email already taken"));
