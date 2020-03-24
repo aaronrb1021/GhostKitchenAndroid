@@ -5,6 +5,8 @@
     android:id="@+id/kitchen_row_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
     app:contentPadding="2dp"
@@ -19,8 +21,8 @@
 
         <ImageView
             android:id="@+id/kitchen_image_view"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:contentDescription="Kitchen image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,16 +34,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="5dp"
             android:text="Kitchen address"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/kitchen_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/kitchen_name_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/kitchen_phone_tv" />
 
         <TextView
             android:id="@+id/kitchen_name_tv"
-            android:layout_width="175dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:layout_marginTop="5dp"
@@ -55,12 +57,12 @@
             android:id="@+id/kitchen_phone_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="2dp"
             android:text="555-555-5555"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/kitchen_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/kitchen_name_tv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

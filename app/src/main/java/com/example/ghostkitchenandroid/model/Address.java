@@ -26,7 +26,6 @@ public abstract class Address {
 
     private void formatPhone(String phone) {
         String phoneWithReplacements = phone.replace("[()- ]", "");
-        Log.i("phoneWithReplacements", phoneWithReplacements);//todo
         if (phoneWithReplacements.length() == 10)
             this.phone = "(" + phoneWithReplacements.substring(0, 3) + ")" + "-" + phoneWithReplacements.substring(3, 6) + "-" + phoneWithReplacements.substring(6, 10);
         else if (phoneWithReplacements.length() == 11)

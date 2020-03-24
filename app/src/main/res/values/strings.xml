@@ -22,6 +22,35 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="submit">Submit</string>
 
+    <!-- STORE OWNER -->
+
+    <!-- add kitchen -->
+    <string name="add_kitchen_toolbar_title">New Ghost Kitchen</string>
+    <string name="add_kitchen_title">Kitchen Info</string>
+    <string name="add_kitchen_name">Kitchen Name</string>
+    <string name="add_kitchen_button">Add Kitchen</string>
+
+    <!-- my kitchens -->
+    <string name="my_kitchens_toolbar_title">My Ghost Kitchens</string>
+
+    <!-- END STORE OWNER -->
+
+
+    <!-- ADDRESS -->
+    <string name="address_line1">Address line 1</string>
+    <string name="address_line2">Address line 2</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip">zip</string>
+    <string name="phone">Phone</string>
+
+    <!-- NAVBAR -->
+    <string name="nav_open">Open Navigation Drawer</string>
+    <string name="nav_close">Close Navigation Drawer</string>
+    <string name="store_owner_my_kitchens">My Ghost Kitchens</string>
+    <string name="store_owner_add_kitchen">New Ghost Kitchen</string>
+
+
     <string-array name="states_full">
         <item>Alabama</item>
         <item>Alaska</item>
@@ -74,23 +103,4 @@
         <item>Wisconsin</item>
         <item>Wyoming</item>
     </string-array>
-
-    <!-- ADDKITCHEN -->
-    <string name="add_kitchen_title">Create a New Kitchen</string>
-    <string name="add_kitchen_name">Kitchen Name</string>
-    <string name="add_kitchen_button">Add Kitchen</string>
-
-    <!-- ADDRESS -->
-    <string name="address_line1">Address line 1</string>
-    <string name="address_line2">Address line 2</string>
-    <string name="city">City</string>
-    <string name="state">State</string>
-    <string name="zip">zip</string>
-    <string name="phone">Phone</string>
-
-    <!-- NAVBAR -->
-    <string name="nav_open">Open Navigation Drawer</string>
-    <string name="nav_close">Close Navigation Drawer</string>
-    <string name="store_owner_my_kitchens">My Ghost Kitchens</string>
-    <string name="store_owner_add_kitchen">New Ghost Kitchen</string>
 </resources>

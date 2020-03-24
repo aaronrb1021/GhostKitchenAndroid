@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.store_owner;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toolbar;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
@@ -24,6 +26,7 @@ public class MyKitchensFragment extends Fragment {
     private MyKitchensViewModel myKitchensViewModel;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     public static MyKitchensFragment newInstance() {
         return new MyKitchensFragment();
@@ -38,6 +41,8 @@ public class MyKitchensFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_kitchens_toolbar_title);
 
         myKitchensViewModel = new ViewModelProvider(this).get(MyKitchensViewModel.class);
         progressBar = getActivity().findViewById(R.id.my_kitchen_progress);

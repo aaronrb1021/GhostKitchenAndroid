@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.store_owner;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -47,6 +48,8 @@ public class AddKitchenFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         addKitchenViewModel = new ViewModelProvider(this).get(AddKitchenViewModel.class);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.add_kitchen_toolbar_title);
 
         initViews();
 
