@@ -21,6 +21,8 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="submit">Submit</string>
+    <string name="edit">Edit</string>
+
 
     <!-- STORE OWNER -->
 
@@ -32,6 +34,16 @@
 
     <!-- my kitchens -->
     <string name="my_kitchens_toolbar_title">My Ghost Kitchens</string>
+    <string name="pending_orders">Pending Orders</string>
+    <string name="menu">Menu</string>
+    <string name="no_pending_orders">NO PENDING ORDERS</string>
+
+    <!-- order -->
+    <string name="order_row_time">11:59 AM</string>
+    <string name="order_row_deliver_by">Deliver By: 12:59 PM</string>
+    <string name="order_row_buyer_name">Buyer Name</string>
+    <string name="address_or_pickup">Address\nor Pickup</string>
+    <string name="order_row_details">$19.99\n4 Items</string>
 
     <!-- END STORE OWNER -->
 

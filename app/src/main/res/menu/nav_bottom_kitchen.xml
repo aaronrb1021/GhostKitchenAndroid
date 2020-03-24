@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_edit_kitchen"
+        android:title="@string/edit"
+        android:icon="@drawable/ic_edit_black_24dp"/>
+
+
+    <item
+        android:id="@+id/bottom_nav_pending_orders"
+        android:title="@string/pending_orders"
+        android:icon="@drawable/ic_announcement_black_24dp"/>
+
+
+    <item
+        android:id="@+id/bottom_nav_menu"
+        android:title="@string/menu"
+        android:icon="@drawable/ic_restaurant_menu_black_24dp"/>
+
+</menu>

@@ -27,6 +27,7 @@ public class MyKitchensFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private View kitchenFragmentContainer;
 
     public static MyKitchensFragment newInstance() {
         return new MyKitchensFragment();

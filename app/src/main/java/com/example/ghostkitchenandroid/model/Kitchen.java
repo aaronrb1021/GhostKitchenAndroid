@@ -1,6 +1,8 @@
 package com.example.ghostkitchenandroid.model;
 
-public class Kitchen implements Comparable<Kitchen> {
+import java.io.Serializable;
+
+public class Kitchen implements Comparable<Kitchen>, Serializable {
 
     private long id;
     private String name;
