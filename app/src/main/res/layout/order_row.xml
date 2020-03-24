@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/kitchen_row_cardview"
+    android:id="@+id/order_row_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -15,7 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
-        android:id="@+id/kitchen_row_constraint"
+        android:id="@+id/order_row_constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/order_row_time"
             android:textAppearance="@android:style/TextAppearance.Material.Notification.Time"
             android:textColor="@color/colorPrimary"
@@ -34,17 +34,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/order_row_time_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_row_deliver_by"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/order_row_time"
             app:layout_constraintStart_toStartOf="@+id/order_row_time"
             app:layout_constraintTop_toBottomOf="@+id/order_row_time" />
 
         <TextView
-            android:id="@+id/order_name_tv"
+            android:id="@+id/order_row_buyer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -56,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/kitchen_phone_tv"
+            android:id="@+id/order_row_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -64,22 +65,24 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/order_row_time"
-            app:layout_constraintTop_toBottomOf="@+id/order_name_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/order_row_buyer_name" />
 
 
         <TextView
-            android:id="@+id/kitchen_address_tv"
+            android:id="@+id/order_row_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/address_or_pickup"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/order_row_time"
-            app:layout_constraintTop_toBottomOf="@+id/kitchen_phone_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/order_row_phone" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/order_row_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -91,12 +94,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/order_row_status_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_pending_24dp"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintEnd_toEndOf="@+id/order_row_details"
+            app:layout_constraintStart_toStartOf="@+id/order_row_details"
+            app:layout_constraintTop_toBottomOf="@+id/order_row_details" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

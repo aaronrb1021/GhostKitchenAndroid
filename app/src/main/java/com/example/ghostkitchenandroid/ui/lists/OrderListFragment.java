@@ -1,4 +1,4 @@
-package com.example.ghostkitchenandroid.ui.store_owner;
+package com.example.ghostkitchenandroid.ui.lists;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

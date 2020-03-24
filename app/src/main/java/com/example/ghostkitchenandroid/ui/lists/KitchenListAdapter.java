@@ -1,23 +1,18 @@
-package com.example.ghostkitchenandroid.ui.kitchen_list;
+package com.example.ghostkitchenandroid.ui.lists;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.ui.store_owner.MyKitchenFragment;
-import com.example.ghostkitchenandroid.ui.store_owner.MyKitchensFragment;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;

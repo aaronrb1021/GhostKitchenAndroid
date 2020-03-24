@@ -19,7 +19,7 @@ import android.widget.Toolbar;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
-import com.example.ghostkitchenandroid.ui.kitchen_list.KitchenListAdapter;
+import com.example.ghostkitchenandroid.ui.lists.KitchenListAdapter;
 
 public class MyKitchensFragment extends Fragment {
 
