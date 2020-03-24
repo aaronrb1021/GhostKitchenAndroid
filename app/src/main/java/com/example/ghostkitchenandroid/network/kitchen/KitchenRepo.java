@@ -10,8 +10,11 @@ import com.example.ghostkitchenandroid.network.advice.ResultWithData;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -21,10 +24,16 @@ public class KitchenRepo {
 
     private static KitchenService kitchenService = KitchenServiceInstance.getInstance();
 
+    private MutableLiveData<ArrayList<Kitchen>> kitchensLiveData = new MutableLiveData<>();
+
     public static KitchenRepo getInstance() {
         if (kitchenRepo == null)
             kitchenRepo = new KitchenRepo();
         return kitchenRepo;
+    }
+
+    public LiveData<ArrayList<Kitchen>> getKitchensLiveData() {
+        return kitchensLiveData;
     }
 
     public ResultWithData<Kitchen> createKitchen(Kitchen kitchen, User user) {
@@ -36,6 +45,10 @@ public class KitchenRepo {
             e.printStackTrace();
         }
         return new ResultWithData<>("Exception error");
+    }
+
+    public void getKitchensByUser(User user) {
+        new GetKitchensByUserTask().execute(user);
     }
 
     private static class CreateKitchenTask extends AsyncTask<DualObjectWrapper<Kitchen, User>, Void, ResultWithData<Kitchen>> {
@@ -52,6 +65,24 @@ public class KitchenRepo {
                 e.printStackTrace();
             }
             return new ResultWithData<>("Connection error");
+        }
+    }
+
+    private class GetKitchensByUserTask extends AsyncTask<User, Void, ArrayList<Kitchen>> {
+
+        @Override
+        protected ArrayList<Kitchen> doInBackground(User... users) {
+            try {
+                return kitchenService.getKitchensByUser(users[0]).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Kitchen> kitchens) {
+            kitchensLiveData.setValue(kitchens);
         }
     }
 }

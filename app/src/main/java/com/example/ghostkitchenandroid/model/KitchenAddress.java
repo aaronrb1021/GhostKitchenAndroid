@@ -1,5 +1,7 @@
 package com.example.ghostkitchenandroid.model;
 
+import androidx.annotation.NonNull;
+
 public class KitchenAddress extends Address {
 
     private Kitchen kitchen;
@@ -12,15 +14,10 @@ public class KitchenAddress extends Address {
         super(addressName, name, addressLine1, addressLine2, city, state, zip, phone);
     }
 
-    //    @OneToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "kitchen_id")
-//    private Kitchen kitchen;
+    @NonNull
+    @Override
+    public String toString() {
+        return addressLine1 + " " + addressLine2 + ", " + city + " " + state + " " + zip;
+    }
 
-//    public Kitchen getKitchen() {
-//        return kitchen;
-//    }
-//
-//    public void setKitchen(Kitchen kitchen) {
-//        this.kitchen = kitchen;
-//    }
 }

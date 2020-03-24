@@ -1,6 +1,6 @@
 package com.example.ghostkitchenandroid.model;
 
-public class Kitchen {
+public class Kitchen implements Comparable<Kitchen> {
 
     private long id;
     private String name;
@@ -39,11 +39,11 @@ public class Kitchen {
         this.id = id;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    @Override
+    public int compareTo(Kitchen o) {
+        if (id == o.getId())
+            return 0;
+        return name.compareTo(o.getName());
+    }
+
 }

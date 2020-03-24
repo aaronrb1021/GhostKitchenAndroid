@@ -1,8 +1,10 @@
 package com.example.ghostkitchenandroid.model;
 
+import androidx.annotation.NonNull;
+
 public abstract class Address {
 
-    private String addressName, name, addressLine1, addressLine2, city, state, zip, phone;
+    protected String addressName, name, addressLine1, addressLine2, city, state, zip, phone;
     private long id;
 
     public Address() {
@@ -86,5 +88,11 @@ public abstract class Address {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Attn: " + name + ", " + addressLine1 + " " + addressLine2 + ", " + city + " " + state + " " + zip;
     }
 }
