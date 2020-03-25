@@ -22,6 +22,7 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="submit">Submit</string>
     <string name="edit">Edit</string>
+    <string name="negative_button">Cancel</string>
 
 
     <!-- STORE OWNER -->
@@ -44,6 +45,15 @@
     <string name="order_row_buyer_name">Buyer Name</string>
     <string name="address_or_pickup">Address\nor Pickup</string>
     <string name="order_row_details">$19.99\n4 Items</string>
+
+    <!-- item -->
+    <string name="no_description">No description available</string>
+    <string name="item_name">Item Name</string>
+    <string name="price">Price</string>
+    <string name="category">Category</string>
+    <string name="enter_new_category">Enter a new category</string>
+    <string name="description">Description</string>
+    <string name="no_items_exist">NO ITEMS YET CREATED</string>
 
     <!-- END STORE OWNER -->
 
