@@ -2,23 +2,40 @@ package com.example.ghostkitchenandroid.model;
 
 import java.util.Locale;
 
-public class Item {
+import androidx.annotation.Nullable;
+
+public class Item implements Comparable<Item> {
 
     private long id;
     private String name;
     private double price;
     private String description;
+    private String category;
     private String priceString;
+    private Kitchen kitchen;
 
-    public Item(String name, double price) {
-        this(name, price, "");
+    public Item(String name, double price, String category) {
+        this(name, price, category,"");
     }
 
-    public Item(String name, double price, String description) {
+    public Item(String name, double price, String category, String description) {
         this.name = name;
-        this.description = description;
         this.price = price;
+        this.category = category;
+        this.description = description;
         priceToString();
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setKitchen(Kitchen kitchen) {
+        this.kitchen = kitchen;
     }
 
     private void priceToString() {
@@ -63,5 +80,19 @@ public class Item {
 
     public void setPriceString(String priceString) {
         this.priceString = priceString;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        if (category.equals(o.category))
+            return (int) (o.price - price);
+        return category.compareTo(o.category);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Item)
+            return id == ((Item) obj).id;
+        return super.equals(obj);
     }
 }

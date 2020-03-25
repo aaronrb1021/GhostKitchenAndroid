@@ -5,13 +5,13 @@ public class BuyerDetails {
     private long userId;
     private String name;
     private String phone;
-    private Address address;
+    private UserAddress userAddress;
 
-    public BuyerDetails(long userId, String name, String phone, Address address) {
+    public BuyerDetails(long userId, String name, String phone, UserAddress userAddress) {
         this.userId = userId;
         this.name = name;
         this.phone = phone;
-        this.address = address;
+        this.userAddress = userAddress;
     }
 
     public long getUserId() {
@@ -38,11 +38,11 @@ public class BuyerDetails {
         this.phone = phone;
     }
 
-    public Address getAddress() {
-        return address;
+    public UserAddress getUserAddress() {
+        return userAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setUserAddress(UserAddress userAddress) {
+        this.userAddress = userAddress;
     }
 }
