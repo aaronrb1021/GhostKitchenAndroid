@@ -17,10 +17,13 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemListViewHolder> {
+public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private KitchenMenu kitchenMenu;
+
+    private final static int VIEW_TYPE_CATEGORY = 1;
+    private final static int VIEW_TYPE_ITEM = 2;
 
     public ItemListAdapter(Context context, ArrayList<Item> items) {
         this.context = context;
@@ -29,18 +32,25 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
 
     @NonNull
     @Override
-    public ItemListAdapter.ItemListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ItemListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemListAdapter.ItemListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 //TODO        if (kitchenMenu.getItemWrapperList().get(position).isCategory())
     }
 
     @Override
     public int getItemCount() {
         return 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (kitchenMenu.getItemWrapperList().get(position).isCategory())
+            return VIEW_TYPE_CATEGORY;
+        return VIEW_TYPE_ITEM;
     }
 
     class ItemListViewHolder extends RecyclerView.ViewHolder {
@@ -54,4 +64,5 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemLi
             tvItemDescription = itemView.findViewById(R.id.item_row_description_tv);
         }
     }
+    //TODO MAKE CATEGORY VIEWHOLDER
 }
