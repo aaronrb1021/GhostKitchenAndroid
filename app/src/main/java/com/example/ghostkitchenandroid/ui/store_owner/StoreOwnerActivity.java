@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 public class StoreOwnerActivity extends AppCompatActivity {
 
@@ -93,7 +94,8 @@ public class StoreOwnerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_store_owner_my_kitchens:
-                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new MyKitchensFragment(), "MyKitchensFragment").addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new MyKitchensFragment(), "MyKitchensFragment").commit();
+                        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.nav_store_owner_add_kitchen:

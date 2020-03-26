@@ -1,5 +1,7 @@
 package com.example.ghostkitchenandroid.model;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,14 +23,16 @@ public class KitchenMenu {
 
     private void initItemWrapperArrayList(ArrayList<Item> items, AtomicInteger categoriesCount) {
         items.stream().forEach(item -> {
-            if (itemWrapperArrayList.contains(item.getCategory())) {
+            if (itemWrapperArrayList.contains(new MenuItemWrapper(item.getCategory()))) {
                 itemWrapperArrayList.add(new MenuItemWrapper(item));
             } else {
                 itemWrapperArrayList.add(new MenuItemWrapper(item.getCategory()));
+                itemWrapperArrayList.add(new MenuItemWrapper(item));
                 categoriesCount.getAndIncrement();
             }
         });
         Arrays.sort(itemWrapperArrayList.toArray());
+        Log.i("itemwrapperlisttostring", itemWrapperArrayList.toString());
     }
 
     private void initCategoriesArray(AtomicInteger categoriesCount) {

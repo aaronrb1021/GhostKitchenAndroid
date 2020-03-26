@@ -2,6 +2,7 @@ package com.example.ghostkitchenandroid.model;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Item implements Comparable<Item> {
@@ -14,15 +15,20 @@ public class Item implements Comparable<Item> {
     private String priceString;
     private Kitchen kitchen;
 
-    public Item(String name, double price, String category) {
-        this(name, price, category,"");
+    public Item() {
+
     }
 
-    public Item(String name, double price, String category, String description) {
+    public Item(String name, double price, String category, Kitchen kitchen) {
+        this(name, price, category, kitchen, "");
+    }
+
+    public Item(String name, double price, String category, Kitchen kitchen, String description) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.description = description;
+        this.kitchen = kitchen;
         priceToString();
     }
 
@@ -94,5 +100,11 @@ public class Item implements Comparable<Item> {
         if (obj instanceof Item)
             return id == ((Item) obj).id;
         return super.equals(obj);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Item:[name = " + name + ", price = " + priceString + ", category = " + category + "]";
     }
 }

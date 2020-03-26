@@ -69,7 +69,7 @@ public class MyKitchenFragment extends Fragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_pending_orders:
-                    getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
                     floatingActionButton.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.bottom_nav_menu:
@@ -81,8 +81,9 @@ public class MyKitchenFragment extends Fragment {
         });
 
         myKitchenViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
+            progressBar.setVisibility(View.INVISIBLE);
             showItemList();
-        });
+        }); //show item list when we receive our created item back to our app
 
         getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
@@ -129,6 +130,7 @@ public class MyKitchenFragment extends Fragment {
                                             etName.getText().toString().trim(),
                                             Double.parseDouble(etPrice.getText().toString().trim()),
                                             tvCategory.getText().toString().trim(),
+                                            myKitchenViewModel.getKitchen(),
                                             etDescription.getText().toString().trim()
                                     )
                             );

@@ -1,5 +1,7 @@
 package com.example.ghostkitchenandroid.ui.store_owner;
 
+import android.util.Log;
+
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.network.item.ItemRepo;
@@ -21,6 +23,7 @@ public class MyKitchenViewModel extends ViewModel {
     }
 
     void createItem(Item item) {
+        Log.i("itemdataincreateitem", item.getPriceString() + item.getName() + item.getCategory() + item.getDescription());
         itemRepo.createItem(item);
     }
 
