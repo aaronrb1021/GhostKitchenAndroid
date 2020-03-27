@@ -28,18 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/nav_bottom_kitchen" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/my_kitchen_fab"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/my_kitchen_bottom_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
     <ProgressBar
         android:id="@+id/my_kitchen_progress"
         android:layout_width="wrap_content"

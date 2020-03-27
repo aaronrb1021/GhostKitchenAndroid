@@ -27,15 +27,15 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final static int VIEW_TYPE_CATEGORY = 1;
     private final static int VIEW_TYPE_ITEM = 2;
 
-    public ItemListAdapter(Context context, ArrayList<Item> items) {
+    public ItemListAdapter(Context context, KitchenMenu kitchenMenu) {
         this.context = context;
-        kitchenMenu = new KitchenMenu(items);
+        this.kitchenMenu = kitchenMenu;
         itemWrappers = kitchenMenu.getItemWrapperList();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (kitchenMenu.getItemWrapperList().get(position).isCategory())
+        if (itemWrappers.get(position).isCategory())
             return VIEW_TYPE_CATEGORY;
         return VIEW_TYPE_ITEM;
     }

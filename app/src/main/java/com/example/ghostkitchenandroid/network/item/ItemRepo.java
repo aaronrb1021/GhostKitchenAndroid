@@ -15,16 +15,8 @@ public class ItemRepo {
 
     private static ItemService itemService = ItemServiceInstance.getInstance();
 
-    private static ItemRepo itemRepo;
-
     private final MutableLiveData<Item> itemLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Item>> itemListLiveData = new MutableLiveData<>();
-
-    public static ItemRepo getInstance() {
-        if (itemRepo == null)
-            itemRepo = new ItemRepo();
-        return itemRepo;
-    }
 
     public void createItem(Item item) {
         new CreateItemTask(itemLiveData).execute(item);

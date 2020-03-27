@@ -31,7 +31,6 @@ public class MyKitchenFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private MyKitchenViewModel myKitchenViewModel;
     private View myKitchenFragmentContainer;
-    private FloatingActionButton floatingActionButton;
     private ProgressBar progressBar;
 
     @Override
@@ -41,7 +40,10 @@ public class MyKitchenFragment extends Fragment {
         final Bundle bundle = getArguments();
 
         myKitchenViewModel = new ViewModelProvider(this).get(MyKitchenViewModel.class);
-        myKitchenViewModel.setKitchen((Kitchen) bundle.get("kitchen"));
+
+        final Kitchen kitchen = (Kitchen) bundle.get("kitchen");
+        if (kitchen != null)
+            myKitchenViewModel.setKitchen(kitchen);
     }
 
     @Nullable
@@ -58,32 +60,19 @@ public class MyKitchenFragment extends Fragment {
 
         bottomNavigationView = view.findViewById(R.id.my_kitchen_bottom_nav);
         myKitchenFragmentContainer = view.findViewById(R.id.my_kitchen_fragment_container);
-        floatingActionButton = view.findViewById(R.id.my_kitchen_fab);
         progressBar = view.findViewById(R.id.my_kitchen_progress);
-
-        floatingActionButton.setOnClickListener(v -> {
-            DialogFragment dialogFragment = new AddItemDialog(myKitchenViewModel, progressBar);
-            dialogFragment.show(getActivity().getSupportFragmentManager(), "AddItemDialogFragment");
-        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_pending_orders:
                     getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
-                    floatingActionButton.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.bottom_nav_menu:
                     showItemList();
-                    floatingActionButton.setVisibility(View.VISIBLE);
                     return true;
             }
             return false;
         });
-
-        myKitchenViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
-            progressBar.setVisibility(View.INVISIBLE);
-            showItemList();
-        }); //show item list when we receive our created item back to our app
 
         getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
@@ -94,57 +83,9 @@ public class MyKitchenFragment extends Fragment {
         ItemListFragment itemListFragment = new ItemListFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("kitchen", myKitchenViewModel.getKitchen());
+        bundle.putInt("mode", ItemListFragment.MODE_STORE_OWNER);
         itemListFragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), itemListFragment).commit();
-    }
-
-    public static class AddItemDialog extends DialogFragment {
-
-        private MyKitchenViewModel myKitchenViewModel;
-        private ProgressBar progressBar;
-
-        AddItemDialog(MyKitchenViewModel myKitchenViewModel, ProgressBar progressBar) {
-            this.myKitchenViewModel = myKitchenViewModel;
-            this.progressBar = progressBar;
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-            final View view = inflater.inflate(R.layout.create_item, null);
-            final EditText etName = view.findViewById(R.id.create_item_name_et);
-            final EditText etPrice = view.findViewById(R.id.create_item_price_et);
-            final EditText etDescription = view.findViewById(R.id.create_item_description_et);
-            final TextView tvCategory = view.findViewById(R.id.create_item_category_tv);
-
-            builder.setView(view)
-                    .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //TODO
-                            progressBar.setVisibility(View.VISIBLE);
-                            myKitchenViewModel.createItem(new Item(
-                                            etName.getText().toString().trim(),
-                                            Double.parseDouble(etPrice.getText().toString().trim()),
-                                            tvCategory.getText().toString().trim(),
-                                            myKitchenViewModel.getKitchen(),
-                                            etDescription.getText().toString().trim()
-                                    )
-                            );
-                        }
-                    })
-                    .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getDialog().cancel();
-                        }
-                    });
-
-            return builder.create();
-        }
     }
 
 }

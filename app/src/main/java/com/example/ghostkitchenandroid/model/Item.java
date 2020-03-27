@@ -45,7 +45,7 @@ public class Item implements Comparable<Item> {
     }
 
     private void priceToString() {
-        priceString = String.format(Locale.US,"%4.2f", price);
+        priceString = String.format(Locale.US,"$%4.2f", price);
     }
 
     public long getId() {

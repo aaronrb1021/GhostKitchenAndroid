@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModel;
 public class MyKitchenViewModel extends ViewModel {
 
     private Kitchen kitchen;
-    private ItemRepo itemRepo = ItemRepo.getInstance();
 
     public void setKitchen(Kitchen kitchen) {
         this.kitchen = kitchen;
@@ -22,12 +21,4 @@ public class MyKitchenViewModel extends ViewModel {
         return kitchen;
     }
 
-    void createItem(Item item) {
-        Log.i("itemdataincreateitem", item.getPriceString() + item.getName() + item.getCategory() + item.getDescription());
-        itemRepo.createItem(item);
-    }
-
-    LiveData<Item> getItemLiveData() {
-        return itemRepo.getItemLiveData();
-    }
 }
