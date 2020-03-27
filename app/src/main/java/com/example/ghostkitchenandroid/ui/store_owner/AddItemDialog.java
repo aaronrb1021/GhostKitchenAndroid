@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.ui.lists.ItemListViewModel;
+
+import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,8 +50,9 @@ public class AddItemDialog extends DialogFragment {
         final EditText etPrice = view.findViewById(R.id.create_item_price_et);
         final EditText etDescription = view.findViewById(R.id.create_item_description_et);
         final TextView tvCategory = view.findViewById(R.id.create_item_category_tv);
+        final LinearLayout customerSpinner = view.findViewById(R.id.create_item_category_spinner);
 
-        tvCategory.setOnClickListener(v -> {
+        customerSpinner.setOnClickListener(v -> {
             AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(itemListViewModel, tvCategory);
             categoryDialog.show(getActivity().getSupportFragmentManager(), "AddItemCategoryDialogFragment");
         });
@@ -107,22 +111,20 @@ public class AddItemDialog extends DialogFragment {
                     getDialog().cancel();
             });
 
-            listView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_2, itemListViewModel.getKitchenMenu().getCategories()));
-//            listView.setClickable(true);
-            listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            String[] categories = itemListViewModel.getKitchenMenu().getCategories();
+            Log.i("categoriestostring", Arrays.toString(categories));
+
+            listView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, categories));
+            listView.setClickable(true);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     tvCategory.setText(itemListViewModel.getKitchenMenu().getCategories()[position]);
-                    dismiss();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                    getDialog().cancel();
                 }
             });
 
-            return builder.setView(R.layout.create_item_category)
+            return builder.setView(view)
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

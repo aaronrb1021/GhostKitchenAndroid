@@ -34,6 +34,13 @@ public class MyKitchensFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        myKitchensViewModel = new ViewModelProvider(this).get(MyKitchensViewModel.class);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.my_kitchens_fragment, container, false);
@@ -45,14 +52,19 @@ public class MyKitchensFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_kitchens_toolbar_title);
 
-        myKitchensViewModel = new ViewModelProvider(this).get(MyKitchensViewModel.class);
-        progressBar = getActivity().findViewById(R.id.my_kitchen_progress);
-        recyclerView = getActivity().findViewById(R.id.my_kitchen_recycler);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        progressBar = view.findViewById(R.id.my_kitchen_progress);
+        recyclerView = view.findViewById(R.id.my_kitchen_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        setObservance();
-
         updateKitchensList();
+
+        setObservance();
     }
 
     private void updateKitchensList() {

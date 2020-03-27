@@ -37,11 +37,12 @@ public class KitchenMenu {
 
     private void initCategoriesArray(AtomicInteger categoriesCount) {
         categories = new String[categoriesCount.get()];
-        itemWrapperArrayList.stream().forEach(itemWrapperSet -> {
-            int index = 0;
-            if (itemWrapperSet.isCategory())
-                categories[index++] = itemWrapperSet.getCategory();
+        categoriesCount.set(0);
+        itemWrapperArrayList.stream().forEach(itemWrapper -> {
+            if (itemWrapper.isCategory())
+                categories[categoriesCount.getAndIncrement()] = itemWrapper.getCategory();
         });
+        Log.i("categoriestostring", Arrays.toString(categories));
     }
 
     public int getNumOfCategories() {
