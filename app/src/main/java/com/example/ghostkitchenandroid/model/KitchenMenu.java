@@ -16,6 +16,7 @@ public class KitchenMenu {
     private String[] categories;
 
     public KitchenMenu(ArrayList<Item> items) {
+        Log.i("itemsinkitchenmenuconstructor", Arrays.toString(items.toArray()));
         AtomicInteger categoriesCount = new AtomicInteger();
         initItemWrapperArrayList(items, categoriesCount);
         initCategoriesArray(categoriesCount);
@@ -32,7 +33,6 @@ public class KitchenMenu {
             }
         });
         Arrays.sort(itemWrapperArrayList.toArray());
-        Log.i("itemwrapperlisttostring", itemWrapperArrayList.toString());
     }
 
     private void initCategoriesArray(AtomicInteger categoriesCount) {
@@ -42,7 +42,6 @@ public class KitchenMenu {
             if (itemWrapper.isCategory())
                 categories[categoriesCount.getAndIncrement()] = itemWrapper.getCategory();
         });
-        Log.i("categoriestostring", Arrays.toString(categories));
     }
 
     public int getNumOfCategories() {

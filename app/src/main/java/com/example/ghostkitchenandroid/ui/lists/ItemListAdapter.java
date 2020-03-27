@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,16 @@ import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.model.MenuItemWrapper;
+import com.example.ghostkitchenandroid.ui.store_owner.AddItemDialog;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -23,14 +28,16 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private KitchenMenu kitchenMenu;
     private ArrayList<MenuItemWrapper> itemWrappers;
+    private ItemListViewModel itemListViewModel;
 
     private final static int VIEW_TYPE_CATEGORY = 1;
     private final static int VIEW_TYPE_ITEM = 2;
 
-    public ItemListAdapter(Context context, KitchenMenu kitchenMenu) {
+    public ItemListAdapter(Context context, KitchenMenu kitchenMenu, ItemListViewModel itemListViewModel) {
         this.context = context;
         this.kitchenMenu = kitchenMenu;
         itemWrappers = kitchenMenu.getItemWrapperList();
+        this.itemListViewModel = itemListViewModel;
     }
 
     @Override
@@ -58,6 +65,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.tvItemName.setText(item.getName());
             itemViewHolder.tvItemPrice.setText(item.getPriceString());
             itemViewHolder.tvItemDescription.setText(item.getDescription());
+            itemViewHolder.itemCardView.setOnClickListener(v -> {
+                Log.i("kitchenitemtodialog", item.toString());
+                DialogFragment dialogFragment = new AddItemDialog(itemListViewModel, item);
+                dialogFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "EditItemDialogFragment");
+            });
         }
     }
 
@@ -70,12 +82,14 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvItemName, tvItemPrice, tvItemDescription;
+        private CardView itemCardView;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItemName = itemView.findViewById(R.id.item_row_name_tv);
             tvItemPrice = itemView.findViewById(R.id.item_row_price_tv);
             tvItemDescription = itemView.findViewById(R.id.item_row_description_tv);
+            itemCardView = itemView.findViewById(R.id.item_row_cardview);
         }
     }
 
@@ -88,5 +102,4 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tvCategory = itemView.findViewById(R.id.item_row_category_tv);
         }
     }
-    //TODO MAKE CATEGORY VIEWHOLDER
 }

@@ -2,6 +2,8 @@ package com.example.ghostkitchenandroid.model;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+
 public class Kitchen implements Comparable<Kitchen>, Serializable {
 
     private long id;
@@ -48,4 +50,9 @@ public class Kitchen implements Comparable<Kitchen>, Serializable {
         return name.compareTo(o.getName());
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "Kitchen: " + name;
+    }
 }

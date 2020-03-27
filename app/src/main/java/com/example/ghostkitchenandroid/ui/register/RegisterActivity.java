@@ -135,13 +135,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerViewModel.getResultLiveData().observe(this, result -> {
             if (result instanceof Result.Success) {
-                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
                 finish();
             } else if (result instanceof Result.Error) {
                 Toast.makeText(getApplicationContext(), ((Result.Error) result).getError().getMessage(), Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
             } else {
-                Toast.makeText(getApplicationContext(), "Register failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Register failed!", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });

@@ -33,6 +33,19 @@ public class AddItemDialog extends DialogFragment {
 
     private ItemListViewModel itemListViewModel;
     private ProgressBar progressBar;
+    private Item item;
+    private View itemDialogView;
+    private EditText etName, etPrice, etDescription;
+    private TextView tvCategory;
+    private LinearLayout customerSpinner;
+    private AlertDialog.Builder builder;
+    private LayoutInflater inflater;
+
+
+    public AddItemDialog(ItemListViewModel itemListViewModel, Item item) {
+        this.itemListViewModel = itemListViewModel;
+        this.item = item;
+    }
 
     public AddItemDialog(ItemListViewModel itemListViewModel, ProgressBar progressBar) {
         this.itemListViewModel = itemListViewModel;
@@ -42,26 +55,34 @@ public class AddItemDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        initViews();
+        if (item == null)
+            return createItemDialog();
+        return editItemDialog();
+    }
 
-        final View view = inflater.inflate(R.layout.create_item, null);
-        final EditText etName = view.findViewById(R.id.create_item_name_et);
-        final EditText etPrice = view.findViewById(R.id.create_item_price_et);
-        final EditText etDescription = view.findViewById(R.id.create_item_description_et);
-        final TextView tvCategory = view.findViewById(R.id.create_item_category_tv);
-        final LinearLayout customerSpinner = view.findViewById(R.id.create_item_category_spinner);
+    private void initViews() {
+        builder = new AlertDialog.Builder(getActivity());
+        inflater = requireActivity().getLayoutInflater();
+
+        itemDialogView = inflater.inflate(R.layout.create_item, null);
+        etName = itemDialogView.findViewById(R.id.create_item_name_et);
+        etPrice = itemDialogView.findViewById(R.id.create_item_price_et);
+        etDescription = itemDialogView.findViewById(R.id.create_item_description_et);
+        tvCategory = itemDialogView.findViewById(R.id.create_item_category_tv);
+        customerSpinner = itemDialogView.findViewById(R.id.create_item_category_spinner);
 
         customerSpinner.setOnClickListener(v -> {
             AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(itemListViewModel, tvCategory);
             categoryDialog.show(getActivity().getSupportFragmentManager(), "AddItemCategoryDialogFragment");
         });
+    }
 
-        builder.setView(view)
+    private Dialog createItemDialog() {
+        builder.setView(itemDialogView)
                 .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO
                         progressBar.setVisibility(View.VISIBLE);
                         itemListViewModel.createItem(new Item(
                                         etName.getText().toString().trim(),
@@ -73,6 +94,38 @@ public class AddItemDialog extends DialogFragment {
                         );
                     }
                 })
+                .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getDialog().cancel();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private Dialog editItemDialog() {
+        etName.setText(item.getName());
+        etPrice.setText(String.valueOf(item.getPrice()));
+        etDescription.setText(item.getDescription());
+        tvCategory.setText(item.getCategory());
+
+        builder.setView(itemDialogView)
+                .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        progressBar.setVisibility(View.VISIBLE);
+                        item.setName(etName.getText().toString().trim());
+                        item.setPrice(Double.parseDouble(etPrice.getText().toString().trim()));
+                        item.setDescription(etDescription.getText().toString().trim());
+                        item.setCategory(tvCategory.getText().toString().trim());
+                        item.setKitchen(itemListViewModel.getKitchen());
+                        itemListViewModel.createItem(item);
+                    }
+                })
+                .setNeutralButton("DELETE", ((dialog, which) -> {
+                    //TODO
+                }))
                 .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

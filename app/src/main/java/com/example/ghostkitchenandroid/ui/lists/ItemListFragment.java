@@ -95,7 +95,7 @@ public class ItemListFragment extends Fragment {
                 tvNoItems.setVisibility(View.INVISIBLE);
             }
             itemListViewModel.setKitchenMenu(new KitchenMenu(items));
-            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), itemListViewModel.getKitchenMenu()));
+            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), itemListViewModel.getKitchenMenu(), itemListViewModel));
         });
 
         itemListViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {

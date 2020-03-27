@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.network.item;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.Kitchen;
@@ -79,6 +80,7 @@ public class ItemRepo {
 
         @Override
         protected void onPostExecute(ArrayList<Item> items) {
+            Log.i("receiveditemsarray", items.toString());
             itemListLiveData.setValue(items);
             itemListLiveData = null;
         }

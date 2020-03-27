@@ -70,6 +70,7 @@ public class Item implements Comparable<Item> {
 
     public void setPrice(double price) {
         this.price = price;
+        priceToString();
     }
 
     public String getDescription() {
@@ -105,6 +106,6 @@ public class Item implements Comparable<Item> {
     @NonNull
     @Override
     public String toString() {
-        return "Item:[name = " + name + ", price = " + priceString + ", category = " + category + "]";
+        return "Item:[name = " + name + ", price = " + priceString + ", category = " + category + ", " + kitchen + "]";
     }
 }

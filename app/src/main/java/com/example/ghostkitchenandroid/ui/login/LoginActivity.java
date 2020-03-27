@@ -77,10 +77,10 @@ public class LoginActivity extends AppCompatActivity {
 
         loginViewModel.getLoginResultLiveData().observe(this, result -> {
             if (!result.isError()) {
-                Toast.makeText(getApplicationContext(), result.toString() + " login success!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), result.toString() + " login success!", Toast.LENGTH_SHORT).show();
                 startMainViews();
             } else if (result.isError()) {
-                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
                 loadingProgressBar.setVisibility(View.INVISIBLE);
             } else {
                 Toast.makeText(getApplicationContext(), "Login failed!", Toast.LENGTH_SHORT).show();
