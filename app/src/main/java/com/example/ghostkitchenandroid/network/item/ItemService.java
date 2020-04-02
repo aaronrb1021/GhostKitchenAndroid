@@ -20,5 +20,5 @@ interface ItemService {
     Call<ArrayList<Item>> findItemsByKitchen(@Body Kitchen kitchen);
 
     @DELETE("items/{requestId}")
-    Call<Boolean> deleteItem(@Path("requestId") String requestId);
+    Call<Boolean> deleteItem(@Path(value = "requestId") String requestId);
 }

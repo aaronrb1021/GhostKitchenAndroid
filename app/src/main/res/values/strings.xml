@@ -36,6 +36,7 @@
 
     <!-- my kitchens -->
     <string name="my_kitchens_toolbar_title">My Ghost Kitchens</string>
+    <string name="my_kitchens_no_kitchens">NO SAVED KITCHENS</string>
     <string name="pending_orders">Pending Orders</string>
     <string name="menu">Menu</string>
     <string name="no_pending_orders">NO PENDING ORDERS</string>
@@ -57,6 +58,7 @@
     <string name="no_items_exist">NO ITEMS YET CREATED</string>
     <string name="item_deleted">Item deleted successfully</string>
     <string name="item_delete_failed">Item deletion FAILED</string>
+    <string name="dialog_create_item_title">Create Item</string>
 
     <!-- END STORE OWNER -->
 

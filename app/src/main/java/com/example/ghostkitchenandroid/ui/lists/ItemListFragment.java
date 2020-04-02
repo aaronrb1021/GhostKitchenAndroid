@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,6 +112,7 @@ public class ItemListFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), R.string.item_delete_failed, Toast.LENGTH_SHORT).show();
                 }
+                updateItemList();
             });
         }
     }

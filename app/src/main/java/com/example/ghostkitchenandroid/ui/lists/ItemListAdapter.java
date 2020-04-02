@@ -49,8 +49,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_CATEGORY)
-            return new CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category_row, parent, false));
-        return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item_row, parent, false));
+            return new CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item_category, parent, false));
+        return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item, parent, false));
     }
 
     @Override
@@ -64,7 +64,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.tvItemPrice.setText(item.getPriceString());
             itemViewHolder.tvItemDescription.setText(item.getDescription());
             itemViewHolder.itemCardView.setOnClickListener(v -> {
-                Log.i("kitchenitemtodialog", item.toString());
                 DialogFragment dialogFragment = new ItemDialog(itemListViewModel, item);
                 dialogFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "EditItemDialogFragment");
             });

@@ -33,7 +33,7 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
     @NonNull
     @Override
     public KitchenListAdapter.KitchenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new KitchenViewHolder(LayoutInflater.from(context).inflate(R.layout.kitchen_row, parent, false));
+        return new KitchenViewHolder(LayoutInflater.from(context).inflate(R.layout.row_kitchen, parent, false));
     }
 
     @Override

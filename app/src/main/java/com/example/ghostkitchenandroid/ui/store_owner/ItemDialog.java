@@ -3,18 +3,15 @@ package com.example.ghostkitchenandroid.ui.store_owner;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,8 +40,9 @@ public class ItemDialog extends DialogFragment {
 
     /**
      * Use this constructor to create a dialog to edit the selected item.
+     *
      * @param itemListViewModel
-     * @param item The item to be modified.
+     * @param item              The item to be modified.
      */
     public ItemDialog(ItemListViewModel itemListViewModel, Item item) {
         this.itemListViewModel = itemListViewModel;
@@ -53,8 +51,9 @@ public class ItemDialog extends DialogFragment {
 
     /**
      * Use this constructor to create a dialog for adding a new item.
+     *
      * @param itemListViewModel
-     * @param progressBar A progress bar that will be enabled/disabled as needed for network status.
+     * @param progressBar       A progress bar that will be enabled/disabled as needed for network status.
      */
     public ItemDialog(ItemListViewModel itemListViewModel, ProgressBar progressBar) {
         this.itemListViewModel = itemListViewModel;
@@ -70,28 +69,15 @@ public class ItemDialog extends DialogFragment {
         return editItemDialog();
     }
 
-    private void initViews() {
-        builder = new AlertDialog.Builder(getActivity());
-        inflater = requireActivity().getLayoutInflater();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        itemDialogView = inflater.inflate(R.layout.create_item, null);
-        etName = itemDialogView.findViewById(R.id.create_item_name_et);
-        etPrice = itemDialogView.findViewById(R.id.create_item_price_et);
-        etDescription = itemDialogView.findViewById(R.id.create_item_description_et);
-        tvCategory = itemDialogView.findViewById(R.id.create_item_category_tv);
-        customerSpinner = itemDialogView.findViewById(R.id.create_item_category_spinner);
-
-        customerSpinner.setOnClickListener(v -> {
-            AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(itemListViewModel, tvCategory);
-            categoryDialog.show(getActivity().getSupportFragmentManager(), "AddItemCategoryDialogFragment");
-        });
-    }
-
-    private Dialog createItemDialog() {
-        builder.setView(itemDialogView)
-                .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        final AlertDialog alertDialog = (AlertDialog) getDialog();
+        if (alertDialog != null) {
+            if (item == null) { //CREATE ITEM LISTENERS
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+                    if (checkData()) {
                         progressBar.setVisibility(View.VISIBLE);
                         itemListViewModel.createItem(new Item(
                                         etName.getText().toString().trim(),
@@ -101,61 +87,106 @@ public class ItemDialog extends DialogFragment {
                                         etDescription.getText().toString().trim()
                                 )
                         );
-                    }
-                })
-                .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getDialog().cancel();
+                        dismiss();
                     }
                 });
+            } else { //EDIT ITEM LISTENERS
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
+                    if (checkData())
+                        submitEditItem();
+                    dismiss();
+                });
+                alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    AlertDialog checkDeleteDialog = builder.setTitle("Are you sure you want to delete item: " + item.getName() + "?")
+                            .setPositiveButton(R.string.delete_strong, (dialog1, which1) -> {
+                                itemListViewModel.deleteItem(item);
+                                dismiss();
+                            })
+                            .setNegativeButton(R.string.negative_button, null)
+                            .create();
+                    checkDeleteDialog.show();
+                    checkDeleteDialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(getContext().getColor(R.color.danger));
+                });
+
+            }
+        }
+    }
+
+
+    private void initViews() {
+        builder = new AlertDialog.Builder(getActivity());
+        inflater = requireActivity().getLayoutInflater();
+
+        itemDialogView = inflater.inflate(R.layout.dialog_create_item, null);
+        etName = itemDialogView.findViewById(R.id.create_item_name_et);
+        etPrice = itemDialogView.findViewById(R.id.create_item_price_et);
+        etDescription = itemDialogView.findViewById(R.id.create_item_description_et);
+        tvCategory = itemDialogView.findViewById(R.id.create_item_category_tv);
+        customerSpinner = itemDialogView.findViewById(R.id.create_item_category_spinner);
+
+        customerSpinner.setOnClickListener(v -> {
+            AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(itemListViewModel, tvCategory);
+            categoryDialog.show(getActivity().getSupportFragmentManager(), "AddItemCategoryDialogFragment");
+            tvCategory.setError(null);
+        });
+    }
+
+    private boolean checkData() {
+        if (etName.getText().toString().trim().length() == 0) {
+            etName.setError(getString(R.string.required));
+            return false;
+        } else if (etPrice.getText().toString().trim().length() == 0) {
+            etPrice.setError(getString(R.string.required));
+            return false;
+        } else if (tvCategory.getText().toString().equalsIgnoreCase("Category")) {
+            tvCategory.setError(getString(R.string.required));
+            return false;
+        }
+        return true;
+    }
+
+    private Dialog createItemDialog() {
+        builder.setView(itemDialogView)
+                .setPositiveButton(R.string.submit, null) //onClick set in onResume()
+                .setNegativeButton(R.string.negative_button, (dialog, which) -> dismiss())
+                .setTitle(R.string.dialog_create_item_title);
 
         return builder.create();
     }
 
     private Dialog editItemDialog() {
-        etName.setText(item.getName());
-        etPrice.setText(String.valueOf(item.getPrice()));
-        etDescription.setText(item.getDescription());
-        tvCategory.setText(item.getCategory());
+        initEditViews();
 
+        builder.setCancelable(false);
         builder.setView(itemDialogView)
-                .setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        progressBar.setVisibility(View.VISIBLE);
-                        item.setName(etName.getText().toString().trim());
-                        item.setPrice(Double.parseDouble(etPrice.getText().toString().trim()));
-                        item.setDescription(etDescription.getText().toString().trim());
-                        item.setCategory(tvCategory.getText().toString().trim());
-                        item.setKitchen(itemListViewModel.getKitchen());
-                        itemListViewModel.createItem(item);
-                    }
-                })
-                .setNeutralButton("DELETE", ((dialog, which) -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    AlertDialog alertDialog = builder.setTitle("Are you sure you want to delete item:\n" + item.getName() + "?")
-                            .setPositiveButton(R.string.delete_strong, (dialog1, which1) -> {
-                                itemListViewModel.deleteItem(item);
-                                getDialog().dismiss();
-                            })
-                            .setNegativeButton(R.string.negative_button, (dialog1, which1) -> {
-                                getDialog().dismiss();
-                            })
-                            .create();
-                    alertDialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(getContext().getColor(R.color.danger));
-                    alertDialog.show();
-                }))
-                .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getDialog().cancel();
-                    }
-                });
+                .setPositiveButton(R.string.submit, null) //listener is set in onResume()
+                .setNeutralButton("DELETE", null)//listener is set in onResume()
+                .setNegativeButton(R.string.negative_button, (dialog, which) -> dismiss());
 
         return builder.create();
     }
 
+    private void initEditViews() {
+        etName.setText(item.getName());
+        etPrice.setText(String.valueOf(item.getPrice()));
+        etDescription.setText(item.getDescription());
+        tvCategory.setText(item.getCategory());
+    }
+
+    private void submitEditItem() {
+        item.setName(etName.getText().toString().trim());
+        item.setPrice(Double.parseDouble(etPrice.getText().toString().trim()));
+        item.setDescription(etDescription.getText().toString().trim());
+        item.setCategory(tvCategory.getText().toString().trim());
+        item.setKitchen(itemListViewModel.getKitchen());
+        itemListViewModel.createItem(item);
+    }
+
+    /**
+     * NESTED INNER CLASS
+     * Used for creating a new dialog to display existing categories previously created as well as give the option to create a new category.
+     */
     public static class AddItemCategoryDialog extends DialogFragment {
 
         private ItemListViewModel itemListViewModel;
@@ -168,20 +199,21 @@ public class ItemDialog extends DialogFragment {
             this.itemListViewModel = itemListViewModel;
             this.tvCategory = tvCategory;
         }
+
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-            final View view = inflater.inflate(R.layout.create_item_category, null);
+            final View view = inflater.inflate(R.layout.dialog_create_item_category, null);
             etCategory = view.findViewById(R.id.create_item_category_dialog_et);
             button = view.findViewById(R.id.create_item_category_dialog_submit);
             listView = view.findViewById(R.id.create_item_category_list);
 
             button.setOnClickListener(v -> {
-                    tvCategory.setText(etCategory.getText().toString().trim());
-                    getDialog().cancel();
+                tvCategory.setText(etCategory.getText().toString().trim());
+                getDialog().cancel();
             });
 
             String[] categories = itemListViewModel.getKitchenMenu().getCategories();

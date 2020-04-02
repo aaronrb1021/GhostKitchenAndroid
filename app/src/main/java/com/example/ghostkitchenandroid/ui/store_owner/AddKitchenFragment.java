@@ -40,7 +40,7 @@ public class AddKitchenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_kitchen_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_add_kitchen, container, false);
     }
 
     @Override

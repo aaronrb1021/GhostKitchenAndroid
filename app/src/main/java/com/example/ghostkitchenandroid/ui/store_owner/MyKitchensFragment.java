@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.example.ghostkitchenandroid.R;
@@ -28,6 +29,7 @@ public class MyKitchensFragment extends Fragment {
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private View kitchenFragmentContainer;
+    private TextView tvNoKitchens;
 
     public static MyKitchensFragment newInstance() {
         return new MyKitchensFragment();
@@ -43,7 +45,7 @@ public class MyKitchensFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_kitchens_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_my_kitchens, container, false);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class MyKitchensFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvNoKitchens = view.findViewById(R.id.my_kitchens_no_kitchens_tv);
         progressBar = view.findViewById(R.id.my_kitchen_progress);
         recyclerView = view.findViewById(R.id.my_kitchen_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -74,6 +77,11 @@ public class MyKitchensFragment extends Fragment {
 
     private void setObservance() {
         myKitchensViewModel.getKitchensLiveData().observe(getViewLifecycleOwner(), kitchens -> {
+            if (kitchens.size() == 0)
+                tvNoKitchens.setVisibility(View.VISIBLE);
+            else
+                tvNoKitchens.setVisibility(View.INVISIBLE);
+
             recyclerView.setAdapter(new KitchenListAdapter(getContext(), kitchens));
             progressBar.setVisibility(View.INVISIBLE);
         });

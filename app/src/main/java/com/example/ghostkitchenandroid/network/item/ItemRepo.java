@@ -110,7 +110,9 @@ public class ItemRepo {
         @Override
         protected Boolean doInBackground(Item... items) {
             try {
-                return itemService.deleteItem(String.valueOf(items[0].getId())).execute().body();
+                String requestId = String.valueOf(items[0].getId());
+                Log.i("requestIdCheck", requestId);
+                return itemService.deleteItem(requestId).execute().body();
             } catch (IOException e) {
                 e.printStackTrace();
             }
