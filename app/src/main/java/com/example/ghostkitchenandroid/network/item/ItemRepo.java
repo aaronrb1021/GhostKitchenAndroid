@@ -11,12 +11,14 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import retrofit2.http.Body;
 
 public class ItemRepo {
 
     private static ItemService itemService = ItemServiceInstance.getInstance();
 
-    private final MutableLiveData<Item> itemLiveData = new MutableLiveData<>();
+    private MutableLiveData<Item> itemLiveData;
+    private MutableLiveData<Boolean> deleteItemLiveData;
     private final MutableLiveData<ArrayList<Item>> itemListLiveData = new MutableLiveData<>();
 
     public void createItem(Item item) {
@@ -27,8 +29,20 @@ public class ItemRepo {
         new GetItemsByKitchenTask(itemListLiveData).execute(kitchen);
     }
 
+    public void deleteItem(Item item) {
+        new DeleteItemTask(deleteItemLiveData).execute(item);
+    }
+
     public LiveData<Item> getItemLiveData() {
+        if (itemLiveData == null)
+            itemLiveData = new MutableLiveData<>();
         return itemLiveData;
+    }
+
+    public LiveData<Boolean> getDeleteItemLiveData() {
+        if (deleteItemLiveData == null)
+            deleteItemLiveData = new MutableLiveData<>();
+        return deleteItemLiveData;
     }
 
     public LiveData<ArrayList<Item>> getItemListLiveData() {
@@ -80,9 +94,32 @@ public class ItemRepo {
 
         @Override
         protected void onPostExecute(ArrayList<Item> items) {
-            Log.i("receiveditemsarray", items.toString());
             itemListLiveData.setValue(items);
             itemListLiveData = null;
+        }
+    }
+
+    private static class DeleteItemTask extends AsyncTask<Item, Void, Boolean> {
+
+        MutableLiveData<Boolean> deleteItemLiveData;
+
+        DeleteItemTask(MutableLiveData<Boolean> deleteItemLiveData) {
+            this.deleteItemLiveData = deleteItemLiveData;
+        }
+
+        @Override
+        protected Boolean doInBackground(Item... items) {
+            try {
+                return itemService.deleteItem(String.valueOf(items[0].getId())).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            deleteItemLiveData.setValue(success);
         }
     }
 }

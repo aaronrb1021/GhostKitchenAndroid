@@ -11,9 +11,7 @@ import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.model.MenuItemWrapper;
-import com.example.ghostkitchenandroid.ui.store_owner.AddItemDialog;
-
-import org.w3c.dom.Text;
+import com.example.ghostkitchenandroid.ui.store_owner.ItemDialog;
 
 import java.util.ArrayList;
 
@@ -67,7 +65,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.tvItemDescription.setText(item.getDescription());
             itemViewHolder.itemCardView.setOnClickListener(v -> {
                 Log.i("kitchenitemtodialog", item.toString());
-                DialogFragment dialogFragment = new AddItemDialog(itemListViewModel, item);
+                DialogFragment dialogFragment = new ItemDialog(itemListViewModel, item);
                 dialogFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "EditItemDialogFragment");
             });
         }

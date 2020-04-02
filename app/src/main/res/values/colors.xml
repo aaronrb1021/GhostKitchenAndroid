@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#005709</color>
     <color name="colorAccent">#757575</color>
     <color name="registerBlue">#0051ff</color>
+    <color name="danger">#a30b00</color>
 </resources>

@@ -23,6 +23,7 @@
     <string name="submit">Submit</string>
     <string name="edit">Edit</string>
     <string name="negative_button">Cancel</string>
+    <string name="delete_strong">DELETE</string>
 
 
     <!-- STORE OWNER -->
@@ -54,6 +55,8 @@
     <string name="enter_new_category">Enter a new category</string>
     <string name="description">Description</string>
     <string name="no_items_exist">NO ITEMS YET CREATED</string>
+    <string name="item_deleted">Item deleted successfully</string>
+    <string name="item_delete_failed">Item deletion FAILED</string>
 
     <!-- END STORE OWNER -->
 

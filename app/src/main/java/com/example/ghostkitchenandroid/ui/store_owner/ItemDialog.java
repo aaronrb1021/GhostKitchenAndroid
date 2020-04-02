@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class AddItemDialog extends DialogFragment {
+public class ItemDialog extends DialogFragment {
 
     private ItemListViewModel itemListViewModel;
     private ProgressBar progressBar;
@@ -41,13 +41,22 @@ public class AddItemDialog extends DialogFragment {
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
 
-
-    public AddItemDialog(ItemListViewModel itemListViewModel, Item item) {
+    /**
+     * Use this constructor to create a dialog to edit the selected item.
+     * @param itemListViewModel
+     * @param item The item to be modified.
+     */
+    public ItemDialog(ItemListViewModel itemListViewModel, Item item) {
         this.itemListViewModel = itemListViewModel;
         this.item = item;
     }
 
-    public AddItemDialog(ItemListViewModel itemListViewModel, ProgressBar progressBar) {
+    /**
+     * Use this constructor to create a dialog for adding a new item.
+     * @param itemListViewModel
+     * @param progressBar A progress bar that will be enabled/disabled as needed for network status.
+     */
+    public ItemDialog(ItemListViewModel itemListViewModel, ProgressBar progressBar) {
         this.itemListViewModel = itemListViewModel;
         this.progressBar = progressBar;
     }
@@ -124,7 +133,18 @@ public class AddItemDialog extends DialogFragment {
                     }
                 })
                 .setNeutralButton("DELETE", ((dialog, which) -> {
-                    //TODO
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    AlertDialog alertDialog = builder.setTitle("Are you sure you want to delete item:\n" + item.getName() + "?")
+                            .setPositiveButton(R.string.delete_strong, (dialog1, which1) -> {
+                                itemListViewModel.deleteItem(item);
+                                getDialog().dismiss();
+                            })
+                            .setNegativeButton(R.string.negative_button, (dialog1, which1) -> {
+                                getDialog().dismiss();
+                            })
+                            .create();
+                    alertDialog.getButton(Dialog.BUTTON_POSITIVE).setTextColor(getContext().getColor(R.color.danger));
+                    alertDialog.show();
                 }))
                 .setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
                     @Override

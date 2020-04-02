@@ -1,18 +1,17 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
-import com.example.ghostkitchenandroid.ui.store_owner.AddItemDialog;
-import com.example.ghostkitchenandroid.ui.store_owner.MyKitchenFragment;
+import com.example.ghostkitchenandroid.ui.store_owner.ItemDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
@@ -30,6 +29,7 @@ public class ItemListFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView tvNoItems;
     private FloatingActionButton floatingActionButton;
+    private int mode;
 
     public static final int MODE_STORE_OWNER = 3;
 
@@ -68,7 +68,7 @@ public class ItemListFragment extends Fragment {
         floatingActionButton = view.findViewById(R.id.item_list_fab);
 
         floatingActionButton.setOnClickListener(v -> {
-            DialogFragment dialogFragment = new AddItemDialog(itemListViewModel, progressBar);
+            DialogFragment dialogFragment = new ItemDialog(itemListViewModel, progressBar);
             dialogFragment.show(getActivity().getSupportFragmentManager(), "AddItemDialogFragment");
         });
     }
@@ -76,7 +76,7 @@ public class ItemListFragment extends Fragment {
     private void handleBundle() {
         final Bundle bundle = getArguments();
         itemListViewModel.setKitchen((Kitchen) bundle.get("kitchen"));
-        final int mode = (int) bundle.get("mode");
+        mode = (int) bundle.get("mode");
         if (mode == MODE_STORE_OWNER)
             floatingActionButton.setVisibility(View.VISIBLE);
     }
@@ -98,9 +98,20 @@ public class ItemListFragment extends Fragment {
             itemListRecycler.setAdapter(new ItemListAdapter(getContext(), itemListViewModel.getKitchenMenu(), itemListViewModel));
         });
 
-        itemListViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
-            progressBar.setVisibility(View.INVISIBLE);
-            updateItemList();
-        }); //show the updated item list when we receive our created item back to our app
+        //only set observance for the below items in store owner mode because they're not needed for customers
+        if (mode == MODE_STORE_OWNER) {
+            itemListViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
+                progressBar.setVisibility(View.INVISIBLE);
+                updateItemList();
+            }); //show the updated item list when we receive our created item back to our app
+
+            itemListViewModel.getDeleteItemLiveData().observe(getViewLifecycleOwner(), success -> {
+                if (success) {
+                    Toast.makeText(getContext(), R.string.item_deleted, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.item_delete_failed, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

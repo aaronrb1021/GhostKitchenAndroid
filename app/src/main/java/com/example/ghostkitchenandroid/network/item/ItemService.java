@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 interface ItemService {
 
@@ -16,4 +18,7 @@ interface ItemService {
 
     @POST("items/kitchen")
     Call<ArrayList<Item>> findItemsByKitchen(@Body Kitchen kitchen);
+
+    @DELETE("items/{requestId}")
+    Call<Boolean> deleteItem(@Path("requestId") String requestId);
 }

@@ -20,6 +20,14 @@ public class ItemListViewModel extends ViewModel {
         return itemRepo.getItemListLiveData();
     }
 
+    public LiveData<Item> getItemLiveData() {
+        return itemRepo.getItemLiveData();
+    }
+
+    public LiveData<Boolean> getDeleteItemLiveData() {
+        return itemRepo.getDeleteItemLiveData();
+    }
+
     public void updateItemListLiveDataByKitchen(Kitchen kitchen) {
         itemRepo.getItemsByKitchen(kitchen);
     }
@@ -27,11 +35,6 @@ public class ItemListViewModel extends ViewModel {
     public void createItem(Item item) {
         itemRepo.createItem(item);
     }
-
-    public LiveData<Item> getItemLiveData() {
-        return itemRepo.getItemLiveData();
-    }
-
 
     public void setKitchen(Kitchen kitchen) {
         this.kitchen = kitchen;
@@ -47,5 +50,9 @@ public class ItemListViewModel extends ViewModel {
 
     public void setKitchenMenu(KitchenMenu kitchenMenu) {
         this.kitchenMenu = kitchenMenu;
+    }
+
+    public void deleteItem(Item item) {
+        itemRepo.deleteItem(item);
     }
 }
