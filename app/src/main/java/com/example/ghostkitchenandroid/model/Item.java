@@ -91,9 +91,9 @@ public class Item implements Comparable<Item> {
 
     @Override
     public int compareTo(Item o) {
-        if (category.equals(o.category))
-            return (int) (o.price - price);
-        return category.compareTo(o.category);
+//        if (category.equals(o.category))
+        return (int) (price - o.price);
+//        return category.compareTo(o.category);
     }
 
     @Override
