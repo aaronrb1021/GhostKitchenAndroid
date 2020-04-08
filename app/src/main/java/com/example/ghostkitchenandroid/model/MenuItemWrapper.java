@@ -45,7 +45,7 @@ public class MenuItemWrapper implements Comparable<MenuItemWrapper> {
         }
         //o is item we are category
         if (category.equals(o.item.getCategory()))
-            return -1; //returns a greater than 0 value because our category should be listed above the items in that category
+            return -1; //returns a less than 0 value because our category should be listed above (lesser index) the items in that category
         return category.compareTo(o.item.getCategory());
     }
 
