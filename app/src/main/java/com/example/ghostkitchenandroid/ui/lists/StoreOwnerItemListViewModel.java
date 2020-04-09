@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ItemListViewModel extends ViewModel {
+public class StoreOwnerItemListViewModel extends ViewModel {
 
     private Kitchen kitchen;
     private KitchenMenu kitchenMenu;

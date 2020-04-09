@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
-import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -70,7 +69,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.store_owner_toolbar);
         drawerLayout = findViewById(R.id.store_owner_drawer_layout);
         navigationView = findViewById(R.id.store_owner_nav_view);
-        tvName = navigationView.getHeaderView(0).findViewById(R.id.nav_store_owner_name);
+        tvName = navigationView.getHeaderView(0).findViewById(R.id.nav_name_tv);
         fragmentContainer = findViewById(R.id.store_owner_fragment_container);
     }
 

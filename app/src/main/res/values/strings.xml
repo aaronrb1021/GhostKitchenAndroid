@@ -25,6 +25,14 @@
     <string name="negative_button">Cancel</string>
     <string name="delete_strong">DELETE</string>
 
+    <!-- CUSTOMER -->
+
+    <string name="shop">Shop</string>
+    <string name="orders">Orders</string>
+    <string name="info">Info</string>
+    <string name="map">Map</string>
+
+    <!-- END CUSTOMER -->
 
     <!-- STORE OWNER -->
 

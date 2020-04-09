@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
-import com.example.ghostkitchenandroid.ui.lists.ItemListViewModel;
+import com.example.ghostkitchenandroid.ui.lists.StoreOwnerItemListViewModel;
 
 import java.util.Arrays;
 
@@ -28,7 +28,7 @@ import androidx.fragment.app.DialogFragment;
 
 public class ItemDialog extends DialogFragment {
 
-    private ItemListViewModel itemListViewModel;
+    private StoreOwnerItemListViewModel storeOwnerItemListViewModel;
     private ProgressBar progressBar;
     private Item item;
     private View itemDialogView;
@@ -41,22 +41,22 @@ public class ItemDialog extends DialogFragment {
     /**
      * Use this constructor to create a dialog to edit the selected item.
      *
-     * @param itemListViewModel
+     * @param storeOwnerItemListViewModel
      * @param item              The item to be modified.
      */
-    public ItemDialog(ItemListViewModel itemListViewModel, Item item) {
-        this.itemListViewModel = itemListViewModel;
+    public ItemDialog(StoreOwnerItemListViewModel storeOwnerItemListViewModel, Item item) {
+        this.storeOwnerItemListViewModel = storeOwnerItemListViewModel;
         this.item = item;
     }
 
     /**
      * Use this constructor to create a dialog for adding a new item.
      *
-     * @param itemListViewModel
+     * @param storeOwnerItemListViewModel
      * @param progressBar       A progress bar that will be enabled/disabled as needed for network status.
      */
-    public ItemDialog(ItemListViewModel itemListViewModel, ProgressBar progressBar) {
-        this.itemListViewModel = itemListViewModel;
+    public ItemDialog(StoreOwnerItemListViewModel storeOwnerItemListViewModel, ProgressBar progressBar) {
+        this.storeOwnerItemListViewModel = storeOwnerItemListViewModel;
         this.progressBar = progressBar;
     }
 
@@ -79,11 +79,11 @@ public class ItemDialog extends DialogFragment {
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
                     if (checkData()) {
                         progressBar.setVisibility(View.VISIBLE);
-                        itemListViewModel.createItem(new Item(
+                        storeOwnerItemListViewModel.createItem(new Item(
                                         etName.getText().toString().trim(),
                                         Double.parseDouble(etPrice.getText().toString().trim()),
                                         tvCategory.getText().toString(),
-                                        itemListViewModel.getKitchen(),
+                                        storeOwnerItemListViewModel.getKitchen(),
                                         etDescription.getText().toString().trim()
                                 )
                         );
@@ -100,7 +100,7 @@ public class ItemDialog extends DialogFragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     AlertDialog checkDeleteDialog = builder.setTitle("Are you sure you want to delete item: " + item.getName() + "?")
                             .setPositiveButton(R.string.delete_strong, (dialog1, which1) -> {
-                                itemListViewModel.deleteItem(item);
+                                storeOwnerItemListViewModel.deleteItem(item);
                                 dismiss();
                             })
                             .setNegativeButton(R.string.negative_button, null)
@@ -126,7 +126,7 @@ public class ItemDialog extends DialogFragment {
         customerSpinner = itemDialogView.findViewById(R.id.create_item_category_spinner);
 
         customerSpinner.setOnClickListener(v -> {
-            AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(itemListViewModel, tvCategory);
+            AddItemCategoryDialog categoryDialog = new AddItemCategoryDialog(storeOwnerItemListViewModel, tvCategory);
             categoryDialog.show(getActivity().getSupportFragmentManager(), "AddItemCategoryDialogFragment");
             tvCategory.setError(null);
         });
@@ -179,8 +179,8 @@ public class ItemDialog extends DialogFragment {
         item.setPrice(Double.parseDouble(etPrice.getText().toString().trim()));
         item.setDescription(etDescription.getText().toString().trim());
         item.setCategory(tvCategory.getText().toString().trim());
-        item.setKitchen(itemListViewModel.getKitchen());
-        itemListViewModel.createItem(item);
+        item.setKitchen(storeOwnerItemListViewModel.getKitchen());
+        storeOwnerItemListViewModel.createItem(item);
     }
 
     /**
@@ -189,14 +189,14 @@ public class ItemDialog extends DialogFragment {
      */
     public static class AddItemCategoryDialog extends DialogFragment {
 
-        private ItemListViewModel itemListViewModel;
+        private StoreOwnerItemListViewModel storeOwnerItemListViewModel;
         private TextView tvCategory;
         private Button button;
         private ListView listView;
         private EditText etCategory;
 
-        AddItemCategoryDialog(ItemListViewModel itemListViewModel, TextView tvCategory) {
-            this.itemListViewModel = itemListViewModel;
+        AddItemCategoryDialog(StoreOwnerItemListViewModel storeOwnerItemListViewModel, TextView tvCategory) {
+            this.storeOwnerItemListViewModel = storeOwnerItemListViewModel;
             this.tvCategory = tvCategory;
         }
 
@@ -216,7 +216,7 @@ public class ItemDialog extends DialogFragment {
                 getDialog().cancel();
             });
 
-            String[] categories = itemListViewModel.getKitchenMenu().getCategories();
+            String[] categories = storeOwnerItemListViewModel.getKitchenMenu().getCategories();
             Log.i("categoriestostring", Arrays.toString(categories));
 
             listView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, categories));
@@ -224,7 +224,7 @@ public class ItemDialog extends DialogFragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    tvCategory.setText(itemListViewModel.getKitchenMenu().getCategories()[position]);
+                    tvCategory.setText(storeOwnerItemListViewModel.getKitchenMenu().getCategories()[position]);
                     getDialog().cancel();
                 }
             });

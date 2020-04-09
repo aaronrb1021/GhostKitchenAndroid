@@ -1,7 +1,6 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +10,28 @@ import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.model.MenuItemWrapper;
-import com.example.ghostkitchenandroid.ui.store_owner.ItemDialog;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private KitchenMenu kitchenMenu;
     private ArrayList<MenuItemWrapper> itemWrappers;
-    private ItemListViewModel itemListViewModel;
+    private StoreOwnerItemListViewModel storeOwnerItemListViewModel;
 
     private final static int VIEW_TYPE_CATEGORY = 1;
     private final static int VIEW_TYPE_ITEM = 2;
 
-    public ItemListAdapter(Context context, KitchenMenu kitchenMenu, ItemListViewModel itemListViewModel) {
+    public ItemListAdapter(Context context, KitchenMenu kitchenMenu, StoreOwnerItemListViewModel storeOwnerItemListViewModel) {
         this.context = context;
         this.kitchenMenu = kitchenMenu;
         itemWrappers = kitchenMenu.getItemWrapperList();
-        this.itemListViewModel = itemListViewModel;
+        this.storeOwnerItemListViewModel = storeOwnerItemListViewModel;
     }
 
     @Override
@@ -64,11 +60,12 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemViewHolder.tvItemPrice.setText(item.getPriceString());
             itemViewHolder.tvItemDescription.setText(item.getDescription());
             itemViewHolder.itemCardView.setOnClickListener(v -> {
-                DialogFragment dialogFragment = new ItemDialog(itemListViewModel, item);
-                dialogFragment.show(((AppCompatActivity)context).getSupportFragmentManager(), "EditItemDialogFragment");
+                onItemCardClick(item);
             });
         }
     }
+
+    public abstract void onItemCardClick(Item item);
 
     @Override
     public int getItemCount() {

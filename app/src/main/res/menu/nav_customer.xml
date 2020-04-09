@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_customer_shop"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/shop"/>
+        <item android:id="@+id/nav_customer_orders"
+            android:icon="@drawable/ic_shop_two_black_24dp"
+            android:title="@string/orders"/>
+    </group>
+</menu>

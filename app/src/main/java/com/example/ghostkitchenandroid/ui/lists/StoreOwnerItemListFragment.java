@@ -1,6 +1,5 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
+import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.ui.store_owner.ItemDialog;
@@ -23,9 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemListFragment extends Fragment {
+public class StoreOwnerItemListFragment extends Fragment {
 
-    private ItemListViewModel itemListViewModel;
+    private StoreOwnerItemListViewModel storeOwnerItemListViewModel;
     private RecyclerView itemListRecycler;
     private ProgressBar progressBar;
     private TextView tvNoItems;
@@ -38,7 +38,7 @@ public class ItemListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        itemListViewModel = new ViewModelProvider(this).get(ItemListViewModel.class);
+        storeOwnerItemListViewModel = new ViewModelProvider(this).get(StoreOwnerItemListViewModel.class);
     }
 
     @Nullable
@@ -69,14 +69,14 @@ public class ItemListFragment extends Fragment {
         floatingActionButton = view.findViewById(R.id.item_list_fab);
 
         floatingActionButton.setOnClickListener(v -> {
-            DialogFragment dialogFragment = new ItemDialog(itemListViewModel, progressBar);
+            DialogFragment dialogFragment = new ItemDialog(storeOwnerItemListViewModel, progressBar);
             dialogFragment.show(getActivity().getSupportFragmentManager(), "AddItemDialogFragment");
         });
     }
 
     private void handleBundle() {
         final Bundle bundle = getArguments();
-        itemListViewModel.setKitchen((Kitchen) bundle.get("kitchen"));
+        storeOwnerItemListViewModel.setKitchen((Kitchen) bundle.get("kitchen"));
         mode = (int) bundle.get("mode");
         if (mode == MODE_STORE_OWNER)
             floatingActionButton.setVisibility(View.VISIBLE);
@@ -84,29 +84,35 @@ public class ItemListFragment extends Fragment {
 
     private void updateItemList() {
         progressBar.setVisibility(View.VISIBLE);
-        itemListViewModel.updateItemListLiveDataByKitchen(itemListViewModel.getKitchen());
+        storeOwnerItemListViewModel.updateItemListLiveDataByKitchen(storeOwnerItemListViewModel.getKitchen());
     }
 
     private void setObservance() {
-        itemListViewModel.getItemListLiveData().observe(getViewLifecycleOwner(), items -> {
+        storeOwnerItemListViewModel.getItemListLiveData().observe(getViewLifecycleOwner(), items -> {
             progressBar.setVisibility(View.INVISIBLE);
             if (items.size() == 0) {
                 tvNoItems.setVisibility(View.VISIBLE);
             } else {
                 tvNoItems.setVisibility(View.INVISIBLE);
             }
-            itemListViewModel.setKitchenMenu(new KitchenMenu(items));
-            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), itemListViewModel.getKitchenMenu(), itemListViewModel));
+            storeOwnerItemListViewModel.setKitchenMenu(new KitchenMenu(items));
+            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), storeOwnerItemListViewModel.getKitchenMenu(), storeOwnerItemListViewModel) {
+                @Override
+                public void onItemCardClick(Item item) {
+                    DialogFragment dialogFragment = new ItemDialog(storeOwnerItemListViewModel, item);
+                    dialogFragment.show(getParentFragmentManager(), "EditItemDialogFragment");
+                }
+            });
         });
 
         //only set observance for the below items in store owner mode because they're not needed for customers
         if (mode == MODE_STORE_OWNER) {
-            itemListViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
+            storeOwnerItemListViewModel.getItemLiveData().observe(getViewLifecycleOwner(), item -> {
                 progressBar.setVisibility(View.INVISIBLE);
                 updateItemList();
             }); //show the updated item list when we receive our created item back to our app
 
-            itemListViewModel.getDeleteItemLiveData().observe(getViewLifecycleOwner(), success -> {
+            storeOwnerItemListViewModel.getDeleteItemLiveData().observe(getViewLifecycleOwner(), success -> {
                 if (success) {
                     Toast.makeText(getContext(), R.string.item_deleted, Toast.LENGTH_SHORT).show();
                 } else {

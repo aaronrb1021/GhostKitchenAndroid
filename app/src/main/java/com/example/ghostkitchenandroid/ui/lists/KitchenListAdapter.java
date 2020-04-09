@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
+import com.example.ghostkitchenandroid.ui.customer.CustomerActivity;
+import com.example.ghostkitchenandroid.ui.customer.CustomerKitchenActivity;
 import com.example.ghostkitchenandroid.ui.store_owner.MyKitchenFragment;
 
 import java.util.ArrayList;
@@ -24,10 +27,15 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
     private Context context;
     private ArrayList<Kitchen> kitchens;
     private ArrayList<View.OnClickListener> cachedListeners = new ArrayList<>();
+    private int mode;
 
-    public KitchenListAdapter(Context context, ArrayList<Kitchen> kitchens) {
+    public static final int MODE_STORE_OWNER = 2;
+    public static final int MODE_CUSTOMER = 3;
+
+    public KitchenListAdapter(Context context, ArrayList<Kitchen> kitchens, int mode) {
         this.context = context;
         this.kitchens = kitchens;
+        this.mode = mode;
     }
 
     @NonNull
@@ -43,13 +51,21 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
         holder.tvPhone.setText(kitchens.get(position).getKitchenAddress().getPhone());
 
         if (position >= cachedListeners.size() || cachedListeners.get(position) == null) {
-            cachedListeners.add(position, view -> {
-                MyKitchenFragment fragment = new MyKitchenFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("kitchen", kitchens.get(position));
-                fragment.setArguments(bundle);
-                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.store_owner_fragment_container, fragment, "MyKitchenFragment").addToBackStack(null).commit();
-            });
+            if (mode == MODE_STORE_OWNER) {
+                cachedListeners.add(position, view -> {
+                    MyKitchenFragment fragment = new MyKitchenFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("kitchen", kitchens.get(position));
+                    fragment.setArguments(bundle);
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.store_owner_fragment_container, fragment, "MyKitchenFragment").addToBackStack(null).commit();
+                });
+            } else if (mode == MODE_CUSTOMER) {
+                cachedListeners.add(position, view -> {
+                    Intent intent = new Intent(context, CustomerKitchenActivity.class);
+                    intent.putExtra("kitchen", kitchens.get(position));
+                    context.startActivity(intent);
+                });
+            }
         }
 
         holder.cardView.setOnClickListener(cachedListeners.get(position));

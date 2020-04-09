@@ -19,4 +19,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="RoundedEdges">
+        <item name="cornerRadius">50dp</item>
+    </style>
+
 </resources>

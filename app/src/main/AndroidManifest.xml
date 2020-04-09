@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.store_owner.StoreOwnerActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.customer.CustomerKitchenActivity"></activity>
+        <activity
+            android:name=".ui.customer.CustomerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.store_owner.StoreOwnerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.register.RegisterActivity" />
         <activity
             android:name=".ui.login.LoginActivity"

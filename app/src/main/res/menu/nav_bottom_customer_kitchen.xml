@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_customer_kitchen_info"
+        android:title="@string/info"
+        android:icon="@drawable/ic_info_outline_black_24dp"/>
+
+
+    <item
+        android:id="@+id/bottom_nav_customer_kitchen_menu"
+        android:title="@string/menu"
+        android:icon="@drawable/ic_restaurant_menu_black_24dp"/>
+
+
+    <item
+        android:id="@+id/bottom_nav_customer_kitchen_map"
+        android:title="@string/map"
+        android:icon="@drawable/ic_map_black_24dp"/>
+
+</menu>
