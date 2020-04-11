@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
+import com.example.ghostkitchenandroid.ui.lists.CustomerItemListFragment;
 import com.example.ghostkitchenandroid.ui.lists.StoreOwnerItemListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,7 +39,7 @@ public class CustomerKitchenActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_customer_kitchen_menu:
-                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new StoreOwnerItemListFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new CustomerItemListFragment()).commit();//TODO
                     return true;
                 case R.id.bottom_nav_menu:
                     showItemList();
@@ -47,14 +48,14 @@ public class CustomerKitchenActivity extends AppCompatActivity {
             return false;
         });
 
-        getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
+        getParentFragmentManager().beginTransaction().replace(*myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
     }
 
     private void initViews() {
         starImage = findViewById(R.id.customer_kitchen_star_image);
         bottomNavigationView = findViewById(R.id.customer_kitchen_bottom_nav);
-        fragmentContainer = findViewById(R.id.customer_fragment_container);
+        fragmentContainer = findViewById(R.id.customer_kitchen_fragment_container);
     }
 
     private void showItemList() {

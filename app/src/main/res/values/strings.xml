@@ -31,6 +31,10 @@
     <string name="orders">Orders</string>
     <string name="info">Info</string>
     <string name="map">Map</string>
+    <string name="filter">Filter</string>
+    <string name="featured">Featured</string>
+    <string name="explore">Explore</string>
+    <string name="favorites">Favorites</string>
 
     <!-- END CUSTOMER -->
 
@@ -44,7 +48,7 @@
 
     <!-- my kitchens -->
     <string name="my_kitchens_toolbar_title">My Ghost Kitchens</string>
-    <string name="my_kitchens_no_kitchens">NO SAVED KITCHENS</string>
+    <string name="my_kitchens_no_kitchens">NO KITCHENS AVAILABLE</string>
     <string name="pending_orders">Pending Orders</string>
     <string name="menu">Menu</string>
     <string name="no_pending_orders">NO PENDING ORDERS</string>

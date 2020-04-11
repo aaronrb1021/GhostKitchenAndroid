@@ -1,8 +1,10 @@
 package com.example.ghostkitchenandroid.model;
 
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 
-public class KitchenAddress extends Address {
+public class KitchenAddress extends Address implements Serializable {
 
     private Kitchen kitchen;
 

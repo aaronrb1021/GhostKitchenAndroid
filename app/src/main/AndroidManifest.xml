@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ghostkitchenandroid">
 
     <application
@@ -10,23 +11,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.customer.CustomerKitchenActivity"></activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.register.RegisterActivity" />
+        <activity android:name=".ui.customer.CustomerKitchenActivity"/>
         <activity
             android:name=".ui.customer.CustomerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.store_owner.StoreOwnerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.register.RegisterActivity" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

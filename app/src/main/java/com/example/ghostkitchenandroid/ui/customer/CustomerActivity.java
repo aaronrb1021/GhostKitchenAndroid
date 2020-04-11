@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
-import com.example.ghostkitchenandroid.ui.store_owner.MyKitchensFragment;
+import com.example.ghostkitchenandroid.ui.lists.KitchenListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class CustomerActivity extends AppCompatActivity {
@@ -38,7 +38,7 @@ public class CustomerActivity extends AppCompatActivity {
 
         navigationView.setNavigationItemSelectedListener(makeNavigationItemSelectedListener());
 
-        displayKitchenList();
+        displayShop();
     }
 
     private void initViews() {
@@ -59,24 +59,22 @@ public class CustomerActivity extends AppCompatActivity {
     }
 
     private NavigationView.OnNavigationItemSelectedListener makeNavigationItemSelectedListener() {
-        return new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_customer_shop:
-                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), , "MyKitchensFragment").commit();
-                        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        return true;
-                }
-                return false;
+        return item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_customer_shop:
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new CustomerShopFragment(), "CustomerShopFragment").commit();
+                    getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    getSupportActionBar().setTitle(R.string.shop);
+                    return true;
             }
+            return false;
         };
     }
 
 
-    private void displayKitchenList() {
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new MyKitchensFragment()).commit(); //TODO need to edit kitchen list fragment
-        navigationView.setCheckedItem(R.id.nav_store_owner_my_kitchens);
+    private void displayShop() {
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new CustomerShopFragment()).commit();
+        navigationView.setCheckedItem(R.id.nav_customer_shop);
     }
 }

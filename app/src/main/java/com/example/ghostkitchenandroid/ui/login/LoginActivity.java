@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
+import com.example.ghostkitchenandroid.ui.customer.CustomerActivity;
 import com.example.ghostkitchenandroid.ui.register.RegisterActivity;
 import com.example.ghostkitchenandroid.ui.store_owner.StoreOwnerActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -139,11 +140,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainViews() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class); //if the below checks fail, as in UserRepo.getLoggedInUser() == null, we will just reload the login page to prevent a crash
         if (UserRepo.getLoggedInUser().isStoreOwner()) {
             intent = new Intent(this, StoreOwnerActivity.class);
         } else if (!UserRepo.getLoggedInUser().isStoreOwner()) {
-//            intent = new Intent(this, )TODO
+            intent = new Intent(this, CustomerActivity.class);
         }
         startActivity(intent);
         finish();

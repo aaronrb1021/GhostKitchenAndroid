@@ -22,16 +22,14 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
     private Context context;
     private KitchenMenu kitchenMenu;
     private ArrayList<MenuItemWrapper> itemWrappers;
-    private StoreOwnerItemListViewModel storeOwnerItemListViewModel;
 
     private final static int VIEW_TYPE_CATEGORY = 1;
     private final static int VIEW_TYPE_ITEM = 2;
 
-    public ItemListAdapter(Context context, KitchenMenu kitchenMenu, StoreOwnerItemListViewModel storeOwnerItemListViewModel) {
+    public ItemListAdapter(Context context, KitchenMenu kitchenMenu) {
         this.context = context;
         this.kitchenMenu = kitchenMenu;
         itemWrappers = kitchenMenu.getItemWrapperList();
-        this.storeOwnerItemListViewModel = storeOwnerItemListViewModel;
     }
 
     @Override

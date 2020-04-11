@@ -84,7 +84,7 @@ public class StoreOwnerItemListFragment extends Fragment {
 
     private void updateItemList() {
         progressBar.setVisibility(View.VISIBLE);
-        storeOwnerItemListViewModel.updateItemListLiveDataByKitchen(storeOwnerItemListViewModel.getKitchen());
+        storeOwnerItemListViewModel.updateItemListLiveData();
     }
 
     private void setObservance() {

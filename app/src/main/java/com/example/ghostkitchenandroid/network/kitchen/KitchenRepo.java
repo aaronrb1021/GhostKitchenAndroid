@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.advice.DualObjectWrapper;
-import com.example.ghostkitchenandroid.network.advice.Result;
 import com.example.ghostkitchenandroid.network.advice.ResultWithData;
 
 import java.io.EOFException;
@@ -47,8 +46,12 @@ public class KitchenRepo {
         return new ResultWithData<>("Exception error");
     }
 
-    public void getKitchensByUser(User user) {
-        new GetKitchensByUserTask().execute(user);
+    public void fetchKitchensByUser(User user) {
+        new FetchKitchensByUserTask(this).execute(user);
+    }
+
+    public void fetchAllKitchens() {
+        new FetchAllKitchensTask(this).execute();
     }
 
     private static class CreateKitchenTask extends AsyncTask<DualObjectWrapper<Kitchen, User>, Void, ResultWithData<Kitchen>> {
@@ -68,7 +71,13 @@ public class KitchenRepo {
         }
     }
 
-    private class GetKitchensByUserTask extends AsyncTask<User, Void, ArrayList<Kitchen>> {
+    private static class FetchKitchensByUserTask extends AsyncTask<User, Void, ArrayList<Kitchen>> {
+
+        private KitchenRepo kitchenRepo;
+
+        FetchKitchensByUserTask(KitchenRepo kitchenRepo) {
+            this.kitchenRepo = kitchenRepo;
+        }
 
         @Override
         protected ArrayList<Kitchen> doInBackground(User... users) {
@@ -82,7 +91,33 @@ public class KitchenRepo {
 
         @Override
         protected void onPostExecute(ArrayList<Kitchen> kitchens) {
-            kitchensLiveData.setValue(kitchens);
+            kitchenRepo.kitchensLiveData.setValue(kitchens);
+            kitchenRepo = null;
+        }
+    }
+
+    private static class FetchAllKitchensTask extends AsyncTask<Void, Void, ArrayList<Kitchen>> {
+
+        private KitchenRepo kitchenRepo;
+
+        FetchAllKitchensTask(KitchenRepo kitchenRepo) {
+            this.kitchenRepo = kitchenRepo;
+        }
+
+        @Override
+        protected ArrayList<Kitchen> doInBackground(Void... voids) {
+            try {
+                return kitchenService.getAllKitchens().execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Kitchen> kitchens) {
+            kitchenRepo.kitchensLiveData.setValue(kitchens);
+            kitchenRepo = null;
         }
     }
 }

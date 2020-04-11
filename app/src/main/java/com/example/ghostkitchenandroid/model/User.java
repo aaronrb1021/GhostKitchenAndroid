@@ -16,6 +16,7 @@ public class User {
     @SerializedName("storeOwner")
     private boolean isStoreOwner;
     private ArrayList<Long> kitchenIds;
+    private CartManager cartManager;
 
     public User() {
 
@@ -33,6 +34,7 @@ public class User {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.isStoreOwner = isStoreOwner;
+        cartManager = new CartManager();
     }
 
     public ArrayList<Long> getKitchenIds() {
@@ -105,6 +107,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public CartManager getCartManager() {
+        return cartManager;
+    }
+
+    public void setCartManager(CartManager cartManager) {
+        this.cartManager = cartManager;
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
+import com.example.ghostkitchenandroid.ui.lists.KitchenListAdapter;
+import com.example.ghostkitchenandroid.ui.lists.KitchenListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -83,7 +85,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
     }
 
     private void displayKitchenList() {
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new MyKitchensFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_STORE_OWNER)).commit();
         navigationView.setCheckedItem(R.id.nav_store_owner_my_kitchens);
     }
 
@@ -93,9 +95,10 @@ public class StoreOwnerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_store_owner_my_kitchens:
-                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new MyKitchensFragment(), "MyKitchensFragment").commit();
+                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_STORE_OWNER), "MyKitchensFragment").commit();
                         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         drawerLayout.closeDrawer(GravityCompat.START);
+                        getSupportActionBar().setTitle(R.string.my_kitchens_toolbar_title);
                         return true;
                     case R.id.nav_store_owner_add_kitchen:
                         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new AddKitchenFragment(), "AddKitchenFragment").addToBackStack(null).commit();
