@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.register.RegisterActivity" />
-        <activity android:name=".ui.customer.CustomerKitchenActivity"/>
+        <activity
+            android:name=".ui.customer.CustomerKitchenActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.customer.CustomerActivity"
             android:theme="@style/AppTheme.NoActionBar" />

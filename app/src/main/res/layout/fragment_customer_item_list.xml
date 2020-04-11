@@ -15,15 +15,27 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cart_preview_container"
-        style="@style/RoundedEdges"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
+        android:background="#757575"
+        android:clickable="true"
+        android:elevation="1dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:background="#757575"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/cart_preview_shopping_cart_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_shopping_cart_green_30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cart_preview_item_count"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cart_preview_price"
@@ -34,16 +46,6 @@
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/cart_preview_shopping_cart_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_shopping_cart_green_30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cart_preview_item_count"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

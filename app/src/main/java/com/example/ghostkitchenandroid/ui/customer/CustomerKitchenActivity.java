@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
@@ -20,6 +21,7 @@ public class CustomerKitchenActivity extends AppCompatActivity {
     private ImageView starImage;
     private BottomNavigationView bottomNavigationView;
     private View fragmentContainer;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,38 +34,26 @@ public class CustomerKitchenActivity extends AppCompatActivity {
             customerKitchenViewModel.setKitchen((Kitchen) getIntent().getExtras().get("kitchen"));
         }
 
-        setTitle(customerKitchenViewModel.getKitchen().getName());
-
         initViews();
+
+        toolbar.setTitle(customerKitchenViewModel.getKitchen().getName());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_customer_kitchen_menu:
-                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new CustomerItemListFragment()).commit();//TODO
-                    return true;
-                case R.id.bottom_nav_menu:
-                    showItemList();
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerItemListFragment.newInstance(customerKitchenViewModel.getKitchen())).commit();//TODO
                     return true;
             }
             return false;
         });
 
-        getParentFragmentManager().beginTransaction().replace(*myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
-        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_customer_kitchen_menu);
     }
 
     private void initViews() {
         starImage = findViewById(R.id.customer_kitchen_star_image);
         bottomNavigationView = findViewById(R.id.customer_kitchen_bottom_nav);
         fragmentContainer = findViewById(R.id.customer_kitchen_fragment_container);
-    }
-
-    private void showItemList() {
-        StoreOwnerItemListFragment storeOwnerItemListFragment = new StoreOwnerItemListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("kitchen", myKitchenViewModel.getKitchen());
-        bundle.putInt("mode", StoreOwnerItemListFragment.MODE_STORE_OWNER);
-        storeOwnerItemListFragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), storeOwnerItemListFragment).commit();
+        toolbar = findViewById(R.id.customer_kitchen_toolbar);
     }
 }

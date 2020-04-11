@@ -110,6 +110,9 @@ public class User {
     }
 
     public CartManager getCartManager() {
+        if (cartManager == null)
+            cartManager = new CartManager();
+
         return cartManager;
     }
 

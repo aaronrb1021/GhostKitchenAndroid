@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -100,4 +101,11 @@ public class KitchenListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_STORE_OWNER)
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_kitchens_toolbar_title);
+    }
 }

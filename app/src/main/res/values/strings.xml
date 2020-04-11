@@ -35,6 +35,7 @@
     <string name="featured">Featured</string>
     <string name="explore">Explore</string>
     <string name="favorites">Favorites</string>
+    <string name="kitchen_details">Kitchen Details</string>
 
     <!-- END CUSTOMER -->
 
@@ -59,6 +60,9 @@
     <string name="order_row_buyer_name">Buyer Name</string>
     <string name="address_or_pickup">Address\nor Pickup</string>
     <string name="order_row_details">$19.99\n4 Items</string>
+    <string name="quantity">Quantity</string>
+    <string name="total">Total:</string>
+    <string name="add_to_cart_dialog_title">Add to Cart</string>
 
     <!-- item -->
     <string name="no_description">No description available</string>

@@ -96,7 +96,7 @@ public class StoreOwnerItemListFragment extends Fragment {
                 tvNoItems.setVisibility(View.INVISIBLE);
             }
             storeOwnerItemListViewModel.setKitchenMenu(new KitchenMenu(items));
-            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), storeOwnerItemListViewModel.getKitchenMenu(), storeOwnerItemListViewModel) {
+            itemListRecycler.setAdapter(new ItemListAdapter(getContext(), storeOwnerItemListViewModel.getKitchenMenu()) {
                 @Override
                 public void onItemCardClick(Item item) {
                     DialogFragment dialogFragment = new ItemDialog(storeOwnerItemListViewModel, item);

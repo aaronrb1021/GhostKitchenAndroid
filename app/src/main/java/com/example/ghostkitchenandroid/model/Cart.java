@@ -11,7 +11,8 @@ public class Cart {
     private int numOfItems;
 
     public Cart() {
-
+        items = new LinkedList<>();
+        quantities = new HashMap<>();
     }
 
     /**
@@ -87,6 +88,10 @@ public class Cart {
 
     public String getSubtotalString() {
         return String.format("$%4.2f", getSubtotal());
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 
 }
