@@ -90,6 +90,18 @@ public class Cart {
         return String.format("$%4.2f", getSubtotal());
     }
 
+    public int getQuantityOfItem(Item item) {
+        return quantities.get(item.getId());
+    }
+
+    public int getQuantityOfItem(int position) {
+        return quantities.get(items.get(position).getId());
+    }
+
+    public Item getItem(int position) {
+        return items.get(position);
+    }
+
     public boolean isEmpty() {
         return items.isEmpty();
     }

@@ -17,7 +17,7 @@
         android:text="Category"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
