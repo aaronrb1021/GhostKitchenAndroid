@@ -24,7 +24,6 @@ import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.ui.customer.CartAddItemDialog;
 import com.example.ghostkitchenandroid.ui.customer.CartEditItemDialog;
-import com.example.ghostkitchenandroid.ui.customer.CustomerItemDialog;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class CustomerItemListFragment extends Fragment {
@@ -179,9 +178,8 @@ public class CustomerItemListFragment extends Fragment {
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener((v, keyCode, event) -> {
-            Log.i("calledoncetwice", String.valueOf(bottomSheetBehavior.getState()));
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_SETTLING) {//this is hacked, might break in the future
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED || bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_SETTLING) {//this is hacked, might break in the future, trying to fix issue of this method being called twice on a single back press, the sheet is in STATE_SETTLING when the second method call executes
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else {
                     getActivity().finish();
