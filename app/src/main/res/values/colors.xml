@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#87E752</color>0072BB
-    <color name="colorPrimaryDark">#3A015C</color>
+    <color name="colorPrimaryDark">#001700</color>
     <color name="colorAccent">#1C1C1C</color>
+    <color name="pomonoGreen">#1A5E2C</color>
+    <color name="pistachio">#97C97F</color>
     <color name="registerBlue">#0051ff</color>
     <color name="danger">#a30b00</color>
 </resources>

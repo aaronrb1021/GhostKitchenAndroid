@@ -111,5 +111,7 @@ public abstract class CustomerItemDialog extends DialogFragment {
 
             }
         });
+
+        quantityEt.requestFocus();
     }
 }

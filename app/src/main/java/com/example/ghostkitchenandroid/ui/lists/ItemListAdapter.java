@@ -43,7 +43,8 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_CATEGORY)
-            return new CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item_category, parent, false));
+            return new CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item_category_bold, parent, false));
+//            return new CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item_category, parent, false));
         return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.row_item, parent, false));
     }
 

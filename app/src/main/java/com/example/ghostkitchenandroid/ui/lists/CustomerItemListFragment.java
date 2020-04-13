@@ -119,13 +119,17 @@ public class CustomerItemListFragment extends Fragment {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 cartPreviewItemCount.setAlpha(1 - slideOffset);
                 cartImage.setAlpha(1 - slideOffset);
-                float potentialTranslation = (float) ((slideOffset * 1125) - cartPreviewPrice.getWidth() / 2.0);
-                float translation = (potentialTranslation >= 0) ? potentialTranslation : 0;
-                cartPreviewPrice.setTranslationX(translation);
+                setPriceViewTranslation(slideOffset);
                 cartPreviewPrice.setTextColor(calculateColor(slideOffset));
                 cartCheckoutArrowLayout.setAlpha(slideOffset);
             }
         });
+    }
+
+    private void setPriceViewTranslation(float slideOffset) {
+        float potentialTranslation = (float) ((slideOffset * 1125) - cartPreviewPrice.getWidth() / 1.8);
+        float translation = (potentialTranslation >= 0) ? potentialTranslation : 0;
+        cartPreviewPrice.setTranslationX(translation);
     }
 
     private static int calculateColor(float slideOffset) {
@@ -142,6 +146,7 @@ public class CustomerItemListFragment extends Fragment {
             cartPreviewContainer.animate()
                     .alpha(0f)
                     .setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             cartPreviewContainer.setVisibility(View.GONE);
         } else if (cartPreviewContainer.getVisibility() == View.GONE) {
             updateCartPreview();
@@ -164,11 +169,14 @@ public class CustomerItemListFragment extends Fragment {
     private void updateCartPreview() {
         cartPreviewItemCount.setText(String.valueOf(customerItemListViewModel.getCart().getNumOfItems()));
         cartPreviewPrice.setText(customerItemListViewModel.getCart().getSubtotalString());
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            setPriceViewTranslation(1);
         cartRecycler.setAdapter(new CartListAdapter(getContext(), customerItemListViewModel.getCart()) {
             @Override
             public void onCardClick(Item item) {
                 new CartEditItemDialog(item, customerItemListViewModel.getCart().getQuantityOfItem(item), quantity -> {
-                    //TODO use quantity submitted in edit dialog
+                    customerItemListViewModel.getCart().updateQuantity(item, quantity);
+                    checkShouldDisplayPreview();
                 }).show(getParentFragmentManager(), "CartEditItemDialog");
             }
         });

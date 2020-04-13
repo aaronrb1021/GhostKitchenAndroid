@@ -16,6 +16,28 @@ public class Cart {
     }
 
     /**
+     * Use this method to update an existing item to a new quantity. Also accepts
+     * 0 as an argument and will remove the item when such an argument is received.
+     * @param item
+     * @param newQuantity
+     * @return
+     */
+    public boolean updateQuantity(Item item, int newQuantity) {
+
+        if (!quantities.containsKey(item.getId()))
+            return false;
+
+        if (newQuantity == 0) {
+            remove(item);
+            return true;
+        }
+
+        quantities.put(item.getId(), newQuantity);
+
+        return true;
+    }
+
+    /**
      *
      * This method is called for both updating existing quantities in the cart and for placing new items in the cart.
      * @param item the item being added/updated in cart
