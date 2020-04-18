@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 public abstract class AbstractItemListViewModel extends ViewModel {
 
-    protected Kitchen kitchen;
+    private Kitchen kitchen;
     protected KitchenMenu kitchenMenu;
     protected ItemRepo itemRepo = new ItemRepo();
 

@@ -1,10 +1,11 @@
 package com.example.ghostkitchenandroid.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Cart {
+public class Cart implements Serializable {
 
     private LinkedList<Item> items;
     private HashMap<Long, Integer> quantities;

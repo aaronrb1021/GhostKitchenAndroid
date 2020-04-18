@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#757575">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/checkout_chip_delivery"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/delivery"
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        app:chipIcon="@drawable/ic_directions_car_primary_green_24dp"
+        app:chipStrokeColor="@color/colorPrimary"
+        app:chipStrokeWidth="1dp"
+        app:chipIconVisible="true"
+        android:checked="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/colorPrimary" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/checkout_chip_pickup"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="75dp"
+        android:text="@string/pickup"
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        app:chipIcon="@drawable/ic_directions_walk_black_24dp"
+        app:chipStrokeColor="@color/colorPrimaryDark"
+        app:chipStrokeWidth="1dp"
+        app:chipIconVisible="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/colorPrimary" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/checkout_pickup_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_chip_pickup">
+
+        <Spinner
+            android:id="@+id/checkout_pickup_time_spinner"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_name_layout" />
+
+        <TextView
+            android:id="@+id/checkout_pickup_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:labelFor="@id/checkout_pickup_time_spinner"
+            android:text="@string/pickup_time"
+            android:textSize="16sp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintEnd_toStartOf="@+id/checkout_pickup_time_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_name_layout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkout_pickup_name_layout"
+            android:layout_width="194dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkout_pickup_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Pickup Name"
+                android:textColorHint="@android:color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/checkout_table_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/charges"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_layout" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_table_title"
+        tools:layout_editor_absoluteX="1dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="@string/subtotal" />
+
+            <TextView
+                android:id="@+id/checkout_subtotal_price"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="$XX.XX"
+                android:textAlignment="viewEnd" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="@string/delivery_fee" />
+
+            <TextView
+                android:id="@+id/checkout_delivery_price"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="N/A"
+                android:textAlignment="viewEnd" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="@string/tax_fee" />
+
+            <TextView
+                android:id="@+id/checkout_tax_price"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="0.08875"
+                android:textAlignment="viewEnd" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="@string/total"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/checkout_total_price"
+                android:layout_weight="1"
+                android:width="0dp"
+                android:text="$XX.XX"
+                android:textAlignment="viewEnd"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_weight="1"
+                android:width="0dp" />
+        </TableRow>
+    </TableLayout>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/checkout_chip_cash"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:checked="true"
+        android:text="@string/cash"
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        app:chipIcon="@drawable/ic_attach_money_primary_green_24dp"
+        app:chipIconVisible="true"
+        app:chipStrokeColor="@color/colorPrimary"
+        app:chipStrokeWidth="1dp"
+        app:rippleColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/checkout_chip_credit"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/credit"
+        android:theme="@style/Theme.MaterialComponents.DayNight"
+        app:chipIcon="@drawable/ic_credit_card_black_24dp"
+        app:chipIconVisible="true"
+        app:chipStrokeColor="@android:color/black"
+        app:chipStrokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_chip_cash"
+        app:rippleColor="@color/colorPrimary" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:enabled="false"
+        android:text="@string/place_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

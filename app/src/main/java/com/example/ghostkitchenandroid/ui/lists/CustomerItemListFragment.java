@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -10,7 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.transition.AutoTransition;
+import android.transition.Scene;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +31,7 @@ import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.KitchenMenu;
 import com.example.ghostkitchenandroid.ui.customer.CartAddItemDialog;
 import com.example.ghostkitchenandroid.ui.customer.CartEditItemDialog;
+import com.example.ghostkitchenandroid.ui.customer.CheckoutFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class CustomerItemListFragment extends Fragment {
@@ -90,6 +98,7 @@ public class CustomerItemListFragment extends Fragment {
         });
 
         setBackBehavior();
+        setCartOnClick();
     }
 
     private void initViews(View view) {
@@ -142,15 +151,15 @@ public class CustomerItemListFragment extends Fragment {
     private void checkShouldDisplayPreview() {
 
         if (customerItemListViewModel.getCart().isEmpty()) {
-            recyclerView.setPadding(0, 0, 0, 0);
             cartPreviewContainer.animate()
                     .alpha(0f)
                     .setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             cartPreviewContainer.setVisibility(View.GONE);
         } else if (cartPreviewContainer.getVisibility() == View.GONE) {
+            if (recyclerView.getChildCount() > 8)
+//                recyclerView.setPadding(0, 140, 0, 0);
             updateCartPreview();
-            recyclerView.setPadding(0, 120, 0, 0);
             cartPreviewContainer.setAlpha(0f);
             cartPreviewContainer.setVisibility(View.VISIBLE);
             cartPreviewContainer.animate()
@@ -180,6 +189,32 @@ public class CustomerItemListFragment extends Fragment {
                 }).show(getParentFragmentManager(), "CartEditItemDialog");
             }
         });
+    }
+
+    private void setCartOnClick() {
+        cartCheckoutArrowLayout.setOnClickListener(v -> {
+            onCheckout();
+        });
+        cartPreviewPrice.setOnClickListener(v -> {
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                onCheckout();
+        });
+    }
+
+    private void onCheckout() {
+        CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(customerItemListViewModel.getCart());
+
+        Transition enterTransition = new Slide(Gravity.LEFT);
+        enterTransition.setDuration(500);
+        checkoutFragment.setEnterTransition(enterTransition);
+        setEnterTransition(enterTransition);
+
+        Transition exitTransition = new Slide(Gravity.RIGHT);
+        exitTransition.setDuration(500);
+        checkoutFragment.setExitTransition(exitTransition);
+        setExitTransition(exitTransition);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(((View)getView().getParent()).getId(), checkoutFragment).addToBackStack(null).commit();
     }
 
     private void setBackBehavior() {

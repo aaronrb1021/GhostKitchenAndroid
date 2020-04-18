@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customer_item_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_dodgeInsetEdges="bottom"/>
+        app:layout_dodgeInsetEdges="bottom|top" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cart_preview_container"
@@ -25,8 +24,8 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="50dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        app:layout_insetEdge="bottom"
-        app:layout_dodgeInsetEdges="none">
+        app:layout_dodgeInsetEdges="none"
+        app:layout_insetEdge="bottom">
 
         <ImageView
             android:id="@+id/cart_preview_shopping_cart_image"
@@ -38,40 +37,6 @@
             app:layout_constraintEnd_toStartOf="@+id/cart_preview_item_count"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/cart_preview_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="12dp"
-            android:text="$X.XX"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed" />
-
-        <TextView
-            android:id="@+id/cart_preview_item_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="15dp"
-            android:text="0"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cart_item_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- INVISIBLE CHECKOUT BUTTON, VISIBLE ON BOTTOM SHEET EXPANSION -->
         <LinearLayout
             android:id="@+id/cart_checkout_layout"
             android:layout_width="wrap_content"
@@ -102,10 +67,41 @@
                 tools:layout_editor_absoluteY="9dp" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/cart_preview_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cart_preview_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="12dp"
+            android:text="$X.XX"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed" />
+
+        <!-- INVISIBLE CHECKOUT BUTTON, VISIBLE ON BOTTOM SHEET EXPANSION -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cart_item_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <!-- END INVISIBLE CHECKOUT BUTTON -->
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

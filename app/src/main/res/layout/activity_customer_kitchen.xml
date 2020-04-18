@@ -12,9 +12,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="5dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Kitchen">
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:title="Kitchen"
+        android:layout_gravity="top">
 
         <ImageView
             android:id="@+id/customer_kitchen_star_image"
