@@ -1,18 +1,21 @@
 package com.example.ghostkitchenandroid.model;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class Order {
 
     private long id;
-    private HashMap<Long, Item> itemHashMap;
-    private String totalString;
-    private double total;
+    private boolean isPickup;
+    private double deliveryFee;
+    private double taxFee;
     private byte status;
-    private Date date;
+    private long orderDateInMillis;
+    private String pickupName;
+    private Kitchen kitchen;
+//    private UserAddress deliveryAddress;
     private BuyerDetails buyerDetails;
+    private Cart cart;
 
     //CONSTANTS
     public static final byte STATUS_PENDING = 0;
@@ -20,21 +23,64 @@ public class Order {
     public static final byte STATUS_COMPLETE = 2;
     public static final byte STATUS_CANCELLED = 3;
 
-    public Order(HashMap<Long, Item> itemHashMap, BuyerDetails buyerDetails, double total) {
-        this(itemHashMap, buyerDetails, total, STATUS_PENDING);
+    public Order() {
+
     }
 
-    public Order(HashMap<Long, Item> itemHashMap, BuyerDetails buyerDetails, double total, byte status) {
-        this.itemHashMap = itemHashMap;
+    /**
+     * This constructor should be used for submitted a pickup order with default PENDING status.
+     * @param cart
+     * @param buyerDetails
+     * @param kitchen
+     * @param taxFee
+     */
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, String pickupName) {
+        this(cart, buyerDetails, kitchen, taxFee, STATUS_PENDING, pickupName);
+    }
+
+    /**
+     * This constructor should be used for a pickup order with a custom status.
+     * @param cart
+     * @param buyerDetails
+     * @param kitchen
+     * @param taxFee
+     * @param status
+     */
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, byte status, String pickupName) {
+        this(cart, buyerDetails, kitchen, taxFee, status, new UserAddress());
+        this.pickupName = pickupName;
+        isPickup = true;
+    }
+
+    /**
+     * Constructor for delivery order with default PENDING status.
+     * @param cart
+     * @param buyerDetails
+     * @param kitchen
+     * @param taxFee
+     * @param deliveryAddress
+     */
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, UserAddress deliveryAddress) {
+        this(cart, buyerDetails, kitchen, taxFee, STATUS_PENDING, deliveryAddress);
+    }
+
+    /**
+     * Constructor for delivery with custom status.
+     * @param cart
+     * @param buyerDetails
+     * @param kitchen
+     * @param taxFee
+     * @param status
+     * @param deliveryAddress
+     */
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, byte status, UserAddress deliveryAddress) {
+        this.cart = cart;
         this.buyerDetails = buyerDetails;
-        this.total = total;
+        this.taxFee = taxFee;
         this.status = status;
-        date = new Date(System.currentTimeMillis());
-        totalToString();
-    }
-
-    private void totalToString() {
-        totalString = String.format(Locale.US,"%4.2f", total);
+        this.kitchen = kitchen;
+//        this.deliveryAddress = deliveryAddress;
+        orderDateInMillis = System.currentTimeMillis();
     }
 
     public long getId() {
@@ -45,20 +91,8 @@ public class Order {
         this.id = id;
     }
 
-    public HashMap<Long, Item> getItemHashMap() {
-        return itemHashMap;
-    }
-
-    public void setItemHashMap(HashMap<Long, Item> itemHashMap) {
-        this.itemHashMap = itemHashMap;
-    }
-
-    public String getTotalString() {
-        return totalString;
-    }
-
-    public void setTotalString(String totalString) {
-        this.totalString = totalString;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public BuyerDetails getBuyerDetails() {
@@ -70,11 +104,11 @@ public class Order {
     }
 
     public double getTotal() {
-        return total;
+        return cart.getSubtotal() + taxFee + deliveryFee;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public String getTotalString() {
+        return String.format(Locale.US,"%4.2f", getTotal());
     }
 
     public byte getStatus() {
@@ -85,11 +119,63 @@ public class Order {
         this.status = status;
     }
 
-    public Date getDate() {
-        return date;
+    public long getOrderDateInMillis() {
+        return orderDateInMillis;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setOrderDateInMillis(long orderDateInMillis) {
+        this.orderDateInMillis = orderDateInMillis;
+    }
+
+    public double getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    public void setDeliveryFee(double deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
+
+    public double getTaxFee() {
+        return taxFee;
+    }
+
+    public void setTaxFee(double taxFee) {
+        this.taxFee = taxFee;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public Kitchen getKitchen() {
+        return kitchen;
+    }
+
+    public void setKitchen(Kitchen kitchen) {
+        this.kitchen = kitchen;
+    }
+
+//    public UserAddress getDeliveryAddress() {
+//        return deliveryAddress;
+//    }
+//
+//    public void setDeliveryAddress(UserAddress deliveryAddress) {
+//        this.deliveryAddress = deliveryAddress;
+//    }
+
+    public boolean isPickup() {
+        return isPickup;
+    }
+
+    public void setIsPickup(boolean isPickup) {
+        this.isPickup = isPickup;
+    }
+
+    public String getPickupName() {
+        return pickupName;
+    }
+
+    public void setPickupName(String pickupName) {
+        this.pickupName = pickupName;
     }
 }

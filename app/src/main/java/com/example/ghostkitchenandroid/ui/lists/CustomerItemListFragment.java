@@ -135,6 +135,11 @@ public class CustomerItemListFragment extends Fragment {
         });
     }
 
+    private void onAddToCartDialogSubmit(Item item, int quantity) {
+        customerItemListViewModel.getCart().add(item, quantity);
+        checkShouldDisplayPreview();
+    }
+
     private void setPriceViewTranslation(float slideOffset) {
         float potentialTranslation = (float) ((slideOffset * 1125) - cartPreviewPrice.getWidth() / 1.8);
         float translation = (potentialTranslation >= 0) ? potentialTranslation : 0;
@@ -157,8 +162,9 @@ public class CustomerItemListFragment extends Fragment {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             cartPreviewContainer.setVisibility(View.GONE);
         } else if (cartPreviewContainer.getVisibility() == View.GONE) {
-            if (recyclerView.getChildCount() > 8)
+            if (recyclerView.getChildCount() > 8) {
 //                recyclerView.setPadding(0, 140, 0, 0);
+            }
             updateCartPreview();
             cartPreviewContainer.setAlpha(0f);
             cartPreviewContainer.setVisibility(View.VISIBLE);
@@ -168,11 +174,6 @@ public class CustomerItemListFragment extends Fragment {
         } else {
             updateCartPreview();
         }
-    }
-
-    private void onAddToCartDialogSubmit(Item item, int quantity) {
-        customerItemListViewModel.getCart().add(item, quantity);
-        checkShouldDisplayPreview();
     }
 
     private void updateCartPreview() {
@@ -193,7 +194,8 @@ public class CustomerItemListFragment extends Fragment {
 
     private void setCartOnClick() {
         cartCheckoutArrowLayout.setOnClickListener(v -> {
-            onCheckout();
+            if (!cartPreviewPrice.callOnClick()) //this fixes UI glitch caused by clicking this button, that for some reason doesn't occur on the cartPreviewPrice onClick()
+                onCheckout();
         });
         cartPreviewPrice.setOnClickListener(v -> {
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
@@ -202,7 +204,7 @@ public class CustomerItemListFragment extends Fragment {
     }
 
     private void onCheckout() {
-        CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(customerItemListViewModel.getCart());
+        CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(customerItemListViewModel.getCart(), customerItemListViewModel.getKitchen());
 
         Transition enterTransition = new Slide(Gravity.LEFT);
         enterTransition.setDuration(500);

@@ -1,9 +1,12 @@
 package com.example.ghostkitchenandroid.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class Cart implements Serializable {
 
@@ -126,7 +129,37 @@ public class Cart implements Serializable {
     }
 
     public boolean isEmpty() {
-        return items.isEmpty();
+        if (items != null)
+            return items.isEmpty();
+        return true;
+    }
+
+    public double getSalesTax() {
+        return 0.08875 * getSubtotal();
+    }
+
+    public String getSalesTaxString() {
+        return String.format(Locale.US, "$%4.2f", getSalesTax());
+    }
+
+    public LinkedList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(LinkedList<Item> items) {
+        this.items = items;
+    }
+
+    public HashMap<Long, Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(HashMap<Long, Integer> quantities) {
+        this.quantities = quantities;
+    }
+
+    public void setNumOfItems(int numOfItems) {
+        this.numOfItems = numOfItems;
     }
 
 }

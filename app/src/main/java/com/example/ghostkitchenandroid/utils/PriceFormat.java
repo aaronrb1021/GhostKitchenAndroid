@@ -7,4 +7,8 @@ public abstract class PriceFormat {
     public static String getFormattedTotal(int quantity, double price) {
         return String.format(Locale.US, "$%4.2f", quantity * price);
     }
+
+    public static String getFormattedPrice(double price) {
+        return String.format(Locale.US, "$%4.2f", price);
+    }
 }

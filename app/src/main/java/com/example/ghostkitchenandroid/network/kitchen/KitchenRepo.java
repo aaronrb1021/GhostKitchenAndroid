@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.network.kitchen;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.User;

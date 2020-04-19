@@ -1,11 +1,12 @@
 package com.example.ghostkitchenandroid.model;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class Item implements Comparable<Item> {
+public class Item implements Comparable<Item>, Serializable {
 
     private long id;
     private String name;

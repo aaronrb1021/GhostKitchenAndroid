@@ -120,6 +120,10 @@ public class User {
         this.cartManager = cartManager;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return firstName + " " + lastName;

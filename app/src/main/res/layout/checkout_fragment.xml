@@ -54,7 +54,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/checkout_pickup_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:visibility="invisible"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,23 +63,25 @@
 
         <Spinner
             android:id="@+id/checkout_pickup_time_spinner"
-            android:layout_width="100dp"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_name_layout" />
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_time_tv" />
 
         <TextView
             android:id="@+id/checkout_pickup_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:labelFor="@id/checkout_pickup_time_spinner"
             android:text="@string/pickup_time"
             android:textSize="16sp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:layout_constraintEnd_toStartOf="@+id/checkout_pickup_time_spinner"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_name_layout" />
 
@@ -268,6 +270,7 @@
         app:rippleColor="@color/colorPrimary" />
 
     <Button
+        android:id="@+id/checkout_order_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"
