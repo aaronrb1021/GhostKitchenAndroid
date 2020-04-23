@@ -10,6 +10,7 @@ import com.example.ghostkitchenandroid.network.advice.ResultWithData;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -25,6 +26,7 @@ public class KitchenRepo {
     private static KitchenService kitchenService = KitchenServiceInstance.getInstance();
 
     private MutableLiveData<ArrayList<Kitchen>> kitchensLiveData = new MutableLiveData<>();
+    private MutableLiveData<Kitchen> kitchenLiveData;
 
     public static KitchenRepo getInstance() {
         if (kitchenRepo == null)
@@ -34,6 +36,15 @@ public class KitchenRepo {
 
     public LiveData<ArrayList<Kitchen>> getKitchensLiveData() {
         return kitchensLiveData;
+    }
+
+    public LiveData<Kitchen> getKitchenLiveData() {
+        kitchenLiveData = new MutableLiveData<>();
+        return kitchenLiveData;
+    }
+
+    public void updateKitchen(Kitchen kitchen) {
+        new UpdateKitchenTask(this).execute(kitchen);
     }
 
     public ResultWithData<Kitchen> createKitchen(Kitchen kitchen, User user) {
@@ -119,6 +130,30 @@ public class KitchenRepo {
         protected void onPostExecute(ArrayList<Kitchen> kitchens) {
             kitchenRepo.kitchensLiveData.setValue(kitchens);
             kitchenRepo = null;
+        }
+    }
+
+    private static class UpdateKitchenTask extends AsyncTask<Kitchen, Void, Kitchen> {
+
+        private WeakReference<KitchenRepo> weakReference;
+
+        private UpdateKitchenTask(KitchenRepo kitchenRepo) {
+            weakReference = new WeakReference<>(kitchenRepo);
+        }
+
+        @Override
+        protected Kitchen doInBackground(Kitchen... kitchens) {
+            try {
+                return kitchenService.updateKitchen(kitchens[0]).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Kitchen kitchen) {
+            weakReference.get().kitchenLiveData.setValue(kitchen);
         }
     }
 }

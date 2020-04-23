@@ -4,7 +4,11 @@ import android.util.Log;
 
 import com.example.ghostkitchenandroid.model.Item;
 import com.example.ghostkitchenandroid.model.Kitchen;
+import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.network.item.ItemRepo;
+import com.example.ghostkitchenandroid.network.order.OrderRepo;
+
+import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +16,7 @@ import androidx.lifecycle.ViewModel;
 public class MyKitchenViewModel extends ViewModel {
 
     private Kitchen kitchen;
+    private OrderRepo orderRepo = OrderRepo.getInstance();
 
     public void setKitchen(Kitchen kitchen) {
         this.kitchen = kitchen;
@@ -19,6 +24,14 @@ public class MyKitchenViewModel extends ViewModel {
 
     public Kitchen getKitchen() {
         return kitchen;
+    }
+
+    LiveData<ArrayList<Order>> getOrderListLiveData() {
+        return orderRepo.getOrderListLiveData();
+    }
+
+    void fetchOrders() {
+        orderRepo.fetchOrdersByKitchen(kitchen);
     }
 
 }

@@ -12,12 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +30,9 @@ import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.model.OrderBuilder;
 import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
-import com.example.ghostkitchenandroid.utils.PriceFormat;
+import com.example.ghostkitchenandroid.utils.Format;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
 
@@ -59,7 +58,7 @@ public class CheckoutFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.checkout_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_checkout, container, false);
     }
 
     @Override
@@ -119,7 +118,7 @@ public class CheckoutFragment extends Fragment {
             deliveryFeeView.setText("N/A");
         }
 
-        totalView.setText(PriceFormat.getFormattedPrice(subtotalPlus));
+        totalView.setText(Format.getFormattedPrice(subtotalPlus));
     }
 
     private void configChips() {
@@ -184,7 +183,7 @@ public class CheckoutFragment extends Fragment {
                     .setKitchen(checkoutViewModel.getKitchen())
                     .setPickupName(pickupNameEt.getText().toString().trim())
                     .create();
-
+            Log.i("pickupboolean", String.valueOf(order.isPickup()));
             checkoutViewModel.createOrder(order);
         });
     }

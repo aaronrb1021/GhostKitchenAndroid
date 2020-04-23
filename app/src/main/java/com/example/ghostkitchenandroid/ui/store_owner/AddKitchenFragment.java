@@ -23,18 +23,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
+import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.State;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 
 public class AddKitchenFragment extends Fragment {
 
     private AddKitchenViewModel addKitchenViewModel;
-    private EditText etKitchenName, etAddressLine1, etAddressLine2, etCity, etZip, etPhone;
-    private Spinner spState;
-    private Button btAddKitchen;
+    protected EditText etKitchenName, etAddressLine1, etAddressLine2, etCity, etZip, etPhone;
+    protected Spinner spState;
+    protected Button btAddKitchen;
 
     public static AddKitchenFragment newInstance() {
+
         return new AddKitchenFragment();
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -44,8 +53,8 @@ public class AddKitchenFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         addKitchenViewModel = new ViewModelProvider(this).get(AddKitchenViewModel.class);
 
@@ -58,6 +67,11 @@ public class AddKitchenFragment extends Fragment {
         setObservance();
 
         setOnClickListener();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void initViews() {
@@ -142,7 +156,7 @@ public class AddKitchenFragment extends Fragment {
                     btAddKitchen.setEnabled(false);
                     break;
                 case AddKitchenFormState.STATE_ERROR:
-                    ((TextView) spState.getSelectedView()).setError(getString(R.string.required));
+//                    ((TextView) spState.getSelectedView()).setError(getString(R.string.required));
                     btAddKitchen.setEnabled(false);
                     break;
                 case AddKitchenFormState.ZIP_ERROR:

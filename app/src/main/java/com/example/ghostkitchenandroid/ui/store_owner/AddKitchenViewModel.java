@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModel;
 public class AddKitchenViewModel extends ViewModel {
 
     private MutableLiveData<AddKitchenFormState> formStateLiveData = new MutableLiveData<>();
-    MutableLiveData<ResultWithData<Kitchen>> resultLiveData = new MutableLiveData<>();
+    private MutableLiveData<ResultWithData<Kitchen>> resultLiveData = new MutableLiveData<>();
     private KitchenRepo kitchenRepo = KitchenRepo.getInstance();
 
     public AddKitchenViewModel() {
@@ -48,4 +48,5 @@ public class AddKitchenViewModel extends ViewModel {
         Kitchen kitchen = new Kitchen(name, address);
         resultLiveData.setValue(kitchenRepo.createKitchen(kitchen, UserRepo.getLoggedInUser()));
     }
+
 }

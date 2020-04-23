@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 interface KitchenService {
@@ -24,4 +25,7 @@ interface KitchenService {
 
     @GET("/kitchens")
     Call<ArrayList<Kitchen>> getAllKitchens();
+
+    @PUT("/kitchens")
+    Call<Kitchen> updateKitchen(@Body Kitchen kitchen);
 }

@@ -52,7 +52,6 @@
     <string name="my_kitchens_no_kitchens">NO KITCHENS AVAILABLE</string>
     <string name="pending_orders">Pending Orders</string>
     <string name="menu">Menu</string>
-    <string name="no_pending_orders">NO PENDING ORDERS</string>
 
     <!-- order -->
     <string name="order_row_time">11:59 AM</string>
@@ -75,6 +74,11 @@
     <string name="place_order">Place Order</string>
     <string name="cash">Cash</string>
     <string name="credit">Credit</string>
+    <string name="all">All</string>
+    <string name="completed">Completed</string>
+    <string name="no_pending_orders">NO PENDING ORDERS</string>
+    <string name="no_orders">NO ORDERS AVAILABLE</string>
+    <string name="no_completed_orders">NO COMPLETED ORDERS</string>
 
     <!-- item -->
     <string name="no_description">No description available</string>

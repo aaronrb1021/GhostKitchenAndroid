@@ -8,9 +8,13 @@ import android.widget.ProgressBar;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
+import com.example.ghostkitchenandroid.model.Order;
+import com.example.ghostkitchenandroid.ui.lists.OrderListAdapter;
 import com.example.ghostkitchenandroid.ui.lists.StoreOwnerItemListFragment;
 import com.example.ghostkitchenandroid.ui.lists.OrderListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,25 +54,42 @@ public class MyKitchenFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(myKitchenViewModel.getKitchen().getName());
 
+        setObservance();
+
+        initViews(view);
+
+        configBottomNav();
+
+        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
+    }
+
+    private void initViews(View view) {
         bottomNavigationView = view.findViewById(R.id.my_kitchen_bottom_nav);
         myKitchenFragmentContainer = view.findViewById(R.id.my_kitchen_fragment_container);
         progressBar = view.findViewById(R.id.my_kitchen_progress);
+    }
 
+    private void configBottomNav() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_pending_orders:
-                    getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
+                    myKitchenViewModel.fetchOrders();
                     return true;
                 case R.id.bottom_nav_menu:
                     showItemList();
                     return true;
+                case R.id.bottom_nav_edit_kitchen:
+                    getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), EditKitchenFragment.newInstance(myKitchenViewModel.getKitchen())).commit();
+                    return true;
             }
             return false;
         });
+    }
 
-        getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), new OrderListFragment()).commit();
-        bottomNavigationView.setSelectedItemId(R.id.bottom_nav_pending_orders);
-
+    private void setObservance() {
+        myKitchenViewModel.getOrderListLiveData().observe(getViewLifecycleOwner(), orders -> {
+            getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), OrderListFragment.newInstance(makeOrderListAdapter(orders, getString(R.string.no_pending_orders)))).commit();
+        });
     }
 
     private void showItemList() {
@@ -78,6 +99,27 @@ public class MyKitchenFragment extends Fragment {
         bundle.putInt("mode", StoreOwnerItemListFragment.MODE_STORE_OWNER);
         storeOwnerItemListFragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(myKitchenFragmentContainer.getId(), storeOwnerItemListFragment).commit();
+    }
+
+    private OrderListAdapter makeOrderListAdapter(ArrayList<Order> orders, String emptyText) {
+        ArrayList<Order> pendingOrders = new ArrayList<>();
+
+        orders.stream().forEach(order -> {
+            if (order.getStatus() == Order.STATUS_PENDING)
+                pendingOrders.add(order);
+        });
+
+        return new OrderListAdapter(getContext(), pendingOrders) {
+            @Override
+            public void onCardClick(Order order) {
+
+            }
+
+            @Override
+            public String getEmptyDisplayText() {
+                return emptyText;
+            }
+        };
     }
 
 }

@@ -22,7 +22,7 @@ public abstract class UserCredValidity {
     public static boolean isPhoneValid(@Nullable String phone) {
         if (phone == null)
             return false;
-        String plainPhone = phone.trim().replace("-", "");
+        String plainPhone = phone.trim().replaceAll("[^0-9]", "");
         return plainPhone.length() == 10 || plainPhone.length() == 11;
     }
 

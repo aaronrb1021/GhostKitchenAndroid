@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
-import com.example.ghostkitchenandroid.utils.PriceFormat;
 
 public class CartAddItemDialog extends CustomerItemDialog {
 

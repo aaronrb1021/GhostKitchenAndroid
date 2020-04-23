@@ -62,10 +62,15 @@ public class CustomerActivity extends AppCompatActivity {
         return item -> {
             switch (item.getItemId()) {
                 case R.id.nav_customer_shop:
-                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new CustomerShopFragment(), "CustomerShopFragment").commit();
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerShopFragment.newInstance(), "CustomerShopFragment").commit();
                     getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     getSupportActionBar().setTitle(R.string.shop);
+                    return true;
+                case R.id.nav_customer_orders:
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerOrderFragment.newInstance(), "CustomerOrderFragment").addToBackStack(null).commit();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    getSupportActionBar().setTitle(R.string.orders);
                     return true;
             }
             return false;

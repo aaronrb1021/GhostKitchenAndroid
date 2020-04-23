@@ -59,6 +59,12 @@ public class CustomerShopFragment extends Fragment {
         bottomNavigationView.setSelectedItemId(R.id.bottom_nav_shop_explore);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener makeNavListener() {
         return item -> {
             switch (item.getItemId()) {

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Item;
-import com.example.ghostkitchenandroid.utils.PriceFormat;
+import com.example.ghostkitchenandroid.utils.Format;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
@@ -101,7 +101,7 @@ public abstract class CustomerItemDialog extends DialogFragment {
                     if (error != null)
                         quantityEt.setError(error);
                     else {//no error, all others above are errors
-                        totalPriceTv.setText(PriceFormat.getFormattedTotal(quantityEntered, item.getPrice()));
+                        totalPriceTv.setText(Format.getFormattedTotal(quantityEntered, item.getPrice()));
                     }
                 }
             }

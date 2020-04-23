@@ -1,11 +1,14 @@
 package com.example.ghostkitchenandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.Locale;
 
 public class Order {
 
     private long id;
+    @SerializedName("pickup")
     private boolean isPickup;
     private double deliveryFee;
     private double taxFee;
@@ -108,7 +111,7 @@ public class Order {
     }
 
     public String getTotalString() {
-        return String.format(Locale.US,"%4.2f", getTotal());
+        return String.format(Locale.US,"$%4.2f", getTotal());
     }
 
     public byte getStatus() {
@@ -167,7 +170,7 @@ public class Order {
         return isPickup;
     }
 
-    public void setIsPickup(boolean isPickup) {
+    public void setPickup(boolean isPickup) {
         this.isPickup = isPickup;
     }
 
