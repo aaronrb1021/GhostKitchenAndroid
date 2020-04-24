@@ -1,15 +1,21 @@
 package com.example.ghostkitchenandroid.network.user;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.advice.Result;
 import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.network.advice.ResultWithData;
+import com.example.ghostkitchenandroid.ui.login.LoginActivity;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -20,6 +26,22 @@ public abstract class UserRepo {
 
     public static User getLoggedInUser() {
         return loggedInUser;
+    }
+
+    public static void logout(AppCompatActivity context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout?");
+        builder.setPositiveButton(R.string.logout, (DialogInterface dialog, int which) -> {
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            context.finish();
+        });
+        builder.setNegativeButton(android.R.string.cancel, (DialogInterface dialog, int which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
     }
 
     /**

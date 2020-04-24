@@ -10,5 +10,8 @@
         <item android:id="@+id/nav_store_owner_add_kitchen"
             android:icon="@drawable/ic_add_black_24dp"
             android:title="@string/store_owner_add_kitchen"/>
+        <item android:id="@+id/nav_store_owner_logout"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/logout"/>
     </group>
 </menu>

@@ -1,5 +1,8 @@
 package com.example.ghostkitchenandroid.ui.store_owner;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -9,11 +12,13 @@ import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.ui.lists.KitchenListAdapter;
 import com.example.ghostkitchenandroid.ui.lists.KitchenListFragment;
+import com.example.ghostkitchenandroid.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -104,9 +109,13 @@ public class StoreOwnerActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new AddKitchenFragment(), "AddKitchenFragment").addToBackStack(null).commit();
                         drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
+                    case R.id.nav_store_owner_logout:
+                        UserRepo.logout(StoreOwnerActivity.this);
+                        return false;
                 }
                 return false;
             }
         };
     }
+
 }

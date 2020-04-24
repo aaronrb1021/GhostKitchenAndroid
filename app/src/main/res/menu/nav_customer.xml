@@ -10,5 +10,8 @@
         <item android:id="@+id/nav_customer_orders"
             android:icon="@drawable/ic_shop_two_black_24dp"
             android:title="@string/orders"/>
+        <item android:id="@+id/nav_customer_logout"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/logout"/>
     </group>
 </menu>

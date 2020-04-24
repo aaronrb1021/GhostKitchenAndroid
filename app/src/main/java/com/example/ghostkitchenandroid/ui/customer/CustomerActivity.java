@@ -72,6 +72,9 @@ public class CustomerActivity extends AppCompatActivity {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     getSupportActionBar().setTitle(R.string.orders);
                     return true;
+                case R.id.nav_customer_logout:
+                    UserRepo.logout(CustomerActivity.this);
+                    return false;
             }
             return false;
         };
