@@ -3,6 +3,8 @@ package com.example.ghostkitchenandroid.ui.customer;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.ui.lists.OrderListAdapter;
 import com.example.ghostkitchenandroid.ui.lists.OrderListFragment;
+import com.example.ghostkitchenandroid.ui.store_owner.OrderDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -118,7 +122,7 @@ public class CustomerOrderFragment extends Fragment {
         return new OrderListAdapter(getContext(), orders) {
             @Override
             public void onCardClick(Order order) {
-
+                new CustomerOrderDialog(order).show(getParentFragmentManager(), "CustomerOrderDialog");
             }
 
             @Override
@@ -130,6 +134,39 @@ public class CustomerOrderFragment extends Fragment {
 
     private void handleFragmentTransaction(ArrayList<Order> orders, int emptyText) {
         getActivity().getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), OrderListFragment.newInstance(makeOrderListAdapter(orders, getString(emptyText))), "CustomerOrderListFragment").commit();
+    }
+
+    public static class CustomerOrderDialog extends OrderDialogFragment {
+
+        public CustomerOrderDialog(Order order) {
+            super(order);
+        }
+
+        @Override
+        protected void onOkClick(Order order, Spinner statusSpinner, DialogInterface dialog) {
+            dialog.dismiss();
+        }
+
+        @Override
+        protected void handleStatus(Order order, Spinner statusSpinner, TextView statusTextView) {
+            statusTextView.setVisibility(View.VISIBLE);
+            switch (order.getStatus()) {
+                case Order.STATUS_PENDING:
+                    statusTextView.setText(R.string.pending);
+                    break;
+                case Order.STATUS_COMPLETE:
+                    statusTextView.setText(R.string.completed);
+                    break;
+                case Order.STATUS_CANCELLED:
+                    statusTextView.setText(R.string.cancelled);
+                    break;
+            }
+        }
+
+        @Override
+        protected AlertDialog.Builder handleBuilderButtons(Order order, AlertDialog.Builder builder) {
+            return builder;
+        }
     }
 
 }

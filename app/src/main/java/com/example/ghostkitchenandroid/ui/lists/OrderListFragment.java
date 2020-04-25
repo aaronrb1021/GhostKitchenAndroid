@@ -60,13 +60,15 @@ public class OrderListFragment extends Fragment {
 
     private void config() {
         orderListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        if (orderListAdapter != null && orderListAdapter.getItemCount() > 0) {
-            orderListRecycler.setAdapter(orderListAdapter);
-        } else {
-            orderListRecycler.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText(orderListAdapter.getEmptyDisplayText());
-            orderListRecycler.setAdapter(null);
+        if (orderListAdapter != null) {
+            if (orderListAdapter.getItemCount() > 0) {
+                orderListRecycler.setAdapter(orderListAdapter);
+            } else {
+                orderListRecycler.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(orderListAdapter.getEmptyDisplayText());
+                orderListRecycler.setAdapter(null);
+            }
         }
     }
 }

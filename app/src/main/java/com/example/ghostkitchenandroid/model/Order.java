@@ -2,7 +2,9 @@ package com.example.ghostkitchenandroid.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class Order {
@@ -180,5 +182,15 @@ public class Order {
 
     public void setPickupName(String pickupName) {
         this.pickupName = pickupName;
+    }
+
+    public String getDateString() {
+        Date date = new Date(orderDateInMillis);
+
+        return date.toString();
+//        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//        gregorianCalendar.setTimeInMillis(orderDateInMillis);
+
+//        return "" + gregorianCalendar.get(Calendar.MONTH) + " " + gregorianCalendar.get(Calendar.DATE) + " " + gregorianCalendar.get(Calendar.YEAR) + " " + gregorianCalendar.get(Calendar.HOUR)
     }
 }

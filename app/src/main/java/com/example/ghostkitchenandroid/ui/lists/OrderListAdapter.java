@@ -11,7 +11,11 @@ import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.utils.Format;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -37,26 +41,80 @@ public abstract class OrderListAdapter extends androidx.recyclerview.widget.Recy
     public void onBindViewHolder(@NonNull OrderListAdapter.OrderListViewHolder holder, int position) {
         Order order = orders.get(position);
 
-        holder.time.setText(Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis()));
+        setName(order, holder);
 
-        if (order.isPickup()) {
-            holder.timeLimit.setText("Pickup Time: " + Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis() + 900000 * 2)); //todo need to collect pickup time in order
-            holder.buyerName.setText(order.getPickupName());
-        }
-        else {
-            holder.timeLimit.setText("Deliver By: " + Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis() + 900000 * 4)); //todo " "
-            holder.buyerName.setText(order.getBuyerDetails().getName());
-        }
+        setMainTime(order, holder);
+
+        setTimes(order, holder);
 
         holder.buyerPhone.setText(Format.phone(order.getBuyerDetails().getPhone()));
 
+        setBuyerAddress(order, holder);
+
+        holder.orderDetails.setText(order.getTotalString() + "\n" + order.getCart().getNumOfItems() + " Items");
+
+        setStatusImage(order, holder);
+
+        holder.cardView.setOnClickListener(view -> {
+            onCardClick(order);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return orders.size();
+    }
+
+    private void setMainTime(Order order, OrderListAdapter.OrderListViewHolder holder) {
+        Date orderDate = new Date(order.getOrderDateInMillis());
+        Date currentDate = new Date(System.currentTimeMillis());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+
+        if (simpleDateFormat.format(orderDate).equals(simpleDateFormat.format(currentDate))) {
+            holder.time.setText(Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis()));
+        } else {
+            holder.time.setText(Format.makeShortDateDisplay(order.getOrderDateInMillis()));
+        }
+    }
+
+    private void setName(Order order, OrderListAdapter.OrderListViewHolder holder) {
+        if (order.isPickup()) {
+            holder.buyerName.setText(order.getPickupName());
+        } else {
+            holder.buyerName.setText(order.getBuyerDetails().getName());
+        }
+    }
+
+    private void setTimes(Order order, OrderListAdapter.OrderListViewHolder holder) {
+
+        if (order.getStatus() == Order.STATUS_PENDING) {
+            holder.time.setTextColor(context.getColor(R.color.pending_yellow));
+            if (order.isPickup()) {
+                holder.timeLimit.setText("Pickup Time: " + Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis() + 900000 * 2)); //todo need to collect pickup time in order
+            } else {
+                holder.timeLimit.setText("Deliver By: " + Format.makeDisplayTimeFromMillis(order.getOrderDateInMillis() + 900000 * 4)); //todo " "
+            }
+        } else {
+            switch (order.getStatus()) {
+                case Order.STATUS_COMPLETE:
+                    holder.timeLimit.setText("Status: Complete");
+                    break;
+                case Order.STATUS_CANCELLED:
+                    holder.time.setTextColor(context.getColor(R.color.danger));
+                    holder.timeLimit.setText("Status: Cancelled");
+                    break;
+            }
+        }
+    }
+
+    private void setBuyerAddress(Order order, OrderListAdapter.OrderListViewHolder holder) {
         if (order.isPickup())
             holder.buyerAddress.setText("PICKUP ORDER");
         else
             holder.buyerAddress.setText("N/A"); //todo delivery address
+    }
 
-        holder.orderDetails.setText(order.getTotalString() + "\n" + order.getCart().getNumOfItems() + " Items");
-
+    private void setStatusImage(Order order, OrderListAdapter.OrderListViewHolder holder) {
         switch (order.getStatus()) {
             case Order.STATUS_PENDING:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_pending_24dp));
@@ -68,15 +126,6 @@ public abstract class OrderListAdapter extends androidx.recyclerview.widget.Recy
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_cancelled_24dp));
                 break;
         }
-
-        holder.cardView.setOnClickListener(view -> {
-            onCardClick(order);
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return orders.size();
     }
 
     public abstract void onCardClick(Order order);

@@ -53,4 +53,11 @@ public abstract class Format {
 
         return hourString + ":" + minuteString + " " + postfix;
     }
+
+    public static String makeShortDateDisplay(long millis) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTimeInMillis(millis);
+
+        return (gregorianCalendar.get(Calendar.MONTH) + 1) + "-" + gregorianCalendar.get(Calendar.DATE) + "-" + gregorianCalendar.get(Calendar.YEAR);
+    }
 }

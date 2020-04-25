@@ -45,6 +45,7 @@ public class CheckoutFragment extends Fragment {
     private Spinner pickupSpinner, deliverySpinner;
     private Button placeOrderBt;
     private TextView subtotalView, taxView, deliveryFeeView, totalView;
+    private boolean orderAttempted;
 
     public static CheckoutFragment newInstance(Cart cart, Kitchen kitchen) {
         CheckoutFragment checkoutFragment = new CheckoutFragment();
@@ -174,6 +175,7 @@ public class CheckoutFragment extends Fragment {
 
     private void configButton() {
         placeOrderBt.setOnClickListener(v -> {
+            orderAttempted = true;
             User currentUser = UserRepo.getLoggedInUser();
             OrderBuilder orderBuilder = OrderBuilder.forPickup();
             Order order = orderBuilder
@@ -203,21 +205,26 @@ public class CheckoutFragment extends Fragment {
 
     private void setObservance() {
         checkoutViewModel.getOrderLiveData().observe(getViewLifecycleOwner(), order -> {
-            if (order == null) {
-                Toast.makeText(getContext(), "Order failed", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            if (orderAttempted) {
+                if (order == null) {
+                    Toast.makeText(getContext(), "Order failed", Toast.LENGTH_SHORT).show();
+                    orderAttempted = false;
+                    return;
+                }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder
-                    .setTitle("Order success!")
-                    .setMessage("Order ID: " + order.getId() + "\nTime submitted: " + new Date(System.currentTimeMillis()).toString())
-                    .setPositiveButton(R.string.submit, (DialogInterface dialog, int which) -> {
-                        finish();
-                    })
-                    .create()
-                    .show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder
+                        .setTitle("Order success!")
+                        .setMessage("Order ID: " + order.getId() + "\nTime submitted: " + new Date(System.currentTimeMillis()).toString())
+                        .setPositiveButton(R.string.submit, (DialogInterface dialog, int which) -> {
+                            finish();
+                        })
+                        .create()
+                        .show();
+
+            }
         });
+
     }
 
     private void finish() {

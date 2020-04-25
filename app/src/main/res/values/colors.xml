@@ -7,4 +7,5 @@
     <color name="pistachio">#97C97F</color>
     <color name="registerBlue">#0051ff</color>
     <color name="danger">#a30b00</color>
+    <color name="pending_yellow">#F5ED00</color>
 </resources>

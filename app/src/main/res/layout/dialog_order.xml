@@ -8,38 +8,44 @@
     android:theme="@style/OrderDialog">
 
     <Spinner
-        android:id="@+id/order_dialog_spinner"
+        android:id="@+id/order_dialog_status_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:entries="@array/order_status"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/order_dialog_status_title"
         app:layout_constraintTop_toBottomOf="@+id/order_dialog_delivery_address" />
 
     <TableLayout
         android:id="@+id/order_dialog_table"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_marginTop="10dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_spinner">
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_status_spinner">
 
         <TableRow>
 
             <TextView
+                android:layout_width="0dp"
                 android:layout_weight="4"
                 android:text="Item"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:text="Quantity"
                 android:textStyle="bold" />
 
             <TextView
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="Price"
                 android:textStyle="bold" />
@@ -47,10 +53,21 @@
     </TableLayout>
 
     <TextView
+        android:id="@+id/order_dialog_status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="STATUS"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/order_dialog_status_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_delivery_address" />
+
+    <TextView
         android:id="@+id/order_dialog_order_id_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
         android:text="@string/order_id"
         android:textStyle="bold"
@@ -71,7 +88,7 @@
         android:id="@+id/order_dialog_date_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="@string/date"
         android:textStyle="bold"
@@ -92,7 +109,7 @@
         android:id="@+id/order_dialog_delivery_address_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="@string/delivery_address"
         android:textStyle="bold"
@@ -103,17 +120,17 @@
         android:id="@+id/order_dialog_delivery_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
         android:text="Name\nAddress 1, Address 2\nCity, State Zip\nPhone"
-        app:layout_constraintStart_toEndOf="@+id/order_dialog_delivery_address_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_date" />
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/order_dialog_date_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_delivery_address_title" />
 
     <TextView
         android:id="@+id/order_dialog_status_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:text="@string/order_status"
         android:textSize="17sp"
@@ -125,40 +142,42 @@
         android:id="@+id/order_dialog_tax_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/order_tax"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_table" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/order_dialog_tax"
+        app:layout_constraintTop_toTopOf="@+id/order_dialog_tax" />
 
     <TextView
         android:id="@+id/order_dialog_tax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:text="$X.XX"
-        app:layout_constraintStart_toStartOf="@+id/order_dialog_deliver_fee"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_dialog_table" />
 
     <TextView
         android:id="@+id/order_dialog_deliver_fee_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:text="@string/delivery_fee"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_tax_title" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/order_dialog_deliver_fee"
+        app:layout_constraintTop_toTopOf="@+id/order_dialog_deliver_fee" />
 
     <TextView
         android:id="@+id/order_dialog_deliver_fee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:text="$X.XX"
-        app:layout_constraintStart_toEndOf="@+id/order_dialog_deliver_fee_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_tax_title" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/order_dialog_tax"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_tax" />
 
     <TextView
         android:id="@+id/order_dialog_total_title"
@@ -174,11 +193,10 @@
         android:id="@+id/order_dialog_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
         android:text="$X.XX"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_table" />
+        app:layout_constraintEnd_toEndOf="@+id/order_dialog_deliver_fee"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_deliver_fee" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,8 +30,16 @@ public class MyKitchenViewModel extends ViewModel {
         return orderRepo.getOrderListLiveData();
     }
 
+    LiveData<Order> getOrderLiveData() {
+        return orderRepo.getOrderLiveData();
+    }
+
     void fetchOrders() {
         orderRepo.fetchOrdersByKitchen(kitchen);
+    }
+
+    void updateOrder(Order order) {
+        orderRepo.createOrder(order);
     }
 
 }
