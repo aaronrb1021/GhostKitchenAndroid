@@ -4,6 +4,7 @@ import com.example.ghostkitchenandroid.model.Cart;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.network.order.OrderRepo;
+import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.utils.ListGenerator;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class CheckoutViewModel extends ViewModel {
 
     void createOrder(Order order) {
         orderRepo.createOrder(order);
+        UserRepo.getLoggedInUser().getCartManager().deleteCartForKitchen(kitchen);
     }
 
 }

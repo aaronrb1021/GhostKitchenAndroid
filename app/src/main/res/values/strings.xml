@@ -27,6 +27,15 @@
     <string name="logout">Logout</string>
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
+    <string name="overview">Overview</string>
+
+    <!-- STORE OWNER ORDER OVERVIEW -->
+
+    <string name="total_sales">TOTAL SALES</string>
+    <string name="total_orders">TOTAL ORDERS</string>
+    <string name="current_pending_orders">CURRENT PENDING ORDERS</string>
+    <string name="top_kitchen">TOP KITCHEN</string>
+    <string name="store_owner_orders_overview_title">Orders Overview</string>
 
     <!-- ORDER FRAGMENT -->
 

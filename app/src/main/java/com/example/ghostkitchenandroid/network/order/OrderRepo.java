@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.Order;
+import com.example.ghostkitchenandroid.model.StoreOwnerOrderOverview;
 import com.example.ghostkitchenandroid.model.User;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class OrderRepo {
     private OrderService orderService = OrderServiceInstance.getInstance();
     private MutableLiveData<Order> orderLiveData;
     private MutableLiveData<ArrayList<Order>> orderListLiveData;
+    private MutableLiveData<StoreOwnerOrderOverview> storeOwnerOrderOverviewLiveData;
 
     public static OrderRepo getInstance() {
         if (orderRepo == null)
@@ -41,6 +43,10 @@ public class OrderRepo {
         new FetchOrdersByKitchenTask(this).execute(kitchen);
     }
 
+    public void fetchOrdersByStoreOwner(User user) {
+        new FetchOrdersByStoreOwnerTask(this).execute(user);
+    }
+
     public LiveData<Order> getOrderLiveData() {
         orderLiveData = new MutableLiveData<>();
         return orderLiveData;
@@ -49,6 +55,11 @@ public class OrderRepo {
     public LiveData<ArrayList<Order>> getOrderListLiveData() {
         orderListLiveData = new MutableLiveData<>();
         return orderListLiveData;
+    }
+
+    public LiveData<StoreOwnerOrderOverview> getStoreOwnerOrderOverviewLiveData() {
+        storeOwnerOrderOverviewLiveData = new MutableLiveData<>();
+        return storeOwnerOrderOverviewLiveData;
     }
 
     private static class CreateOrderTask extends AsyncTask<Order, Void, Order> {
@@ -123,6 +134,30 @@ public class OrderRepo {
         protected void onPostExecute(ArrayList<Order> orders) {
             if (orders != null)
                 orderRepoWeakReference.get().orderListLiveData.setValue(orders);
+        }
+    }
+
+    private static class FetchOrdersByStoreOwnerTask extends AsyncTask<User, Void, StoreOwnerOrderOverview> {
+
+        private WeakReference<OrderRepo> orderRepoWeakReference;
+
+        private FetchOrdersByStoreOwnerTask(OrderRepo orderRepo) {
+            orderRepoWeakReference = new WeakReference<>(orderRepo);
+        }
+
+        @Override
+        protected StoreOwnerOrderOverview doInBackground(User... users) {
+            try {
+                return orderRepoWeakReference.get().orderService.fetchOrdersByStoreOwner(users[0]).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(StoreOwnerOrderOverview storeOwnerOrderOverview) {
+            orderRepoWeakReference.get().storeOwnerOrderOverviewLiveData.setValue(storeOwnerOrderOverview);
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.ghostkitchenandroid.network.order;
 
 import com.example.ghostkitchenandroid.model.Order;
+import com.example.ghostkitchenandroid.model.StoreOwnerOrderOverview;
+import com.example.ghostkitchenandroid.model.User;
 
 import java.util.ArrayList;
 
@@ -20,4 +22,7 @@ public interface OrderService {
 
     @GET("/orders/kitchen/{kitchenId}")
     Call<ArrayList<Order>> fetchOrdersByKitchen(@Path(value = "kitchenId") String kitchenId);
+
+    @POST("/orders/storeOwner")
+    Call<StoreOwnerOrderOverview> fetchOrdersByStoreOwner(@Body User user);
 }

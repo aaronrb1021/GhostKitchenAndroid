@@ -185,7 +185,6 @@ public class CheckoutFragment extends Fragment {
                     .setKitchen(checkoutViewModel.getKitchen())
                     .setPickupName(pickupNameEt.getText().toString().trim())
                     .create();
-            Log.i("pickupboolean", String.valueOf(order.isPickup()));
             checkoutViewModel.createOrder(order);
         });
     }

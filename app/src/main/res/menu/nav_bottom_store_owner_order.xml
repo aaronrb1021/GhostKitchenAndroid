@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_store_owner_order_pending"
+        android:title="@string/pending_orders"
+        android:icon="@drawable/ic_announcement_black_24dp"/>
+
+    <item
+        android:id="@+id/bottom_nav_store_owner_overview"
+        android:title="@string/overview"
+        android:icon="@drawable/ic_view_agenda_black_24dp"/>
+
+    <item
+        android:id="@+id/bottom_nav_store_owner_order_all"
+        android:title="@string/all"
+        android:icon="@drawable/ic_shop_two_black_24dp"/>
+
+</menu>

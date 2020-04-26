@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class MyKitchenFragment extends Fragment {
@@ -79,7 +78,7 @@ public class MyKitchenFragment extends Fragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_pending_orders:
-                    myKitchenViewModel.fetchOrders();
+                    myKitchenViewModel.refreshOrders();
                     return true;
                 case R.id.bottom_nav_menu:
                     showItemList();
@@ -99,7 +98,7 @@ public class MyKitchenFragment extends Fragment {
         myKitchenViewModel.getOrderLiveData().observe(getViewLifecycleOwner(), order -> {
             if (order != null) {
                 Toast.makeText(getContext(), "Order ID " + order.getId() + " updated!", Toast.LENGTH_SHORT).show();
-                myKitchenViewModel.fetchOrders();
+                myKitchenViewModel.refreshOrders();
             } else {
                 Toast.makeText(getContext(), "Order update FAILED!", Toast.LENGTH_SHORT).show();
             }
@@ -126,7 +125,7 @@ public class MyKitchenFragment extends Fragment {
         return new OrderListAdapter(getContext(), pendingOrders) {
             @Override
             public void onCardClick(Order order) {
-                new MyKitchenPendingOrderDialog(order, myKitchenViewModel).show(getParentFragmentManager(), "MyKitchenPendingOrderDialog");
+                new StoreOwnerOrderDialog(order, myKitchenViewModel).show(getParentFragmentManager(), "MyKitchenPendingOrderDialog");
             }
 
             @Override
@@ -134,49 +133,6 @@ public class MyKitchenFragment extends Fragment {
                 return emptyText;
             }
         };
-    }
-
-    public static class MyKitchenPendingOrderDialog extends OrderDialogFragment {
-
-        private MyKitchenViewModel myKitchenViewModel;
-        private Order order;
-
-        public MyKitchenPendingOrderDialog(Order order, MyKitchenViewModel myKitchenViewModel) {
-            super(order);
-            this.order = order;
-            this.myKitchenViewModel = myKitchenViewModel;
-        }
-
-        @Override
-        protected void onOkClick(Order order, Spinner statusSpinner, DialogInterface dialog) {
-            if (statusSpinner.getSelectedItem().equals("COMPLETE"))
-                updateOrderWithStatus(order, Order.STATUS_COMPLETE);
-            else if (statusSpinner.getSelectedItem().equals("CANCELLED"))
-                updateOrderWithStatus(order, Order.STATUS_CANCELLED);
-            else if (statusSpinner.getSelectedItem().equals("READY"))
-                updateOrderWithStatus(order, Order.STATUS_READY);
-
-            dialog.dismiss();
-        }
-
-        @Override
-        protected void handleStatus(Order order, Spinner statusSpinner, TextView statusTextView) {
-            statusSpinner.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected AlertDialog.Builder handleBuilderButtons(Order order, AlertDialog.Builder builder) {
-            builder.setNeutralButton(R.string.mark_order_complete, ((dialog, which) -> {
-                updateOrderWithStatus(order, Order.STATUS_COMPLETE);
-            }));
-            return builder;
-        }
-
-        private void updateOrderWithStatus(Order order, byte status) {
-            order.setStatus(status);
-            myKitchenViewModel.updateOrder(order);
-            myKitchenViewModel.fetchOrders(); //this will update our visible list, as per observance of the orderListLiveData
-        }
     }
 
 }

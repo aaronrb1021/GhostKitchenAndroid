@@ -35,4 +35,8 @@ public class CartManager {
         return carts.containsKey(kitchen.getId());
     }
 
+    public void deleteCartForKitchen(Kitchen kitchen) {
+        carts.remove(kitchen.getId());
+    }
+
 }

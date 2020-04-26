@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class StoreOwnerActivity extends AppCompatActivity {
@@ -100,14 +101,15 @@ public class StoreOwnerActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_store_owner_my_kitchens:
-                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_STORE_OWNER), "MyKitchensFragment").commit();
+                        handleFragmentTransaction(KitchenListFragment.newInstance(KitchenListAdapter.MODE_STORE_OWNER), "MyKitchensFragment");
                         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        drawerLayout.closeDrawer(GravityCompat.START);
                         getSupportActionBar().setTitle(R.string.my_kitchens_toolbar_title);
                         return true;
                     case R.id.nav_store_owner_add_kitchen:
-                        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), new AddKitchenFragment(), "AddKitchenFragment").addToBackStack(null).commit();
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                        handleFragmentTransaction(new AddKitchenFragment(), "AddKitchenFragment");
+                        return true;
+                    case R.id.nav_store_owner_orders:
+                        handleFragmentTransaction(StoreOwnerOrdersFragment.newInstance(), "StoreOwnerOrdersFragment");
                         return true;
                     case R.id.nav_store_owner_logout:
                         UserRepo.logout(StoreOwnerActivity.this);
@@ -116,6 +118,11 @@ public class StoreOwnerActivity extends AppCompatActivity {
                 return false;
             }
         };
+    }
+
+    private void handleFragmentTransaction(Fragment fragment, String tag) {
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), fragment, tag).addToBackStack(null).commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
 }
