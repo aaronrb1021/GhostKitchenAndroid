@@ -2,9 +2,11 @@ package com.example.ghostkitchenandroid.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 
-public abstract class Address {
+public abstract class Address implements Serializable {
 
     protected String addressName, name, addressLine1, addressLine2, city, state, zip, phone;
     private long id;

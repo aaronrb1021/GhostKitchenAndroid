@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#757575">
+    android:background="#757575"
+    android:theme="@style/OrderDialog">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -52,37 +53,91 @@
         app:rippleColor="@color/colorPrimary" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/checkout_pickup_layout"
-        android:layout_width="wrap_content"
+        android:id="@+id/checkout_deliver_layout"
+        android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:visibility="invisible"
         android:layout_marginTop="20dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkout_chip_delivery">
+
+        <LinearLayout
+            android:id="@+id/checkout_delivery_address_custom_spinner"
+            style="?android:attr/spinnerStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/checkout_delivery_address_tv"
+                style="?android:attr/spinnerItemStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:text="@string/address_title"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/checkout_delivery_time_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+            app:layout_constraintBottom_toBottomOf="@+id/checkout_delivery_time_tv"
+            app:layout_constraintStart_toEndOf="@+id/checkout_delivery_time_tv"
+            app:layout_constraintTop_toTopOf="@+id/checkout_delivery_time_tv" />
+
+        <TextView
+            android:id="@+id/checkout_delivery_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:labelFor="@id/checkout_pickup_time_spinner"
+            android:text="@string/delivery_time"
+            android:textSize="16sp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:layout_constraintStart_toStartOf="@+id/checkout_delivery_address_custom_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_delivery_address_custom_spinner" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/checkout_pickup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkout_chip_pickup">
 
         <Spinner
             android:id="@+id/checkout_pickup_time_spinner"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_time_tv" />
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+            app:layout_constraintBottom_toBottomOf="@+id/checkout_pickup_time_tv"
+            app:layout_constraintStart_toEndOf="@+id/checkout_pickup_time_tv"
+            app:layout_constraintTop_toTopOf="@+id/checkout_pickup_time_tv" />
 
         <TextView
             android:id="@+id/checkout_pickup_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:labelFor="@id/checkout_pickup_time_spinner"
             android:text="@string/pickup_time"
             android:textSize="16sp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:layout_constraintEnd_toStartOf="@+id/checkout_pickup_time_spinner"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/checkout_pickup_name_layout"
             app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_name_layout" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -111,10 +166,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:fontFamily="sans-serif-smallcaps"
+        android:fontFamily="sans-serif"
         android:text="@string/charges"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_layout" />

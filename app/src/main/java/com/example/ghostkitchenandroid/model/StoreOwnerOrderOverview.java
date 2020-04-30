@@ -24,10 +24,12 @@ public class StoreOwnerOrderOverview implements Serializable {
         double currentTopSales = 0;
 
         for (ArrayList<Order> orderList : ordersLists) {
-            double kitchenSales = getSalesByKitchen(orderList.get(0).getKitchen().getId());
-            if (kitchenSales > currentTopSales) {
-                currentTopSales = kitchenSales;
-                topKitchen = orderList.get(0).getKitchen();
+            if (orderList.size() > 0) {
+                double kitchenSales = getSalesByKitchen(orderList.get(0).getKitchen().getId());
+                if (kitchenSales > currentTopSales) {
+                    currentTopSales = kitchenSales;
+                    topKitchen = orderList.get(0).getKitchen();
+                }
             }
         }
 
@@ -38,7 +40,8 @@ public class StoreOwnerOrderOverview implements Serializable {
         String[] names = new String[ordersLists.size()];
 
         for (int i = 0; i < ordersLists.size(); i++) {
-            names[i] = ordersLists.get(i).get(0).getKitchen().getName(); //checks the first order in each order list to get the name of the kitchen for the list of orders
+            if (ordersLists.get(i).size() > 0)
+                names[i] = ordersLists.get(i).get(0).getKitchen().getName(); //checks the first order in each order list to get the name of the kitchen for the list of orders
         }
 
         return names;
@@ -72,7 +75,7 @@ public class StoreOwnerOrderOverview implements Serializable {
         int numOfOrders = 0;
 
         for (ArrayList<Order> orderList : ordersLists) {
-            if (orderList.get(0).getKitchen().getId() == id) {
+            if (orderList.size() > 0 && orderList.get(0).getKitchen().getId() == id) {
                 numOfOrders = orderList.size();
                 break;
             }
@@ -97,7 +100,7 @@ public class StoreOwnerOrderOverview implements Serializable {
         double totalSales = 0;
 
         for (ArrayList<Order> orderList : ordersLists) {
-            if (orderList.get(0).getKitchen().getId() == id) {
+            if (orderList.size() > 0 && orderList.get(0).getKitchen().getId() == id) {
                 for (Order o : orderList) {
                     totalSales += o.getTotal();
                 }
@@ -136,7 +139,7 @@ public class StoreOwnerOrderOverview implements Serializable {
         ArrayList<Order> orders = new ArrayList<>();
 
         for (ArrayList<Order> orderList : ordersLists) {
-            if (orderList.get(0).getKitchen().getId() == id) {
+            if (orderList.size() > 0 && orderList.get(0).getKitchen().getId() == id) {
                 orders.addAll(orderList);
                 break;
             }
@@ -149,7 +152,7 @@ public class StoreOwnerOrderOverview implements Serializable {
         ArrayList<Order> orders = new ArrayList<>();
 
         for (ArrayList<Order> orderList : ordersLists) {
-            if (orderList.get(0).getKitchen().getId() == id) {
+            if (orderList.size() > 0 && orderList.get(0).getKitchen().getId() == id) {
                 for (Order o : orderList) {
                     if (o.getStatus() == Order.STATUS_PENDING) {
                         orders.add(o);

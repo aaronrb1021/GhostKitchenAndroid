@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Order;
+import com.example.ghostkitchenandroid.model.StoreOwnerOrderOverview;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.ui.customer.CustomerOrderFragment;
 import com.example.ghostkitchenandroid.ui.lists.OrderListAdapter;
@@ -72,7 +74,6 @@ public class StoreOwnerOrdersFragment extends Fragment {
         storeOwnerOrdersViewModel.getStoreOwnerOrderOverviewLiveData().observe(getViewLifecycleOwner(), storeOwnerOrderOverview -> {
 
             storeOwnerOrdersViewModel.setStoreOwnerOrderOverview(storeOwnerOrderOverview);
-
             switch (bottomNavigationView.getSelectedItemId()) {
                 case R.id.bottom_nav_store_owner_overview:
                     getParentFragmentManager().beginTransaction().replace(fragmentContainer.getId(), StoreOwnerOrdersOverviewFragment.newInstance(storeOwnerOrderOverview)).commit();
@@ -83,6 +84,15 @@ public class StoreOwnerOrdersFragment extends Fragment {
                 case R.id.bottom_nav_store_owner_order_pending:
                     onPendingClick(storeOwnerOrderOverview.getAllPendingOrders());
                     break;
+            }
+
+        });
+        storeOwnerOrdersViewModel.getOrderLiveData().observe(getViewLifecycleOwner(), order -> {
+            if (order != null) {
+                storeOwnerOrdersViewModel.fetchStoreOwnerOrderOverview(UserRepo.getLoggedInUser());
+                Toast.makeText(getContext(), "Order ID " + order.getId() + " updated!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Error updating order!", Toast.LENGTH_SHORT).show();
             }
         });
     }

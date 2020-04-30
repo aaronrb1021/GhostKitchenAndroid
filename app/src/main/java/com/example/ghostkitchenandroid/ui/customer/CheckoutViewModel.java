@@ -51,6 +51,7 @@ public class CheckoutViewModel extends ViewModel {
 
     public void initTimeLists(long fromTimeInMillis) {
         pickupTimes = ListGenerator.makePickupTimes(fromTimeInMillis);
+        deliveryTimes = ListGenerator.makeDeliveryTimes(fromTimeInMillis);
     }
 
     void createOrder(Order order) {

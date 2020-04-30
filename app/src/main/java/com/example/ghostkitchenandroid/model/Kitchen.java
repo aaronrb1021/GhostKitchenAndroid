@@ -53,6 +53,6 @@ public class Kitchen implements Comparable<Kitchen>, Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "Kitchen: " + name;
+        return "Kitchen: " + name + "\n" + kitchenAddress.toString();
     }
 }

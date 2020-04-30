@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
 public abstract class OrderDialogFragment extends DialogFragment {
 
     private Order order;
-    private TextView id, date, address, statusTextView, tax, deliveryFee, total;
+    private TextView id, kitchen, date, address, statusTextView, tax, deliveryFee, total;
     private Spinner statusSpinner;
     private TableLayout tableLayout;
 
@@ -71,6 +71,7 @@ public abstract class OrderDialogFragment extends DialogFragment {
 
     private void initViews(View view) {
         id = view.findViewById(R.id.order_dialog_order_id);
+        kitchen = view.findViewById(R.id.order_dialog_kitchen);
         date = view.findViewById(R.id.order_dialog_date);
         address = view.findViewById(R.id.order_dialog_delivery_address);
         statusTextView = view.findViewById(R.id.order_dialog_status_tv);
@@ -83,6 +84,7 @@ public abstract class OrderDialogFragment extends DialogFragment {
 
     private void config() {
         id.setText(String.valueOf(order.getId()));
+        kitchen.setText(order.getKitchen().getName());
         date.setText(order.getDateString());
 
         if (order.isPickup()) {
@@ -109,6 +111,8 @@ public abstract class OrderDialogFragment extends DialogFragment {
             TextView tvName = new TextView(getContext());
             TextView tvQuantity = new TextView(getContext());
             TextView tvPrice = new TextView(getContext());
+
+            tvPrice.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
 
             tvName.setText(item.getName());
             tvQuantity.setText(String.valueOf(order.getCart().getQuantityOfItem(item)));

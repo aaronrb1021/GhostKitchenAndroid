@@ -19,7 +19,7 @@ public class KitchenAddress extends Address implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        if (addressLine2.length() == 0)
+        if (addressLine2 == null)
             return addressLine1 + "\n" + city + ", " + state + " " + zip;
         return addressLine1 + " " + addressLine2 + "\n" + city + ", " + state + " " + zip;
     }

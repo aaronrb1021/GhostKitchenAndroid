@@ -28,6 +28,10 @@ public class StoreOwnerOrdersViewModel extends ViewModel implements OrderStatusU
         return orderRepo.getStoreOwnerOrderOverviewLiveData();
     }
 
+    LiveData<Order> getOrderLiveData() {
+        return orderRepo.getOrderLiveData();
+    }
+
     void fetchStoreOwnerOrderOverview(User user) {
         orderRepo.fetchOrdersByStoreOwner(user);
     }

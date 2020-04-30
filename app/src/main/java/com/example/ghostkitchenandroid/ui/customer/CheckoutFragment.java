@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +42,9 @@ public class CheckoutFragment extends Fragment {
     private CheckoutViewModel checkoutViewModel;
     private Chip deliveryChip, pickupChip, cashChip, creditChip;
     private TextInputEditText pickupNameEt;
-    private View pickupLayout;
+    private View pickupLayout, deliveryLayout;
     private Spinner pickupSpinner, deliverySpinner;
+    private LinearLayout customAddressSpinner;
     private Button placeOrderBt;
     private TextView subtotalView, taxView, deliveryFeeView, totalView;
     private boolean orderAttempted;
@@ -94,16 +96,18 @@ public class CheckoutFragment extends Fragment {
         deliveryChip = view.findViewById(R.id.checkout_chip_delivery);
         pickupChip = view.findViewById(R.id.checkout_chip_pickup);
         pickupLayout = view.findViewById(R.id.checkout_pickup_layout);
+        deliveryLayout = view.findViewById(R.id.checkout_deliver_layout);
         pickupNameEt = view.findViewById(R.id.checkout_pickup_name_et);
         cashChip = view.findViewById(R.id.checkout_chip_cash);
         creditChip = view.findViewById(R.id.checkout_chip_credit);
         pickupSpinner = view.findViewById(R.id.checkout_pickup_time_spinner);
+        deliverySpinner = view.findViewById(R.id.checkout_delivery_time_spinner);
+        customAddressSpinner = view.findViewById(R.id.checkout_delivery_address_custom_spinner);
         placeOrderBt = view.findViewById(R.id.checkout_order_button);
         taxView = view.findViewById(R.id.checkout_tax_price);
         subtotalView = view.findViewById(R.id.checkout_subtotal_price);
         deliveryFeeView = view.findViewById(R.id.checkout_delivery_price);
         totalView = view.findViewById(R.id.checkout_total_price);
-//        deliverySpinner = view.findViewById(R.id.checkout_del)TODO delivery spinner
     }
 
     private void configViews() {
@@ -126,10 +130,12 @@ public class CheckoutFragment extends Fragment {
         deliveryChip.setOnClickListener(v -> {
             chipSelectSwap(pickupChip, deliveryChip, R.drawable.ic_directions_walk_black_24dp, R.drawable.ic_directions_car_primary_green_24dp);
             pickupLayout.setVisibility(View.INVISIBLE);
+            deliveryLayout.setVisibility(View.VISIBLE);
         });
         pickupChip.setOnClickListener(v -> {
             chipSelectSwap(deliveryChip, pickupChip, R.drawable.ic_directions_car_black_24dp, R.drawable.ic_directions_walk_primary_green_24dp);
             pickupLayout.setVisibility(View.VISIBLE);
+            deliveryLayout.setVisibility(View.INVISIBLE);
         });
         cashChip.setOnClickListener(v -> {
             chipSelectSwap(creditChip, cashChip, R.drawable.ic_credit_card_black_24dp, R.drawable.ic_attach_money_primary_green_24dp);
@@ -141,6 +147,7 @@ public class CheckoutFragment extends Fragment {
 
     private void configSpinners() {
         pickupSpinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, checkoutViewModel.getPickupTimes()));
+        deliverySpinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, checkoutViewModel.getDeliveryTimes()));
     }
 
     private void chipSelectSwap(Chip oldChip, Chip newChip, int oldChipDrawable, int newChipDrawable) {

@@ -28,6 +28,7 @@
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
     <string name="overview">Overview</string>
+    <string name="address_title">Address</string>
 
     <!-- STORE OWNER ORDER OVERVIEW -->
 
@@ -40,6 +41,7 @@
     <!-- ORDER FRAGMENT -->
 
     <string name="order_id">Order ID:</string>
+    <string name="kitchen_name">Kitchen:</string>
     <string name="date">Date:</string>
     <string name="delivery_address">Delivery Address:</string>
     <string name="order_status">Order Status:</string>
@@ -104,6 +106,7 @@
     <string name="no_pending_orders">NO PENDING ORDERS</string>
     <string name="no_orders">NO ORDERS AVAILABLE</string>
     <string name="no_completed_orders">NO COMPLETED ORDERS</string>
+    <string name="delivery_time">Delivery Time:</string>
 
     <!-- item -->
     <string name="no_description">No description available</string>

@@ -45,8 +45,9 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="Price"
+                android:textAlignment="textEnd"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>
@@ -84,6 +85,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/order_dialog_kitchen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/kitchen_name"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_order_id_title" />
+
+    <TextView
+        android:id="@+id/order_dialog_kitchen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Kitchen"
+        app:layout_constraintStart_toEndOf="@+id/order_dialog_date_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_order_id" />
+
+    <TextView
         android:id="@+id/order_dialog_date_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,17 +114,16 @@
         android:text="@string/date"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_order_id_title" />
+        app:layout_constraintTop_toBottomOf="@+id/order_dialog_kitchen_title" />
 
     <TextView
         android:id="@+id/order_dialog_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
         android:text="April 1st 2020, 12:59 PM"
         app:layout_constraintStart_toEndOf="@+id/order_dialog_date_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_dialog_order_id" />
+        app:layout_constraintTop_toTopOf="@+id/order_dialog_date_title" />
 
     <TextView
         android:id="@+id/order_dialog_delivery_address_title"

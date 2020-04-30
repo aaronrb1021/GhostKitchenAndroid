@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.appcompat.widget.Toolbar;
@@ -31,6 +32,7 @@ public class CustomerKitchenActivity extends AppCompatActivity {
         customerKitchenViewModel = new ViewModelProvider(this).get(CustomerKitchenViewModel.class);
 
         if (customerKitchenViewModel.getKitchen() == null) {
+            Log.i("kitchensnullness1", String.valueOf(((Kitchen) getIntent().getExtras().get("kitchen")).getKitchenAddress() == null));
             customerKitchenViewModel.setKitchen((Kitchen) getIntent().getExtras().get("kitchen"));
         }
 
@@ -41,7 +43,11 @@ public class CustomerKitchenActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_customer_kitchen_menu:
-                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerItemListFragment.newInstance(customerKitchenViewModel.getKitchen())).commit();//TODO
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerItemListFragment.newInstance(customerKitchenViewModel.getKitchen())).commit();
+                    return true;
+                case R.id.bottom_nav_customer_kitchen_info:
+                    Log.i("kitchennullness", customerKitchenViewModel.getKitchen().toString());
+                    getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), CustomerKitchenInfoFragment.newInstance(customerKitchenViewModel.getKitchen())).commit();
                     return true;
             }
             return false;

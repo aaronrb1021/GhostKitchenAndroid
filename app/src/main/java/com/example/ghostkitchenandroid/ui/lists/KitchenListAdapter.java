@@ -63,7 +63,10 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
             } else if (mode == MODE_CUSTOMER) {
                 cachedListeners.add(position, view -> {
                     Intent intent = new Intent(context, CustomerKitchenActivity.class);
-                    intent.putExtra("kitchen", kitchens.get(position));
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("kitchen", kitchens.get(position));
+                    intent.putExtras(bundle);
+//                    intent.putExtra("kitchen", kitchens.get(position));
                     context.startActivity(intent);
                 });
             }
