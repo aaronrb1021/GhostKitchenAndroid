@@ -14,6 +14,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 interface KitchenService {
 
@@ -28,4 +29,7 @@ interface KitchenService {
 
     @PUT("/kitchens")
     Call<Kitchen> updateKitchen(@Body Kitchen kitchen);
+
+    @GET("/kitchens/{zip}/{distance}")
+    Call<ArrayList<Kitchen>> getAllKitchensByDistanceFromZip(@Path(value = "zip") String zip, @Path(value = "distance") String distance);
 }

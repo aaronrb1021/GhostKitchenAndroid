@@ -13,6 +13,8 @@ public class KitchenListViewModel extends ViewModel {
 
     private KitchenRepo kitchenRepo = KitchenRepo.getInstance();
     private int mode;
+    private KitchenListFragment.Radius radius;
+    private String zip;
 
     LiveData<ArrayList<Kitchen>> getKitchensLiveData() {
         return kitchenRepo.getKitchensLiveData();
@@ -26,11 +28,31 @@ public class KitchenListViewModel extends ViewModel {
         kitchenRepo.fetchAllKitchens();
     }
 
+    void updateKitchensByDistanceFromZip(String distance) {
+        kitchenRepo.fetchKitchensByDistanceFromZip(zip, distance);
+    }
+
     int getMode() {
         return mode;
     }
 
     void setMode(int mode) {
         this.mode = mode;
+    }
+
+    public KitchenListFragment.Radius getRadius() {
+        return radius;
+    }
+
+    public void setRadius(KitchenListFragment.Radius radius) {
+        this.radius = radius;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 }

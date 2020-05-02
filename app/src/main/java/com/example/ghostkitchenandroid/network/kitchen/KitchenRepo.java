@@ -67,6 +67,10 @@ public class KitchenRepo {
         new FetchAllKitchensTask(this).execute();
     }
 
+    public void fetchKitchensByDistanceFromZip(String zip, String distance) {//distance in miles
+        new FetchKitchensByDistanceFromZipTask(this).execute(zip, distance);
+    }
+
     private static class CreateKitchenTask extends AsyncTask<DualObjectWrapper<Kitchen, User>, Void, ResultWithData<Kitchen>> {
 
         @Override
@@ -155,6 +159,31 @@ public class KitchenRepo {
         @Override
         protected void onPostExecute(Kitchen kitchen) {
             weakReference.get().kitchenLiveData.setValue(kitchen);
+        }
+    }
+
+    private static class FetchKitchensByDistanceFromZipTask extends AsyncTask<String, Void, ArrayList<Kitchen>> {
+
+        private WeakReference<KitchenRepo> weakReference;
+
+        private FetchKitchensByDistanceFromZipTask(KitchenRepo kitchenRepo) {
+            weakReference = new WeakReference<>(kitchenRepo);
+        }
+
+        @Override
+        protected ArrayList<Kitchen> doInBackground(String... strings) {
+            try {
+                return kitchenService.getAllKitchensByDistanceFromZip(strings[0], strings[1]).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Kitchen> kitchens) {
+            Log.i("fetchbyzip", kitchens.toString());
+            weakReference.get().kitchensLiveData.setValue(kitchens);
         }
     }
 }

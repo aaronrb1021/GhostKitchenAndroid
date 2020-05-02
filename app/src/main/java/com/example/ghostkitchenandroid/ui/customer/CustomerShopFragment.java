@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.ui.lists.KitchenListAdapter;
@@ -43,6 +45,7 @@ public class CustomerShopFragment extends Fragment {
     private ImageView imageFilter;
     private View listContainer;
     private BottomNavigationView bottomNavigationView;
+    private int selection;
 
     public static CustomerShopFragment newInstance() {
         return new CustomerShopFragment();
@@ -87,42 +90,46 @@ public class CustomerShopFragment extends Fragment {
         return item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_nav_shop_explore:
-                    displayKitchenList();
+                    displayKitchenList(null, null);
                     return true;
             }
             return false;
         };
     }
 
-    private void displayKitchenList() {
-        getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER)).commit();
+    private void displayKitchenList(String zip, KitchenListFragment.Radius radius) {
+        if (zip == null || radius == null)
+            getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER)).commit();
+        else
+            getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER, zip, radius)).commit();
     }
 
     private void manageFilterButton() {
         View.OnClickListener onClickListener = (v) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-            builder.setPositiveButton(android.R.string.cancel, ((dialog, which) -> {
+            AlertDialog alertDialog = builder.setPositiveButton(android.R.string.cancel, ((dialog, which) -> {
                 dialog.dismiss();
             }))
                     .setTitle("Distance From Zip Code")
-                    .setView(makeLinearLayout())
-                    .create()
-                    .show();
+                    .create();
+
+            alertDialog.setView(makeLinearLayout(alertDialog));
+            alertDialog.show();
         };
 
         tvFilter.setOnClickListener(onClickListener);
         imageFilter.setOnClickListener(onClickListener);
     }
 
-    private LinearLayout makeLinearLayout() {
+    private LinearLayout makeLinearLayout(AlertDialog alertDialog) {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         TextInputLayout textInputLayout = makeTextInput();
 
         linearLayout.addView(textInputLayout);
-        linearLayout.addView(makeListView(textInputLayout));
+        linearLayout.addView(makeListView(textInputLayout, alertDialog));
 
         return linearLayout;
     }
@@ -148,17 +155,17 @@ public class CustomerShopFragment extends Fragment {
             }
         });
         textInputEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        textInputEditText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         textInputLayout.setErrorEnabled(true);
         textInputLayout.setPadding(450, 50, 450, 0);
         textInputLayout.addView(textInputEditText);
-
         textInputLayout.setHint("Zip Code");
 
         return textInputLayout;
     }
 
-    private ListView makeListView(TextInputLayout textInputLayout) {
+    private ListView makeListView(TextInputLayout textInputLayout, AlertDialog alertDialog) {
         String[] options = {"5 miles", "10 miles", "20 miles", "50 miles", "All"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_single_choice, options);
@@ -166,12 +173,52 @@ public class CustomerShopFragment extends Fragment {
         ListView listView = new ListView(getContext());
 
         listView.setAdapter(adapter);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        listView.setSelection(4);
+        if (customerShopViewModel.getZipCode() != null) {
+            textInputLayout.getEditText().setText(customerShopViewModel.getZipCode());
+            listView.setItemChecked(customerShopViewModel.getPositionSelection(), true);
+        } else {
+            listView.setItemChecked(4, true);
+        }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (!UserCredValidity.isZipValid(textInputLayout.getEditText().getText().toString())) {
+
+            String zipString = textInputLayout.getEditText().getText().toString();
+            String selectedOption = ((TextView)parent.getChildAt(position)).getText().toString();
+
+            if (!selectedOption.equals("All") && !UserCredValidity.isZipValid(zipString)) {
                 textInputLayout.setError(getString(R.string.required));
+                listView.setItemChecked(customerShopViewModel.getPositionSelection(), true);
+            } else {
+                switch (selectedOption) {
+                    case "5 miles":
+                        customerShopViewModel.setZipCode(zipString);
+                        customerShopViewModel.setPositionSelection(0);
+                        displayKitchenList(zipString, KitchenListFragment.Radius.FIVE);
+                        break;
+                    case "10 miles":
+                        customerShopViewModel.setZipCode(zipString);
+                        customerShopViewModel.setPositionSelection(1);
+                        displayKitchenList(zipString, KitchenListFragment.Radius.TEN);
+                        break;
+                    case "20 miles":
+                        customerShopViewModel.setZipCode(zipString);
+                        customerShopViewModel.setPositionSelection(2);
+                        displayKitchenList(zipString, KitchenListFragment.Radius.TWENTY);
+                        break;
+                    case "50 miles":
+                        customerShopViewModel.setZipCode(zipString);
+                        customerShopViewModel.setPositionSelection(3);
+                        displayKitchenList(zipString, KitchenListFragment.Radius.FIFTY);
+                        break;
+                    default:
+                        customerShopViewModel.setZipCode(null);
+                        customerShopViewModel.setPositionSelection(4);
+                        displayKitchenList(null, null);
+                        break;
+                }
+                alertDialog.dismiss();
             }
         });
 

@@ -24,18 +24,42 @@ import com.example.ghostkitchenandroid.network.user.UserRepo;
 
 public class KitchenListFragment extends Fragment {
 
+    public enum Radius {
+        ALL, FIVE, TEN, TWENTY, FIFTY
+    }
+
     private KitchenListViewModel kitchenListViewModel;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private View kitchenFragmentContainer;
     private TextView tvNoKitchens;
-    private int mode;
 
     public static KitchenListFragment newInstance(int mode) {
         if (mode == KitchenListAdapter.MODE_STORE_OWNER || mode == KitchenListAdapter.MODE_CUSTOMER) {
             KitchenListFragment kitchenListFragment = new KitchenListFragment();
-            kitchenListFragment.mode = mode;
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("mode", mode);
+
+            kitchenListFragment.setArguments(bundle);
+
+            return kitchenListFragment;
+        }
+        return null;
+    }
+
+    public static KitchenListFragment newInstance(int mode, String zip, Radius radius) {
+        if (mode == KitchenListAdapter.MODE_STORE_OWNER || mode == KitchenListAdapter.MODE_CUSTOMER) {
+            KitchenListFragment kitchenListFragment = new KitchenListFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("mode", mode);
+            bundle.putSerializable("zip", zip);
+            bundle.putSerializable("radius", radius);
+
+            kitchenListFragment.setArguments(bundle);
+
             return kitchenListFragment;
         }
         return null;
@@ -47,8 +71,14 @@ public class KitchenListFragment extends Fragment {
 
         kitchenListViewModel = new ViewModelProvider(this).get(KitchenListViewModel.class);
 
-        if (mode != 0) //This makes sure we only set the mode after newInstance(int mode); on state changes we do not need to set the mode again.
-            kitchenListViewModel.setMode(mode);
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            kitchenListViewModel.setMode((int) bundle.get("mode"));
+            kitchenListViewModel.setZip((String) bundle.get("zip"));
+            kitchenListViewModel.setRadius((Radius) bundle.get("radius"));
+        }
+
     }
 
     @Override
@@ -67,17 +97,23 @@ public class KitchenListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews(view);
+
+        if (kitchenListViewModel.getRadius() == null && kitchenListViewModel.getMode() == KitchenListAdapter.MODE_CUSTOMER)
+            showAllKitchens();
+        else if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_STORE_OWNER)
+            showKitchensByUser();
+        else if (kitchenListViewModel.getRadius() != null)
+            showKitchensByRadiusFromZip();
+
+        setObservance();
+    }
+
+    private void initViews(View view) {
         tvNoKitchens = view.findViewById(R.id.my_kitchens_no_kitchens_tv);
         progressBar = view.findViewById(R.id.my_kitchen_progress);
         recyclerView = view.findViewById(R.id.my_kitchen_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_CUSTOMER)
-            showAllKitchens();
-        else if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_STORE_OWNER)
-            showKitchensByUser();
-
-        setObservance();
     }
 
     private void showKitchensByUser() {
@@ -88,6 +124,32 @@ public class KitchenListFragment extends Fragment {
     public void showAllKitchens() {
         progressBar.setVisibility(View.VISIBLE);
         kitchenListViewModel.updateKitchensLiveDataAllKitchens();
+    }
+
+    private void showKitchensByRadiusFromZip() {
+        Log.i("fetchbyzip", "here");
+        String radiusString;
+
+        switch (kitchenListViewModel.getRadius()) {
+            case FIVE:
+                radiusString = "5";
+                break;
+            case TEN:
+                radiusString = "10";
+                break;
+            case TWENTY:
+                radiusString = "20";
+                break;
+            case FIFTY:
+                radiusString = "50";
+                break;
+            default:
+                showAllKitchens();
+                return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        kitchenListViewModel.updateKitchensByDistanceFromZip(radiusString);
     }
 
     private void setObservance() {
