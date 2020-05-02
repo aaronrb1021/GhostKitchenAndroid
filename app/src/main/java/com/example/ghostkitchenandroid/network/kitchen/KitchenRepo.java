@@ -35,6 +35,7 @@ public class KitchenRepo {
     }
 
     public LiveData<ArrayList<Kitchen>> getKitchensLiveData() {
+        kitchenLiveData = new MutableLiveData<>();
         return kitchensLiveData;
     }
 

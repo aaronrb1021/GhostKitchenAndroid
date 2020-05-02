@@ -72,7 +72,7 @@ public class OrderBuilder {
         else if (isPickup)
             return new Order(cart, buyerDetails, kitchen, taxFee, status, pickupName);
         else
-            return new Order(cart, buyerDetails, kitchen, taxFee, status, deliveryAddress);
+            return new Order(cart, buyerDetails, kitchen, taxFee, status, deliveryFee, deliveryAddress);
     }
 
 }

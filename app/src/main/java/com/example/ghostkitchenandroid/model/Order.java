@@ -65,8 +65,8 @@ public class Order {
      * @param taxFee
      * @param deliveryAddress
      */
-    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, UserAddress deliveryAddress) {
-        this(cart, buyerDetails, kitchen, taxFee, STATUS_PENDING, deliveryAddress);
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, double deliveryFee, UserAddress deliveryAddress) {
+        this(cart, buyerDetails, kitchen, taxFee, STATUS_PENDING, deliveryFee, deliveryAddress);
     }
 
     /**
@@ -78,10 +78,11 @@ public class Order {
      * @param status
      * @param deliveryAddress
      */
-    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, byte status, UserAddress deliveryAddress) {
+    public Order(Cart cart, BuyerDetails buyerDetails, Kitchen kitchen, double taxFee, byte status, double deliveryFee, UserAddress deliveryAddress) {
         this.cart = cart;
         this.buyerDetails = buyerDetails;
         this.taxFee = taxFee;
+        this.deliveryFee = deliveryFee;
         this.status = status;
         this.kitchen = kitchen;
         this.deliveryAddress = deliveryAddress;
