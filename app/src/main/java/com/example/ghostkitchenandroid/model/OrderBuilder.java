@@ -69,7 +69,10 @@ public class OrderBuilder {
     public Order create() {
         if (status == Order.STATUS_PENDING && isPickup)
             return new Order(cart, buyerDetails, kitchen, taxFee, pickupName);
-        return new Order();//TODO work on other constructor logic
+        else if (isPickup)
+            return new Order(cart, buyerDetails, kitchen, taxFee, status, pickupName);
+        else
+            return new Order(cart, buyerDetails, kitchen, taxFee, status, deliveryAddress);
     }
 
 }

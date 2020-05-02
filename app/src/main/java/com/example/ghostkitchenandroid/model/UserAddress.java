@@ -1,6 +1,8 @@
 package com.example.ghostkitchenandroid.model;
 
-public class UserAddress extends Address {
+import java.io.Serializable;
+
+public class UserAddress extends Address implements Serializable {
 
     private User user;
 
@@ -8,8 +10,9 @@ public class UserAddress extends Address {
         super("", "", "N/A", "PICKUP", "", "", "", "");
     }
 
-    public UserAddress(String addressName, String name, String addressLine1, String addressLine2, String city, String state, String zip, String phone) {
-        super(addressName, name, addressLine1, addressLine2, city, state, zip, phone);
+    public UserAddress(User user, String name, String addressLine1, String addressLine2, String city, String state, String zip, String phone) {
+        super("", name, addressLine1, addressLine2, city, state, zip, phone);
+        this.user = user;
     }
 
     public User getUser() {

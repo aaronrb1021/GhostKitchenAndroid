@@ -1,6 +1,7 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public abstract class OrderListAdapter extends androidx.recyclerview.widget.Recy
 
         setTimes(order, holder);
 
-        holder.buyerPhone.setText(Format.phone(order.getBuyerDetails().getPhone()));
+        setPhone(order, holder);
 
         setBuyerAddress(order, holder);
 
@@ -85,6 +86,15 @@ public abstract class OrderListAdapter extends androidx.recyclerview.widget.Recy
         }
     }
 
+    private void setPhone(Order order, OrderListAdapter.OrderListViewHolder holder) {
+//        if (order.isPickup())
+        holder.buyerPhone.setText(Format.phone(order.getBuyerDetails().getPhone()));
+//        else {
+//            holder.buyerPhone.setText(Format.phone(order.getDeliveryAddress().getPhone()));
+//            Log.i("buyerphonecheck", Format.phone(order.getDeliveryAddress().getPhone()));
+//        }
+    }
+
     private void setTimes(Order order, OrderListAdapter.OrderListViewHolder holder) {
 
         if (order.getStatus() == Order.STATUS_PENDING) {
@@ -111,7 +121,7 @@ public abstract class OrderListAdapter extends androidx.recyclerview.widget.Recy
         if (order.isPickup())
             holder.buyerAddress.setText("PICKUP ORDER");
         else
-            holder.buyerAddress.setText("N/A"); //todo delivery address
+            holder.buyerAddress.setText(order.getDeliveryAddress().getAddressLine1() + " " + order.getDeliveryAddress().getAddressLine2() + "\n" + order.getDeliveryAddress().getCity() + ", " + order.getDeliveryAddress().getState() + " " + order.getDeliveryAddress().getZip());
     }
 
     private void setStatusImage(Order order, OrderListAdapter.OrderListViewHolder holder) {

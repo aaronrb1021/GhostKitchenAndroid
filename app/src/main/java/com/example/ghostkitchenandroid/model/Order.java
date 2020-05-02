@@ -18,7 +18,7 @@ public class Order {
     private long orderDateInMillis;
     private String pickupName;
     private Kitchen kitchen;
-//    private UserAddress deliveryAddress;
+    private UserAddress deliveryAddress;
     private BuyerDetails buyerDetails;
     private Cart cart;
 
@@ -84,7 +84,7 @@ public class Order {
         this.taxFee = taxFee;
         this.status = status;
         this.kitchen = kitchen;
-//        this.deliveryAddress = deliveryAddress;
+        this.deliveryAddress = deliveryAddress;
         orderDateInMillis = System.currentTimeMillis();
     }
 
@@ -160,13 +160,13 @@ public class Order {
         this.kitchen = kitchen;
     }
 
-//    public UserAddress getDeliveryAddress() {
-//        return deliveryAddress;
-//    }
-//
-//    public void setDeliveryAddress(UserAddress deliveryAddress) {
-//        this.deliveryAddress = deliveryAddress;
-//    }
+    public UserAddress getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(UserAddress deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
 
     public boolean isPickup() {
         return isPickup;
@@ -188,9 +188,5 @@ public class Order {
         Date date = new Date(orderDateInMillis);
 
         return date.toString();
-//        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-//        gregorianCalendar.setTimeInMillis(orderDateInMillis);
-
-//        return "" + gregorianCalendar.get(Calendar.MONTH) + " " + gregorianCalendar.get(Calendar.DATE) + " " + gregorianCalendar.get(Calendar.YEAR) + " " + gregorianCalendar.get(Calendar.HOUR)
     }
 }

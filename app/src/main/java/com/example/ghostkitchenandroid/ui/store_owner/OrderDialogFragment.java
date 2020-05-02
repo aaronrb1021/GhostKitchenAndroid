@@ -90,7 +90,7 @@ public abstract class OrderDialogFragment extends DialogFragment {
         if (order.isPickup()) {
             address.setText("N/A - PICKUP\nPickup Name: " + order.getPickupName());
         } else {
-            //TODO delivery address
+            address.setText(order.getDeliveryAddress().toString());
         }
 
         handleStatus(order, statusSpinner, statusTextView);

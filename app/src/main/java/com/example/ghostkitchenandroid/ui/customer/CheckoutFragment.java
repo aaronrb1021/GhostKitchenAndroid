@@ -30,11 +30,13 @@ import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.Order;
 import com.example.ghostkitchenandroid.model.OrderBuilder;
 import com.example.ghostkitchenandroid.model.User;
+import com.example.ghostkitchenandroid.model.UserAddress;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.utils.Format;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CheckoutFragment extends Fragment {
@@ -46,7 +48,7 @@ public class CheckoutFragment extends Fragment {
     private Spinner pickupSpinner, deliverySpinner;
     private LinearLayout customAddressSpinner;
     private Button placeOrderBt;
-    private TextView subtotalView, taxView, deliveryFeeView, totalView;
+    private TextView subtotalView, taxView, deliveryFeeView, totalView, deliveryAddressTv;
     private boolean orderAttempted;
 
     public static CheckoutFragment newInstance(Cart cart, Kitchen kitchen) {
@@ -84,6 +86,9 @@ public class CheckoutFragment extends Fragment {
         configSpinners();
         configButton();
         configWatchers();
+
+        checkoutViewModel.fetchUserAddresses(UserRepo.getLoggedInUser());
+
         setObservance();
     }
 
@@ -102,6 +107,7 @@ public class CheckoutFragment extends Fragment {
         creditChip = view.findViewById(R.id.checkout_chip_credit);
         pickupSpinner = view.findViewById(R.id.checkout_pickup_time_spinner);
         deliverySpinner = view.findViewById(R.id.checkout_delivery_time_spinner);
+        deliveryAddressTv = view.findViewById(R.id.checkout_delivery_address_tv);
         customAddressSpinner = view.findViewById(R.id.checkout_delivery_address_custom_spinner);
         placeOrderBt = view.findViewById(R.id.checkout_order_button);
         taxView = view.findViewById(R.id.checkout_tax_price);
@@ -148,6 +154,10 @@ public class CheckoutFragment extends Fragment {
     private void configSpinners() {
         pickupSpinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, checkoutViewModel.getPickupTimes()));
         deliverySpinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, checkoutViewModel.getDeliveryTimes()));
+
+        customAddressSpinner.setOnClickListener(v -> {
+            createAddressListDialog().show();
+        });
     }
 
     private void chipSelectSwap(Chip oldChip, Chip newChip, int oldChipDrawable, int newChipDrawable) {
@@ -183,17 +193,37 @@ public class CheckoutFragment extends Fragment {
     private void configButton() {
         placeOrderBt.setOnClickListener(v -> {
             orderAttempted = true;
-            User currentUser = UserRepo.getLoggedInUser();
-            OrderBuilder orderBuilder = OrderBuilder.forPickup();
-            Order order = orderBuilder
-                    .setCart(checkoutViewModel.getCart())
-                    .setBuyerDetails(new BuyerDetails(currentUser.getId(), currentUser.getFullName(), currentUser.getPhoneNumber()))
-                    .setTaxFee(checkoutViewModel.getCart().getSalesTax())
-                    .setKitchen(checkoutViewModel.getKitchen())
-                    .setPickupName(pickupNameEt.getText().toString().trim())
-                    .create();
-            checkoutViewModel.createOrder(order);
+            if (pickupChip.isChecked())
+                checkoutViewModel.createOrder(newPickupOrder());
+            else
+                checkoutViewModel.createOrder(newDeliveryOrder());
         });
+    }
+
+    private Order newPickupOrder() {
+        User currentUser = UserRepo.getLoggedInUser();
+        OrderBuilder orderBuilder = OrderBuilder.forPickup();
+        return orderBuilder
+                .setCart(checkoutViewModel.getCart())
+                .setBuyerDetails(new BuyerDetails(currentUser.getId(), currentUser.getFullName(), currentUser.getPhoneNumber()))
+                .setTaxFee(checkoutViewModel.getCart().getSalesTax())
+                .setKitchen(checkoutViewModel.getKitchen())
+                .setPickupName(pickupNameEt.getText().toString().trim())
+                .create();
+    }
+
+    private Order newDeliveryOrder() {
+        User currentUser = UserRepo.getLoggedInUser();
+        OrderBuilder orderBuilder = OrderBuilder.forDelivery();
+        Log.i("useraddressdata", checkoutViewModel.getSelectedUserAddress().getUser().getId() + checkoutViewModel.getSelectedUserAddress().toString());
+        return orderBuilder
+                .setCart(checkoutViewModel.getCart())
+                .setBuyerDetails(new BuyerDetails(currentUser.getId(), currentUser.getFullName(), currentUser.getPhoneNumber()))
+                .setTaxFee(checkoutViewModel.getCart().getSalesTax())
+                .setKitchen(checkoutViewModel.getKitchen())
+                .setDeliveryAddress(checkoutViewModel.getSelectedUserAddress())
+                .setDeliveryFee(2.95)
+                .create();
     }
 
     private void updateOrderButton() {
@@ -202,10 +232,11 @@ public class CheckoutFragment extends Fragment {
                 placeOrderBt.setEnabled(true);
             else
                 placeOrderBt.setEnabled(false);
-            return;
-        } else {
-            placeOrderBt.setEnabled(false);
-            //TODO check delivery form data
+        } else {//delivery order
+            if (checkoutViewModel.getSelectedUserAddress() != null)
+                placeOrderBt.setEnabled(true);
+            else
+                placeOrderBt.setEnabled(false);
         }
     }
 
@@ -231,10 +262,54 @@ public class CheckoutFragment extends Fragment {
             }
         });
 
+        checkoutViewModel.getUserAddressLiveData().observe(getViewLifecycleOwner(), userAddress -> {
+            if (userAddress != null) {
+                userAddressChanged(userAddress);
+                checkoutViewModel.getUserAddresses().add(userAddress);
+                Toast.makeText(getContext(), "New address created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Address creation FAILED!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        checkoutViewModel.getUserAddressListLiveData().observe(getViewLifecycleOwner(), userAddresses -> {
+
+            checkoutViewModel.setUserAddresses(userAddresses);
+
+            if (checkoutViewModel.getSelectedUserAddress() == null && userAddresses.size() > 0) {
+                userAddressChanged(userAddresses.get(0));
+            }
+        });
+
     }
 
     private void finish() {
-        getActivity().finish();
+        requireActivity().finish();
+    }
+
+    private AlertDialog createAddressListDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        ArrayAdapter<UserAddress> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, checkoutViewModel.getUserAddresses());
+
+        builder
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setNeutralButton(R.string.new_address_title, (dialog, which) -> {
+                    new CreateDeliveryAddressDialog(checkoutViewModel).show(getChildFragmentManager(), "CreateDeliveryAddressDialog");
+                })
+                .setAdapter(arrayAdapter, (dialog, which) -> {
+                    UserAddress selectedAddress = arrayAdapter.getItem(which);
+                    userAddressChanged(arrayAdapter.getItem(which));
+                });
+
+        return builder.create();
+    }
+
+    private void userAddressChanged(UserAddress userAddress) {
+        deliveryAddressTv.setText(userAddress.toString());
+        checkoutViewModel.setSelectedUserAddress(userAddress);
+        updateOrderButton();
     }
 
 }

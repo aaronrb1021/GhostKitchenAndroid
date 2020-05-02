@@ -66,6 +66,9 @@ public class StoreOwnerOrdersOverviewFragment extends Fragment {
         currentPendingOrders.setText(String.valueOf(storeOwnerOrderOverview.getNumOfPendingOrders()));
 
         Kitchen topKitchen = storeOwnerOrderOverview.getTopKitchen();
-        topKitchenInfo.setText(topKitchen.getName() + "\n" + "Orders: " + storeOwnerOrderOverview.getNumOfOrdersByKitchen(topKitchen.getId()) + "\n" + "Sales: " + Format.getFormattedPrice(storeOwnerOrderOverview.getSalesByKitchen(topKitchen.getId())));
+        if (topKitchen != null)
+            topKitchenInfo.setText(topKitchen.getName() + "\n" + "Orders: " + storeOwnerOrderOverview.getNumOfOrdersByKitchen(topKitchen.getId()) + "\n" + "Sales: " + Format.getFormattedPrice(storeOwnerOrderOverview.getSalesByKitchen(topKitchen.getId())));
+        else
+            topKitchenInfo.setText("N/A");
     }
 }

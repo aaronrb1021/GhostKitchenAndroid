@@ -105,6 +105,6 @@ public abstract class Address implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "Attn: " + name + ", " + addressLine1 + " " + addressLine2 + ", " + city + " " + state + " " + zip;
+        return name + "\n" + addressLine1 + " " + addressLine2 + "\n" + city + ", " + state + " " + zip;
     }
 }

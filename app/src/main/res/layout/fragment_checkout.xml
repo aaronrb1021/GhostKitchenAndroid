@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#757575"
-    android:theme="@style/OrderDialog">
+    android:background="#757575">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -55,7 +54,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/checkout_deliver_layout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +67,7 @@
             style="?android:attr/spinnerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -97,7 +96,8 @@
             android:id="@+id/checkout_delivery_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
             android:labelFor="@id/checkout_pickup_time_spinner"
             android:text="@string/delivery_time"
             android:textSize="16sp"
@@ -110,7 +110,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/checkout_pickup_layout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +172,7 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkout_pickup_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/checkout_deliver_layout" />
 
     <TableLayout
         android:id="@+id/tableLayout"

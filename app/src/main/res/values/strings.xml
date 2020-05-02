@@ -29,6 +29,7 @@
     <string name="cancelled">Cancelled</string>
     <string name="overview">Overview</string>
     <string name="address_title">Address</string>
+    <string name="name">Name</string>
 
     <!-- STORE OWNER ORDER OVERVIEW -->
 
@@ -130,6 +131,7 @@
     <string name="state">State</string>
     <string name="zip">zip</string>
     <string name="phone">Phone</string>
+    <string name="new_address_title">New Address</string>
 
     <!-- NAVBAR -->
     <string name="nav_open">Open Navigation Drawer</string>
