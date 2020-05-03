@@ -36,6 +36,7 @@
             android:id="@+id/customer_kitchen_info_phone_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="@string/phone"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -55,6 +56,7 @@
             android:id="@+id/customer_kitchen_info_address_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="@string/address_title"
             android:inputType="textPostalAddress|textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -74,6 +76,7 @@
             android:id="@+id/customer_kitchen_info_name_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="@string/add_kitchen_name"
             android:inputType="text|textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>

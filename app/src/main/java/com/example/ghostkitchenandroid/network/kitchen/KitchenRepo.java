@@ -182,7 +182,6 @@ public class KitchenRepo {
 
         @Override
         protected void onPostExecute(ArrayList<Kitchen> kitchens) {
-            Log.i("fetchbyzip", kitchens.toString());
             weakReference.get().kitchensLiveData.setValue(kitchens);
         }
     }

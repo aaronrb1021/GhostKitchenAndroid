@@ -1,5 +1,6 @@
 package com.example.ghostkitchenandroid.ui.lists;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,6 +17,7 @@ import android.transition.Scene;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -161,10 +163,10 @@ public class CustomerItemListFragment extends Fragment {
                     .setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             cartPreviewContainer.setVisibility(View.GONE);
+
+            setBottomMargin(0);
         } else if (cartPreviewContainer.getVisibility() == View.GONE) {
-            if (recyclerView.getChildCount() > 8) {
-//                recyclerView.setPadding(0, 140, 0, 0);
-            }
+            setBottomMargin(bottomSheetBehavior.getPeekHeight());
             updateCartPreview();
             cartPreviewContainer.setAlpha(0f);
             cartPreviewContainer.setVisibility(View.VISIBLE);
@@ -172,8 +174,15 @@ public class CustomerItemListFragment extends Fragment {
                     .alpha(0.8f)
                     .setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
         } else {
+            setBottomMargin(bottomSheetBehavior.getPeekHeight());
             updateCartPreview();
         }
+    }
+
+    private void setBottomMargin(int bottomMargin) {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) recyclerView.getLayoutParams();
+        params.setMargins(0,bottomMargin,0,0);
+        recyclerView.setLayoutParams(params);
     }
 
     private void updateCartPreview() {

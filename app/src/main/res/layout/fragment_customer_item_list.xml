@@ -8,8 +8,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/customer_item_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_dodgeInsetEdges="bottom|top" />
+        android:layout_height="match_parent"
+        app:layout_dodgeInsetEdges="bottom"
+        app:layout_insetEdge="top"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cart_preview_container"
