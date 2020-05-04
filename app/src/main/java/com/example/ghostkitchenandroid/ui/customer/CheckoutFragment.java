@@ -33,6 +33,7 @@ import com.example.ghostkitchenandroid.model.User;
 import com.example.ghostkitchenandroid.model.UserAddress;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 import com.example.ghostkitchenandroid.utils.Format;
+import com.example.ghostkitchenandroid.utils.UserCredValidity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -43,10 +44,10 @@ public class CheckoutFragment extends Fragment {
 
     private CheckoutViewModel checkoutViewModel;
     private Chip deliveryChip, pickupChip, cashChip, creditChip;
-    private TextInputEditText pickupNameEt;
+    private TextInputEditText pickupNameEt, cardNameEt, cardNumberEt, expirationEt, cvvEt;
     private View pickupLayout, deliveryLayout;
     private Spinner pickupSpinner, deliverySpinner;
-    private LinearLayout customAddressSpinner;
+    private LinearLayout customAddressSpinner, cardLayout;
     private Button placeOrderBt;
     private TextView subtotalView, taxView, deliveryFeeView, totalView, deliveryAddressTv;
     private boolean orderAttempted;
@@ -114,6 +115,11 @@ public class CheckoutFragment extends Fragment {
         subtotalView = view.findViewById(R.id.checkout_subtotal_price);
         deliveryFeeView = view.findViewById(R.id.checkout_delivery_price);
         totalView = view.findViewById(R.id.checkout_total_price);
+        cardLayout = view.findViewById(R.id.checkout_card_layout);
+        cardNameEt = view.findViewById(R.id.checkout_card_name_et);
+        cardNumberEt = view.findViewById(R.id.checkout_card_number_et);
+        expirationEt = view.findViewById(R.id.checkout_card_expiration_et);
+        cvvEt = view.findViewById(R.id.checkout_card_cvv_et);
     }
 
     private void configViews() {
@@ -145,9 +151,11 @@ public class CheckoutFragment extends Fragment {
         });
         cashChip.setOnClickListener(v -> {
             chipSelectSwap(creditChip, cashChip, R.drawable.ic_credit_card_black_24dp, R.drawable.ic_attach_money_primary_green_24dp);
+            cardLayout.setVisibility(View.GONE);
         });
         creditChip.setOnClickListener(v -> {
             chipSelectSwap(cashChip, creditChip, R.drawable.ic_attach_money_black_24dp, R.drawable.ic_credit_card_primary_green_24dp);
+            cardLayout.setVisibility(View.VISIBLE);
         });
     }
 
@@ -188,6 +196,10 @@ public class CheckoutFragment extends Fragment {
             }
         };
         pickupNameEt.addTextChangedListener(textWatcher);
+        cardNumberEt.addTextChangedListener(textWatcher);
+        cardNameEt.addTextChangedListener(textWatcher);
+        cvvEt.addTextChangedListener(textWatcher);
+        expirationEt.addTextChangedListener(textWatcher);
     }
 
     private void configButton() {
@@ -227,17 +239,36 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void updateOrderButton() {
-        if (pickupChip.isChecked()) {
+        if (pickupChip.isChecked() && cashChip.isChecked()) {
             if (pickupNameEt.getText().toString().trim().length() > 0)
                 placeOrderBt.setEnabled(true);
             else
                 placeOrderBt.setEnabled(false);
-        } else {//delivery order
+        } else if (cashChip.isChecked()) {//delivery and cash order
             if (checkoutViewModel.getSelectedUserAddress() != null)
                 placeOrderBt.setEnabled(true);
             else
                 placeOrderBt.setEnabled(false);
+        } else if (pickupChip.isChecked()) {//pickup and credit card order
+            if (pickupNameEt.getText().toString().trim().length() > 0 && isCardValid())
+                placeOrderBt.setEnabled(true);
+            else
+                placeOrderBt.setEnabled(false);
+        } else {//delivery and credit card order
+            if (checkoutViewModel.getSelectedUserAddress() != null && isCardValid())
+                placeOrderBt.setEnabled(true);
+            else
+                placeOrderBt.setEnabled(false);
         }
+    }
+
+    private boolean isCardValid() {
+        if (UserCredValidity.isValid(cardNameEt.getText().toString().trim()) &&
+                UserCredValidity.isCreditCardValid(cardNumberEt.getText().toString().trim()) &&
+                UserCredValidity.isExpirationValid(expirationEt.getText().toString().trim()) &&
+                UserCredValidity.isCvvValid(cvvEt.getText().toString().trim()))
+            return true;
+        return false;
     }
 
     private void setObservance() {

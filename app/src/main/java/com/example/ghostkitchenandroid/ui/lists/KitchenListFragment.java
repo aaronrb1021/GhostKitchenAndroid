@@ -3,6 +3,7 @@ package com.example.ghostkitchenandroid.ui.lists;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import android.widget.Toolbar;
 
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
+import com.example.ghostkitchenandroid.ui.store_owner.AddKitchenFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class KitchenListFragment extends Fragment {
 
@@ -31,9 +34,9 @@ public class KitchenListFragment extends Fragment {
     private KitchenListViewModel kitchenListViewModel;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private Toolbar toolbar;
-    private View kitchenFragmentContainer;
     private TextView tvNoKitchens;
+    private FloatingActionButton floatingActionButton;
+    private View fragmentContainer;
 
     public static KitchenListFragment newInstance(int mode) {
         if (mode == KitchenListAdapter.MODE_STORE_OWNER || mode == KitchenListAdapter.MODE_CUSTOMER) {
@@ -101,8 +104,11 @@ public class KitchenListFragment extends Fragment {
 
         if (kitchenListViewModel.getRadius() == null && kitchenListViewModel.getMode() == KitchenListAdapter.MODE_CUSTOMER)
             showAllKitchens();
-        else if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_STORE_OWNER)
+        else if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_STORE_OWNER) {
             showKitchensByUser();
+            floatingActionButton.setVisibility(View.VISIBLE);
+            setButtonOnClick();
+        }
         else if (kitchenListViewModel.getRadius() != null)
             showKitchensByRadiusFromZip();
 
@@ -114,6 +120,14 @@ public class KitchenListFragment extends Fragment {
         progressBar = view.findViewById(R.id.my_kitchen_progress);
         recyclerView = view.findViewById(R.id.my_kitchen_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        floatingActionButton = view.findViewById(R.id.kitchen_list_add_fab);
+        fragmentContainer = getActivity().findViewById(R.id.store_owner_fragment_container);
+    }
+
+    private void setButtonOnClick() {
+        floatingActionButton.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction().replace(fragmentContainer.getId(), AddKitchenFragment.newInstance(), "AddKitchenFragment").addToBackStack("StoreOwnerKitchenList").commit();
+        });
     }
 
     private void showKitchensByUser() {

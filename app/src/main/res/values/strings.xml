@@ -108,6 +108,10 @@
     <string name="no_orders">NO ORDERS AVAILABLE</string>
     <string name="no_completed_orders">NO COMPLETED ORDERS</string>
     <string name="delivery_time">Delivery Time:</string>
+    <string name="name_on_card">Name on Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiration">Expiration</string>
+    <string name="cvv">CVV</string>
 
     <!-- item -->
     <string name="no_description">No description available</string>

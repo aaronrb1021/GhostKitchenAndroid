@@ -44,6 +44,26 @@ public abstract class UserCredValidity {
         return true;
     }
 
+    public static boolean isExpirationValid(@Nullable String expiration) {
+        if (expiration == null || expiration.replaceAll("[^0-9]", "").length() != 4)
+            return false;
+        return true;
+    }
+
+    public static boolean isCvvValid(@Nullable String cvv) {
+        int cvvLength = (cvv != null) ? cvv.replaceAll("[^0-9]", "").length() : 0;
+        if (cvvLength < 3 || cvvLength > 4)
+            return false;
+        return true;
+    }
+
+    public static boolean isCreditCardValid(@Nullable String cardNumber) {
+        int cardLength = (cardNumber != null) ? cardNumber.replaceAll("[^0-9]", "").length() : 0;
+        if (cardLength != 16)
+            return false;
+        return true;
+    }
+
     /**
      * Checks if a string is not null and has a length greater than 0.
      * @param string the string to check
