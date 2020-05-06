@@ -75,6 +75,9 @@
     <string name="add_kitchen_name">Kitchen Name</string>
     <string name="add_kitchen_button">Add Kitchen</string>
 
+    <!-- EDIT KITCHEN -->
+    <string name="edit_image">EDIT IMAGE</string>
+
     <!-- my kitchens -->
     <string name="my_kitchens_toolbar_title">My Ghost Kitchens</string>
     <string name="my_kitchens_no_kitchens">NO KITCHENS AVAILABLE</string>

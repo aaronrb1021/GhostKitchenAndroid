@@ -3,6 +3,11 @@ package com.example.ghostkitchenandroid.ui.store_owner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +33,20 @@ import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.State;
 import com.example.ghostkitchenandroid.network.user.UserRepo;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Base64;
+
+import static android.app.Activity.RESULT_OK;
+
 public class AddKitchenFragment extends Fragment {
 
     private AddKitchenViewModel addKitchenViewModel;
     protected EditText etKitchenName, etAddressLine1, etAddressLine2, etCity, etZip, etPhone;
     protected Spinner spState;
-    protected Button btAddKitchen;
+    protected Button btAddKitchen, btImage;
+    protected ImageView imageView;
 
     public static AddKitchenFragment newInstance() {
 
@@ -82,9 +96,16 @@ public class AddKitchenFragment extends Fragment {
         etZip = getActivity().findViewById(R.id.add_kitchen_zip_et);
         etPhone = getActivity().findViewById(R.id.add_kitchen_phone_et);
         btAddKitchen = getActivity().findViewById(R.id.add_kitchen_bt);
+        btImage = getActivity().findViewById(R.id.add_kitchen_image_button);
+        imageView = getActivity().findViewById(R.id.add_kitchen_image);
 
         spState = getActivity().findViewById(R.id.add_kitchen_state_spinner);
         spState.setAdapter(new ArrayAdapter<State>(getContext(), android.R.layout.simple_spinner_dropdown_item, State.values()));
+
+        btImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, 0);
+        });
     }
 
     private void setListeners() {
@@ -188,6 +209,7 @@ public class AddKitchenFragment extends Fragment {
     }
 
     private void init() {
+        imageView.setImageDrawable(getActivity().getDrawable(R.drawable.ic_kitchen_black_24dp));
         etKitchenName.setText("");
         etAddressLine1.setText("");
         etAddressLine2.setText("");
@@ -198,7 +220,18 @@ public class AddKitchenFragment extends Fragment {
     }
 
     private void setOnClickListener() {
+
         btAddKitchen.setOnClickListener(v -> {
+
+            String bytes = null;
+
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();) {
+                ((BitmapDrawable)imageView.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+                bytes = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+            } catch (IOException | ClassCastException e) {
+                e.printStackTrace();
+            }
+
             addKitchenViewModel.submit(
                     etKitchenName.getText().toString().trim(),
                     etAddressLine1.getText().toString().trim(),
@@ -206,8 +239,23 @@ public class AddKitchenFragment extends Fragment {
                     etCity.getText().toString().trim(),
                     (State) spState.getSelectedItem(),
                     etZip.getText().toString().trim(),
-                    etPhone.getText().toString().trim()
+                    etPhone.getText().toString().trim(),
+                    bytes
             );
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri targetUri = data.getData();
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(targetUri));
+                imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

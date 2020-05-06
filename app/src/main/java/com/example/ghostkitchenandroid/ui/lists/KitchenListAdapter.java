@@ -2,6 +2,8 @@ package com.example.ghostkitchenandroid.ui.lists;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.example.ghostkitchenandroid.ui.customer.CustomerKitchenActivity;
 import com.example.ghostkitchenandroid.ui.store_owner.MyKitchenFragment;
 
 import java.util.ArrayList;
+import java.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -47,6 +50,11 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull KitchenListAdapter.KitchenViewHolder holder, int position) {
+
+        Bitmap image = decodeImage(position);
+        if (image != null)
+            holder.imageView.setImageBitmap(image);
+
         holder.tvName.setText(kitchens.get(position).getName());
         holder.tvAddress.setText(kitchens.get(position).getKitchenAddress().toString());
         holder.tvPhone.setText(kitchens.get(position).getKitchenAddress().getPhone());
@@ -78,6 +86,16 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
     @Override
     public int getItemCount() {
         return kitchens.size();
+    }
+
+    private Bitmap decodeImage(int position) {
+        String base64ImageString = kitchens.get(position).getImageBytes();
+
+        if (base64ImageString != null) {
+            byte[] bytes = Base64.getDecoder().decode(base64ImageString);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        return null;
     }
 
     static class KitchenViewHolder extends RecyclerView.ViewHolder {

@@ -14,9 +14,9 @@ public class EditKitchenViewModel extends ViewModel {
     private Kitchen kitchen;
     private KitchenRepo kitchenRepo = KitchenRepo.getInstance();
 
-    void submit(String name, String addressLine1, String addressLine2, String city, State state, String zip, String phone) {
+    void submit(String name, String addressLine1, String addressLine2, String city, State state, String zip, String phone, String bytes) {
         KitchenAddress address = new KitchenAddress(name, name, addressLine1, addressLine2, city, state.toString(), zip, phone);
-        Kitchen kitchen = new Kitchen(name, address);
+        Kitchen kitchen = new Kitchen(name, address, bytes);
         kitchen.setId(this.kitchen.getId());
         kitchenRepo.updateKitchen(kitchen);
     }

@@ -9,14 +9,16 @@ public class Kitchen implements Comparable<Kitchen>, Serializable {
     private long id;
     private String name;
     private KitchenAddress kitchenAddress;
+    private String imageBytes;
 
     public Kitchen() {
 
     }
 
-    public Kitchen(String name, KitchenAddress kitchenAddress) {
+    public Kitchen(String name, KitchenAddress kitchenAddress, String imageBytes) {
         this.name = name;
         this.kitchenAddress = kitchenAddress;
+        this.imageBytes = imageBytes;
     }
 
     public String getName() {
@@ -41,6 +43,14 @@ public class Kitchen implements Comparable<Kitchen>, Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(String imageBytes) {
+        this.imageBytes = imageBytes;
     }
 
     @Override

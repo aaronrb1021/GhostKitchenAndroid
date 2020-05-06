@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,11 @@ import android.widget.Toast;
 import com.example.ghostkitchenandroid.R;
 import com.example.ghostkitchenandroid.model.Kitchen;
 import com.example.ghostkitchenandroid.model.State;
+import com.example.ghostkitchenandroid.utils.KitchenDecoder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 public class EditKitchenFragment extends AddKitchenFragment {
 
@@ -63,6 +70,9 @@ public class EditKitchenFragment extends AddKitchenFragment {
     private void displayKitchenData() {
         Kitchen kitchen = editKitchenViewModel.getKitchen();
 
+        if (kitchen.getImageBytes() != null)
+            imageView.setImageBitmap(KitchenDecoder.base64ToBitmap(kitchen));
+
         etKitchenName.setText(kitchen.getName());
         etAddressLine1.setText(kitchen.getKitchenAddress().getAddressLine1());
         etAddressLine2.setText(kitchen.getKitchenAddress().getAddressLine2());
@@ -71,6 +81,8 @@ public class EditKitchenFragment extends AddKitchenFragment {
         etPhone.setText(kitchen.getKitchenAddress().getPhone());
         spState.setSelection(State.valueOf(kitchen.getKitchenAddress().getState()).ordinal());
 
+        btImage.setText(getString(R.string.edit_image));
+
         btAddKitchen.setText(R.string.submit);
         btAddKitchen.setOnClickListener(v -> {
             submitKitchenUpdates();
@@ -78,6 +90,16 @@ public class EditKitchenFragment extends AddKitchenFragment {
     }
 
     private void submitKitchenUpdates() {
+
+        String bytes = null;
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();) {
+            ((BitmapDrawable)imageView.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+            bytes = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+        } catch (IOException | ClassCastException e) {
+            e.printStackTrace();
+        }
+
         editKitchenViewModel.submit(
                 etKitchenName.getText().toString().trim(),
                 etAddressLine1.getText().toString().trim(),
@@ -85,7 +107,8 @@ public class EditKitchenFragment extends AddKitchenFragment {
                 etCity.getText().toString().trim(),
                 (State) spState.getSelectedItem(),
                 etZip.getText().toString().trim(),
-                etPhone.getText().toString().trim()
+                etPhone.getText().toString().trim(),
+                bytes
         );
     }
 
