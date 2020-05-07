@@ -35,6 +35,7 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
 
     public static final int MODE_STORE_OWNER = 2;
     public static final int MODE_CUSTOMER = 3;
+    public static final int MODE_CUSTOMER_FAVORITES = 4;
 
     public KitchenListAdapter(Context context, ArrayList<Kitchen> kitchens, int mode) {
         this.context = context;
@@ -68,13 +69,12 @@ public class KitchenListAdapter extends RecyclerView.Adapter<KitchenListAdapter.
                     fragment.setArguments(bundle);
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.store_owner_fragment_container, fragment, "MyKitchenFragment").addToBackStack(null).commit();
                 });
-            } else if (mode == MODE_CUSTOMER) {
+            } else if (mode == MODE_CUSTOMER || mode == MODE_CUSTOMER_FAVORITES) {
                 cachedListeners.add(position, view -> {
                     Intent intent = new Intent(context, CustomerKitchenActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("kitchen", kitchens.get(position));
                     intent.putExtras(bundle);
-//                    intent.putExtra("kitchen", kitchens.get(position));
                     context.startActivity(intent);
                 });
             }

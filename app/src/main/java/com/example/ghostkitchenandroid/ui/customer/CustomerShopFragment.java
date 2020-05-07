@@ -92,6 +92,12 @@ public class CustomerShopFragment extends Fragment {
                 case R.id.bottom_nav_shop_explore:
                     displayKitchenList(null, null);
                     return true;
+                case R.id.bottom_nav_shop_featured:
+                    displayKitchenList(null, null);
+                    return true;
+                case R.id.bottom_nav_shop_favorites:
+                    displayFavorites();
+                    return true;
             }
             return false;
         };
@@ -102,6 +108,10 @@ public class CustomerShopFragment extends Fragment {
             getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER)).commit();
         else
             getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER, zip, radius)).commit();
+    }
+
+    private void displayFavorites() {
+        getParentFragmentManager().beginTransaction().replace(listContainer.getId(), KitchenListFragment.newInstance(KitchenListAdapter.MODE_CUSTOMER_FAVORITES)).commit();
     }
 
     private void manageFilterButton() {

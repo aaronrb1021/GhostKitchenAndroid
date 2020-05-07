@@ -12,20 +12,33 @@ import com.example.ghostkitchenandroid.ui.login.LoginActivity;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutionException;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public abstract class UserRepo {
+public class UserRepo {
 
     private static User loggedInUser;
     private static UserService userService = UserServiceInstance.getInstance();
+    private MutableLiveData<User> userLiveData;
 
     public static User getLoggedInUser() {
         return loggedInUser;
+    }
+
+    public LiveData<User> getUserLiveData() {
+        userLiveData = new MutableLiveData<>();
+        return userLiveData;
+    }
+
+    public void updateUser(User user) {
+        new UpdateUserTask(this).execute(user);
     }
 
     public static void logout(AppCompatActivity context) {
@@ -114,6 +127,31 @@ public abstract class UserRepo {
                 return new Result.Error(new Exception("Unknown Error"));
             }
             return new Result.Error(new Exception("Unknown Error"));
+        }
+    }
+
+    private static class UpdateUserTask extends AsyncTask<User, Void, User> {
+
+        private WeakReference<UserRepo> weakReference;
+
+        UpdateUserTask(UserRepo userRepo) {
+            weakReference = new WeakReference<>(userRepo);
+        }
+
+        @Override
+        protected User doInBackground(User... users) {
+            try {
+                return userService.updateUser(users[0]).execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            if (user != null)
+                weakReference.get().userLiveData.setValue(user);
         }
     }
 }

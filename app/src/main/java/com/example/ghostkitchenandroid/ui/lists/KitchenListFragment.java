@@ -39,7 +39,7 @@ public class KitchenListFragment extends Fragment {
     private View fragmentContainer;
 
     public static KitchenListFragment newInstance(int mode) {
-        if (mode == KitchenListAdapter.MODE_STORE_OWNER || mode == KitchenListAdapter.MODE_CUSTOMER) {
+        if (mode == KitchenListAdapter.MODE_STORE_OWNER || mode == KitchenListAdapter.MODE_CUSTOMER || mode == KitchenListAdapter.MODE_CUSTOMER_FAVORITES) {
             KitchenListFragment kitchenListFragment = new KitchenListFragment();
 
             Bundle bundle = new Bundle();
@@ -108,8 +108,9 @@ public class KitchenListFragment extends Fragment {
             showKitchensByUser();
             floatingActionButton.setVisibility(View.VISIBLE);
             setButtonOnClick();
-        }
-        else if (kitchenListViewModel.getRadius() != null)
+        } else if (kitchenListViewModel.getMode() == KitchenListAdapter.MODE_CUSTOMER_FAVORITES) {
+            showKitchensByUser();
+        } else if (kitchenListViewModel.getRadius() != null)
             showKitchensByRadiusFromZip();
 
         setObservance();

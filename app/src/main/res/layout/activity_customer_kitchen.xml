@@ -23,7 +23,9 @@
             android:layout_gravity="end"
             android:layout_marginRight="30dp"
             android:foregroundGravity="right"
-            android:src="@drawable/ic_star_border_black_24dp" />
+            android:src="@drawable/ic_star_border_black_24dp"
+            android:clickable="true"
+            />
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
