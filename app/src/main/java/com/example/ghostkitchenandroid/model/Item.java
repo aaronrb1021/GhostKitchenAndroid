@@ -92,9 +92,7 @@ public class Item implements Comparable<Item>, Serializable {
 
     @Override
     public int compareTo(Item o) {
-//        if (category.equals(o.category))
         return (int) (price - o.price);
-//        return category.compareTo(o.category);
     }
 
     @Override
